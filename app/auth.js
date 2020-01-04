@@ -1,77 +1,76 @@
 const LocalStrategy = require("passport-local").Strategy;
-
-const mysql = require('mysql');
 const bcrypt = require('bcrypt-nodejs');
-const dbconfig = require('../config/database');
-const connection = mysql.createConnection(dbconfig.connection);
-
-connection.query('USE ' + dbconfig.database);
+const models = require('../sequelize/models');
+const User = models.User;
 
 module.exports = function (passport) {
 
-  passport.serializeUser(function (user, done) {
-    done(null, user.id);
+  passport.serializeUser((user, done) => {
+    done(null, user.get().id);
   });
 
-  passport.deserializeUser(function (id, done) {
-    connection.query("SELECT * FROM users WHERE id = ? ", [id],
-      function (err, rows) {
-        done(err, rows[0]);
-      });
+  passport.deserializeUser((id, done) => {
+    User.findOne({ where: { id: id } })
+        .then( (user) => { done(null, user) } );
   });
 
   passport.use(
     'local-register',
     new LocalStrategy({
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
       passReqToCallback: true
     },
-      function (req, username, password, done) {
-        connection.query("SELECT * FROM users WHERE username = ? ",
-          [username], function (err, rows) {
-            if (err)
-              return done(err);
-            if (rows.length) {
-              return done(null, false, req.flash('signupMessage', 'That is already taken'));
-            } else {
-              var newUserMysql = {
-                username: username,
-                password: bcrypt.hashSync(password, null, null)
-              };
+      (req, email, password, done) => {
+        User.findOne({ where: { email: email } })
+            .then( 
+              (user) => {
+                if(user === null){
+                  
+                  User.create(
+                    {
+                      name: req.body.name,
+                      email: email,
+                      password: bcrypt.hashSync(password, null, null)
+                    }
+                  )
+                  .then(
+                    (user) => {
+                      return done(null, user);
+                    }
+                  );
 
-              var insertQuery = "INSERT INTO users (username, password) values (?, ?)";
+                }
+                else {
+                  return done(null, false, req.flash('auth-error', "E-mail already registered"));
+                }
 
-              connection.query(insertQuery, [newUserMysql.username, newUserMysql.password],
-                function (err, rows) {
-                  newUserMysql.id = rows.insertId;
-
-                  return done(null, newUserMysql);
-                });
-            }
-          });
+              }
+            )
       })
   );
 
   passport.use(
     'local-login',
     new LocalStrategy({
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
       passReqToCallback: true
     },
-      function (req, username, password, done) {
-        connection.query("SELECT * FROM users WHERE username = ? ", [username],
-          function (err, rows) {
-            if (err)
-              return done(err);
-            if (!rows.length) {
-              return done(null, false, req.flash('loginMessage', 'No User Found'));
-            }
-            if (!bcrypt.compareSync(password, rows[0].password))
-              return done(null, false, req.flash('loginMessage', 'Wrong Password'));
+      (req, email, password, done) => {
+        User.findOne({ where: { email: email } })
+          .then((user) => {
 
-            return done(null, rows[0]);
+            const errorMsg = 'Invalid credentials';
+            if (user === null) {
+              return done(null, false, req.flash('auth-error', errorMsg));
+            }
+            else {
+              if (bcrypt.compareSync(password, user.get().password))
+                return done(null, user);
+              else
+                return done(null, false, req.flash('auth-error', errorMsg));
+            }
           });
       })
   );

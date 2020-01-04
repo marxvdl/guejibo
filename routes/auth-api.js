@@ -1,7 +1,7 @@
 module.exports = function (app, passport) {
 
     app.get('/auth/error', (req, res) => {
-        res.send({ error: "Authentication error"});
+        res.send({ errors: req.flash('auth-error')});
     });
 
     app.post('/auth/login', passport.authenticate('local-login', {
