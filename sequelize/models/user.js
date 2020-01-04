@@ -1,12 +1,16 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.CHAR(60),
-  }, { freezeTableName: true });
-  User.associate = function (models) {
 
+  const User = sequelize.define('User',
+    {
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.CHAR(60),
+    },
+    { freezeTableName: true }
+  );
+
+  User.associate = (models) => {
     User.hasMany(
       models.GameRoom,
       {
@@ -16,13 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     User.belongsToMany(
-      models.GameRoom, 
-      { 
+      models.GameRoom,
+      {
         foreignKey: 'userId',
         through: 'UsersGameRooms',
-        as: 'gameRooms'        
+        as: 'gameRooms'
       }
     );
   };
+
   return User;
 };

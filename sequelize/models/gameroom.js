@@ -1,13 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const GameRoom = sequelize.define('GameRoom', {
-    gameId: DataTypes.INTEGER,
-    ownerId: DataTypes.INTEGER,
-    timeStarted: DataTypes.DATE,
-    timeEnded: DataTypes.DATE
 
-  }, { freezeTableName: true });
-  GameRoom.associate = function(models) {
+  const GameRoom = sequelize.define('GameRoom', 
+    {
+      gameId: DataTypes.INTEGER,
+      ownerId: DataTypes.INTEGER,
+      timeStarted: DataTypes.DATE,
+      timeEnded: DataTypes.DATE
+    }, 
+    { freezeTableName: true }
+  );
+
+  GameRoom.associate = (models) => {
     GameRoom.belongsTo(models.User, {foreignKey: 'ownerId', as: 'owner'});
     GameRoom.belongsTo(models.Game, {foreignKey: 'gameId', as: 'game'});
 
@@ -20,5 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     );
   };
+
   return GameRoom;
+
 };
