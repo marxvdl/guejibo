@@ -1,3 +1,6 @@
+const models = require('../sequelize/models');
+const User = models.User;
+
 module.exports = function (app, passport) {
 
     app.get('/auth/error', (req, res) => {
@@ -25,7 +28,7 @@ module.exports = function (app, passport) {
     }));
 
     app.get('/auth/profile', isLoggedIn, (req, res) => {
-        res.send(req.user);
+        res.send( User.exportObject(req.user) );
     });
 
     app.get('/auth/logout', (req, res)  => {

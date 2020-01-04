@@ -29,5 +29,13 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  User.exportObject = (user) => {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
+  };
+
   return User;
 };

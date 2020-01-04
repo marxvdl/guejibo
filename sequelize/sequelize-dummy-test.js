@@ -105,7 +105,6 @@ User.findOne({
 });
 
 
-
 /* *********************************************************** */
 
 User.findOne({
@@ -119,11 +118,11 @@ User.findOne({
     console.log();
 
     console.log("Game rooms that sicrano@talala.com owns:");
-    console.log( user.get().ownedGameRooms.map(gr => gr.get()) );
+    console.log( user.get().ownedGameRooms.map(gr => GameRoom.exportObject(gr) ) );
     console.log();
 
     console.log("Game rooms that sicrano@talala.com is part of:");
-    console.log( user.get().gameRooms.map(gr => gr.get()) );
+    console.log( user.get().gameRooms.map(gr => GameRoom.exportObject(gr) ) );
     console.log();
 });
 
@@ -136,12 +135,20 @@ GameRoom.findOne(
 )
 .then( (gr) => {
     console.log("Owner of game room 4:");
-    console.log( gr.get().owner.get() );
+    console.log( User.exportObject(gr.get().owner) );
     console.log(
 
     );
     console.log("Users of game room 4:");
-    console.log( gr.get().users.map(u => u.get()) );
+    console.log( gr.get().users.map(u => User.exportObject(u)) );
     console.log();
 });
 
+Game.findOne(
+    { where: { id: 2 } }
+)
+.then( (game) => {
+    console.log();
+    console.log("Game 2:");
+    console.log( Game.exportObject(game) );
+});

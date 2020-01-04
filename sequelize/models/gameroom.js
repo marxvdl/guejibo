@@ -1,28 +1,38 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 
-  const GameRoom = sequelize.define('GameRoom', 
+  const GameRoom = sequelize.define('GameRoom',
     {
       gameId: DataTypes.INTEGER,
       ownerId: DataTypes.INTEGER,
       timeStarted: DataTypes.DATE,
       timeEnded: DataTypes.DATE
-    }, 
+    },
     { freezeTableName: true }
   );
 
   GameRoom.associate = (models) => {
-    GameRoom.belongsTo(models.User, {foreignKey: 'ownerId', as: 'owner'});
-    GameRoom.belongsTo(models.Game, {foreignKey: 'gameId', as: 'game'});
+    GameRoom.belongsTo(models.User, { foreignKey: 'ownerId', as: 'owner' });
+    GameRoom.belongsTo(models.Game, { foreignKey: 'gameId', as: 'game' });
 
     GameRoom.belongsToMany(
-      models.User, 
-      { 
+      models.User,
+      {
         foreignKey: 'gameRoomId',
         through: 'UsersGameRooms',
-        as: 'users'        
+        as: 'users'
       }
     );
+  };
+
+  GameRoom.exportObject = (gr) => {
+    return {
+      id: gr.id,
+      gameId: gr.gameId,
+      ownerId: gr.ownerId,
+      timeStarted: gr.timeStarted,
+      timeEnded: gr.timeEnded
+    };
   };
 
   return GameRoom;

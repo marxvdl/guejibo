@@ -12,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     Game.hasMany(models.GameRoom, {foreignKey: 'gameId', as: 'gameRooms'});
   };
 
+  Game.exportObject = (game) => {
+    return {
+      id: game.id,
+      name: game.name
+    };
+  };
+
   return Game;
   
 };
