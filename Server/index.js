@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
+var cors = require('cors');
 
 /* ******************************************* */
 
@@ -12,13 +13,14 @@ const port = 3000;
 
 /* ******************************************* */
 
+// cors
+app.use(cors());
+
 // cookie-parser
 app.use(cookieParser());
 
 // body-parser
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.json());
 
 // express-session
 app.use(session({
