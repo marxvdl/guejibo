@@ -1,10 +1,9 @@
 const express = require('express');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-var passport = require('passport');
-var flash = require('connect-flash');
-var cors = require('cors');
+const passport = require('passport');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
 /* ******************************************* */
 
@@ -12,6 +11,9 @@ const app = express();
 const port = 3000;
 
 /* ******************************************* */
+
+// dotenv
+dotenv.config();
 
 // cors
 app.use(cors());
@@ -22,20 +24,9 @@ app.use(cookieParser());
 // body-parser
 app.use(bodyParser.json());
 
-// express-session
-app.use(session({
-    secret: 'hYvaAklVxj7odxW',
-    resave: true,
-    saveUninitialized: true
-}));
-
 // passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-// connect-flash
-app.use(flash());
-
 
 /* ******************************************* */
 
