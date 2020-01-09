@@ -2,8 +2,9 @@ const jwtDecode = require('jwt-decode');
 
 const BASEURL = 'http://localhost:3000/';
 
-export function login() {
+export let global = {};
 
+export function login() {
     $.ajax({
         type: 'POST',
         url: BASEURL + 'auth/login',
@@ -16,17 +17,32 @@ export function login() {
 
             if (data.success === true) {
                 console.log("Logged in");
-                let jwt = jwtDecode(data.token);
 
-                $("#top-email").text(jwt.email);
+                global.token = data.token;
+                global.payload = jwtDecode(data.token);
+
+                $("#top-email").text(global.payload.email);
                 $("#top-email").css('color', '#3aff3a');
-                $("#login-panel").slideUp();
+                $("#login-panel").slideUp(400, () => { $("#perfil-panel").fadeIn() } );
             }
             else {
                 console.log("Could not log in: " + data.error);
             }
         }
     });
-
 };
 
+export function profile(){
+    $.ajax({
+        type: 'GET',
+        beforeSend: xhr => {
+            xhr.setRequestHeader ("Authorization", "Bearer " + global.token);
+        },
+        url: BASEURL + 'auth/profile',
+        success: data => {
+            $('#perfil-nome').text(data.name);
+            $('#perfil-email').text(data.email);
+            $('#perfil-id').text(data.id);            
+        }
+    });
+};

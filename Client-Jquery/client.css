@@ -9,6 +9,10 @@ body {
     padding: 5px;    
 }
 
+#top-email {
+    color: rgb(163, 163, 163);
+}
+
 .panel {
     border: 2px solid rgb(36, 36, 36);
     background-color: rgb(241, 241, 241);
@@ -19,4 +23,8 @@ body {
 
 .panel button {
     width: 200px;
+}
+
+.panel h1 {
+    margin-top: 0;
 }
