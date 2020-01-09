@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IacWeb Test Client</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="dist/main.js"></script>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <div class="top" >
+        User: <span id="top-email">unknown</span>
+    </div>
+    <div class="panel" id="login-panel">
+        <h1>Entrar</h1>
+        <p>Email: <input type="email" id="login-email"></p>
+        <p>Password: <input type="password" id="login-password"></p>
+        <button onclick="client.login()">Entrar</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+body {
+    font-family: sans;
+    margin: 0;
+}
+
+.top {
+    background-color: rgb(39, 39, 39);
+    color: white;
+    padding: 5px;    
+}
+
+.panel {
+    border: 2px solid rgb(36, 36, 36);
+    background-color: rgb(241, 241, 241);
+    padding: 20px;
+    width: 600px;
+    margin: 10px;
+}
+
+.panel button {
+    width: 200px;
+}
