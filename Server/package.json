@@ -1,5 +1,5 @@
 {
- "name": "node-loginregister",
+ "name": "iacweb-server",
  "main": "server.js",
  "scripts": {
   "start": "node ./server"

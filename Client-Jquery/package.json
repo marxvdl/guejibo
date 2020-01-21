@@ -1,0 +1,14 @@
+{
+  "name": "iacweb-jquery-client",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "jwt-decode": "^2.2.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack": "^4.41.5"
+  },
+  "author": "",
+  "license": "ISC"
+}
