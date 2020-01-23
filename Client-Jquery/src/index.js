@@ -52,17 +52,45 @@ export function profile(){
             $('#perfil-id').text(data.id);            
         }
     });
-};
+}
 
-function loadGames(){
+export function loadGames(){
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/games',
         success: data => {
             $('#games-ul').empty();
-            for(let game of data){
-                $('#games-ul').append( $(`<li>${game.name}: ${game.id}</li>`) );
+            for(let game of data){                
+                $('#games-ul').append( 
+                    $(`
+                    <li>
+                        <strong>${game.name}</strong>: 
+                        <a href="#" onclick="client.createRoom(${game.id})">Create room</a> 
+                        <span id="success-${game.id}" class="msg success" style="display:none">Success!</span>
+                        <span id="failure-${game.id}" class="msg failure" style="display:none">Failure</span>
+                    </li>`) 
+                );
+            }
+        }
+    });
+}
+
+export function createRoom(gameid){
+    $.ajax({
+        type: 'POST',
+        beforeSend: authHeader,
+        url: BASEURL + 'api/gameroom',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+            gameid: gameid
+        }),
+        success: data => {
+            if(data.success){
+                $(`#success-${gameid}`).fadeIn();
+            }
+            else{
+                $(`#failure-${gameid}`).fadeIn();
             }
         }
     });

@@ -28,3 +28,17 @@ body {
 .panel h1 {
     margin-top: 0;
 }
+
+.msg {
+    font-weight: bold;
+    font-size: small;
+    margin-left: 10px;
+}
+
+.success {
+    color: rgb(73, 167, 73);
+}
+
+.failure {
+    color: rgb(150, 0, 0);
+}
