@@ -23,7 +23,12 @@ export function login() {
 
                 $("#top-email").text(global.payload.email);
                 $("#top-email").css('color', '#3aff3a');
-                $("#login-panel").slideUp(400, () => { $("#perfil-panel").fadeIn() } );
+                $("#login-panel").slideUp(400, () => { 
+                    $("#perfil-panel").fadeIn(400, () => {
+                        $("#games-panel").fadeIn();
+                        loadGames();
+                    }) 
+                } );
             }
             else {
                 console.log("Could not log in: " + data.error);
@@ -32,12 +37,14 @@ export function login() {
     });
 };
 
+const authHeader = xhr => { 
+    xhr.setRequestHeader ("Authorization", "Bearer " + global.token); 
+};
+
 export function profile(){
     $.ajax({
         type: 'GET',
-        beforeSend: xhr => {
-            xhr.setRequestHeader ("Authorization", "Bearer " + global.token);
-        },
+        beforeSend: authHeader,
         url: BASEURL + 'auth/profile',
         success: data => {
             $('#perfil-nome').text(data.name);
@@ -46,3 +53,17 @@ export function profile(){
         }
     });
 };
+
+function loadGames(){
+    $.ajax({
+        type: 'GET',
+        beforeSend: authHeader,
+        url: BASEURL + 'api/games',
+        success: data => {
+            $('#games-ul').empty();
+            for(let game of data){
+                $('#games-ul').append( $(`<li>${game.name}: ${game.id}</li>`) );
+            }
+        }
+    });
+}

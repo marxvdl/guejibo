@@ -33,7 +33,7 @@ app.use(passport.session());
 // Internal modules
 require('./app/auth')(passport);
 require('./routes/auth-api')(app, passport);
-require('./routes/web')(app);
+require('./routes/main-api')(app, passport);
 
 // Initialize
 app.listen(port);
