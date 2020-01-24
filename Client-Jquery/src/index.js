@@ -25,8 +25,11 @@ export function login() {
                 $("#top-email").css('color', '#3aff3a');
                 $("#login-panel").slideUp(400, () => { 
                     $("#perfil-panel").fadeIn(400, () => {
-                        $("#games-panel").fadeIn();
                         loadGames();
+                        loadGameRooms();
+                        $("#games-panel").fadeIn(400, () => {
+                            $("#rooms-panel").fadeIn();
+                        });
                     }) 
                 } );
             }
@@ -91,6 +94,27 @@ export function createRoom(gameid){
             }
             else{
                 $(`#failure-${gameid}`).fadeIn();
+            }
+        }
+    });
+}
+
+export function loadGameRooms(){
+    $.ajax({
+        type: 'GET',
+        beforeSend: authHeader,
+        url: BASEURL + 'api/mygamerooms',
+        success: data => {
+            $('#rooms-ul').empty();
+            for(let gr of data){
+                $('#rooms-ul').append(
+                    '<li>'
+                    + gr.game.name
+                    + (gr.timeStarted? `Started at ' + ${gr.timeStarted}` : '')
+                    + (gr.timeEnded? `, ended at ' + ${gr.timeEnded}` : '')
+                    + `, ${gr.users.length} members`
+                    +'</li>'
+                );
             }
         }
     });

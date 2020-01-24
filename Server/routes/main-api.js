@@ -1,4 +1,5 @@
 const models = require('../sequelize/models');
+const User = models.User;
 const Game = models.Game;
 const GameRoom = models.GameRoom;
 
@@ -33,6 +34,28 @@ module.exports = function (app, passport) {
             });
         });
 
+    });
+
+    app.get('/api/mygamerooms', isLoggedIn(), (req, res) => {
+        GameRoom.findAll({ 
+            where: { 
+                ownerId: req.user.id 
+            },
+            include: [
+                {
+                    model: Game,
+                    as: 'game'
+                },
+                {
+                    model: User,
+                    as: 'users'
+                }
+            ]
+        }).then(result => {
+            res.send(
+                result.map( gr => GameRoom.exportObject(gr) )
+            );
+        });        
     });
 
     //

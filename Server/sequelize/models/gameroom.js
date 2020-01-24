@@ -1,5 +1,9 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
+
+  const Game = require('./game')(sequelize, DataTypes);
+  const User = require('./user')(sequelize, DataTypes);
 
   const GameRoom = sequelize.define('GameRoom',
     {
@@ -26,13 +30,25 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   GameRoom.exportObject = (gr) => {
-    return {
-      id: gr.id,
-      gameId: gr.gameId,
+    let obj = {
+      id: gr.id,      
       ownerId: gr.ownerId,
       timeStarted: gr.timeStarted,
       timeEnded: gr.timeEnded
     };
+
+    if (gr.hasOwnProperty('game')) {
+      obj.game = Game.exportObject(gr.game);
+    }
+    else{
+      obj.gameId = gr.gameId;
+    }
+
+    if (gr.hasOwnProperty('users')) {      
+      obj.users = gr.users.map(user => User.exportObject(user));
+    }
+
+    return obj;
   };
 
   return GameRoom;
