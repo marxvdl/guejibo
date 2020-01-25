@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       gameId: DataTypes.INTEGER,
       ownerId: DataTypes.INTEGER,
+      code: DataTypes.CHAR(4),
       timeStarted: DataTypes.DATE,
       timeEnded: DataTypes.DATE
     },
@@ -33,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     let obj = {
       id: gr.id,      
       ownerId: gr.ownerId,
+      code: gr.code,
       timeStarted: gr.timeStarted,
       timeEnded: gr.timeEnded
     };
