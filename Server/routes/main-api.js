@@ -5,6 +5,9 @@ const GameRoom = models.GameRoom;
 
 module.exports = function (app, passport) {
 
+    /*
+     * Returns a list of all available games.
+     */
     app.get('/api/games', isLoggedIn(), (req, res) => {     
         Game.findAll().then(result => {
             res.send(
@@ -13,6 +16,9 @@ module.exports = function (app, passport) {
         });
     });
 
+    /*
+     * Creates a new game room with current user as the owner.
+     */
     app.post('/api/gameroom', isLoggedIn(), (req, res) => {
         const gr = GameRoom.build({
             gameId: req.body.gameid,
@@ -36,6 +42,9 @@ module.exports = function (app, passport) {
 
     });
 
+    /*
+     * Returns a list of all game rooms owned by current user.
+     */
     app.get('/api/mygamerooms', isLoggedIn(), (req, res) => {
         GameRoom.findAll({ 
             where: { 
