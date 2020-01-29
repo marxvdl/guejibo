@@ -4,6 +4,10 @@
   "dependencies": {
     "jwt-decode": "^2.2.0"
   },
+  "scripts": {    
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
   "devDependencies": {
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
