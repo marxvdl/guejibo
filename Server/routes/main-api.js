@@ -11,10 +11,10 @@ module.exports = function (app, passport) {
     /*
      * Returns a list of all available games.
      */
-    app.get('/api/games', isLoggedIn(), (req, res) => {     
+    app.get('/api/games', isLoggedIn(), (req, res) => {
         Game.findAll().then(result => {
             res.send(
-                result.map( game => Game.exportObject(game) )
+                result.map(game => Game.exportObject(game))
             );
         });
     });
@@ -32,18 +32,18 @@ module.exports = function (app, passport) {
         });
 
         gr.save()
-        .then(result => {
-            res.send({
-                success: true,
-                id: result.id,
-                code: result.code
+            .then(result => {
+                res.send({
+                    success: true,
+                    id: result.id,
+                    code: result.code
+                });
+            })
+            .catch(error => {
+                res.send({
+                    success: false
+                });
             });
-        })
-        .catch(error => {
-            res.send({
-                success: false
-            });
-        });
 
     });
 
@@ -51,9 +51,9 @@ module.exports = function (app, passport) {
      * Returns a list of all game rooms owned by current user.
      */
     app.get('/api/mygamerooms', isLoggedIn(), (req, res) => {
-        GameRoom.findAll({ 
-            where: { 
-                ownerId: req.user.id 
+        GameRoom.findAll({
+            where: {
+                ownerId: req.user.id
             },
             include: [
                 {
@@ -62,14 +62,14 @@ module.exports = function (app, passport) {
                 },
                 {
                     model: User,
-                    as: 'users'
+                    as: 'members'
                 }
             ]
         }).then(result => {
             res.send(
-                result.map( gr => GameRoom.exportObject(gr) )
+                result.map(gr => GameRoom.exportObject(gr))
             );
-        });        
+        });
     });
 
     /*
@@ -80,23 +80,13 @@ module.exports = function (app, passport) {
             where: {
                 code: req.body.code,
                 timeStarted: null
-            },
-            include:  [
-                {
-                    model: Game,
-                    as: 'game'
-                },
-                {
-                    model: User,
-                    as: 'owner'
-                }
-            ]
+            }
         })
         .then(gr => {
-            res.send({
-                success: true,
-                game: { name: gr.game.name },
-                owner: { name: gr.owner.name },
+            gr.addMember(req.user.id).then(user_gr => {
+                res.send({
+                    success: true
+                });
             });
         })
         .catch(e => {
@@ -105,6 +95,35 @@ module.exports = function (app, passport) {
                 success: false,
                 error: 'Game room not found'
             })
+        });
+    });
+
+
+    /*
+     * Returns data about a game room, including a full list of members.
+     */
+    app.get('/api/gameroom/:id', isLoggedIn(), (req, res) => {
+        GameRoom.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [
+                {
+                    model: Game,
+                    as: 'game'
+                },
+                {
+                    model: User,
+                    as: 'owner'
+                },
+                {
+                    model: User,
+                    as: 'members'
+                }
+            ]
+        })
+        .then(gr => {
+            res.send( GameRoom.exportObject(gr, true) );
         });
     });
 

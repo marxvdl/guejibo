@@ -25,15 +25,14 @@ module.exports = (sequelize, DataTypes) => {
       {
         foreignKey: 'gameRoomId',
         through: 'UsersGameRooms',
-        as: 'users'
+        as: 'members'
       }
     );
   };
 
-  GameRoom.exportObject = (gr) => {
+  GameRoom.exportObject = (gr, fulllist = false) => {
     let obj = {
-      id: gr.id,      
-      ownerId: gr.ownerId,
+      id: gr.id,
       code: gr.code,
       timeStarted: gr.timeStarted,
       timeEnded: gr.timeEnded
@@ -42,12 +41,22 @@ module.exports = (sequelize, DataTypes) => {
     if (gr.hasOwnProperty('game')) {
       obj.game = Game.exportObject(gr.game);
     }
-    else{
+    else {
       obj.gameId = gr.gameId;
     }
 
-    if (gr.hasOwnProperty('users')) {      
-      obj.users = gr.users.map(user => User.exportObject(user));
+    if (gr.hasOwnProperty('owner')) {
+      obj.owner = Game.exportObject(gr.owner);
+    }
+    else {
+      obj.ownerId = gr.ownerId;
+    }
+
+    if (gr.hasOwnProperty('members')) {
+      if (fulllist)
+        obj.members = gr.members.map(user => User.exportObject(user));
+      else
+        obj.numberOfMembers = gr.members.length;
     }
 
     return obj;

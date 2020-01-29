@@ -26,11 +26,11 @@ export function login() {
                 $("#login-panel").slideUp(400, () => { 
                     $("#perfil-panel").fadeIn(400, () => {
                         loadGames();
-                        loadGameRooms();
-                        $("#games-panel").fadeIn(400, () => {
-                            $("#rooms-panel").fadeIn();
-                        });
+                        loadGameRooms();                        
                     }) 
+                    $("#games-panel").fadeIn(400, () => {
+                        $("#rooms-panel").fadeIn();
+                    });
                 } );
             }
             else {
@@ -70,7 +70,10 @@ export function loadGames(){
                     <li>
                         <strong>${game.name}</strong>: 
                         <a href="#" onclick="client.createRoom(${game.id})">Create room</a> 
-                        <span id="success-${game.id}" class="msg success" style="display:none">Success!</span>
+                        <span id="success-${game.id}" class="msg" style="display:none">
+                            <span class="success">Success!</span>
+                            Code: <span class="code" id="success-code-${game.id}"></span>
+                        </span>
                         <span id="failure-${game.id}" class="msg failure" style="display:none">Failure</span>
                     </li>`) 
                 );
@@ -89,7 +92,9 @@ export function createRoom(gameid){
             gameid: gameid
         }),
         success: data => {
+            console.log(data);
             if(data.success){
+                $(`#success-code-${gameid}`).text((data.code));
                 $(`#success-${gameid}`).fadeIn();
             }
             else{
@@ -112,9 +117,28 @@ export function loadGameRooms(){
                     + gr.game.name
                     + (gr.timeStarted? `Started at ' + ${gr.timeStarted}` : '')
                     + (gr.timeEnded? `, ended at ' + ${gr.timeEnded}` : '')
-                    + `, ${gr.users.length} members`
-                    +'</li>'
+                    + `, <a href="#" onclick="client.listRoomMembers(${gr.id})">${gr.numberOfMembers} members</a>
+                        <ul id="room-members-${gr.id}"></ul>
+                    </li>`
                 );
+            }
+        }
+    });
+}
+
+export function listRoomMembers(id){
+    console.log(id);
+    $.ajax({
+        type: 'GET',
+        beforeSend: authHeader,
+        url: BASEURL + 'api/gameroom/' + id,
+        success: data => {
+            console.log(data);
+            let mul = $(`#room-members-${id}`);
+            mul.empty();
+            for(let m of data.members){
+                console.log(mul, m);
+                mul.append(`<li><strong>${m.name}</strong>, ${m.email}</li>`);
             }
         }
     });
