@@ -29,6 +29,14 @@ body {
     margin-top: 0;
 }
 
+.panel li {
+    margin-top: 10px;
+}
+
+.panel ul {
+    margin-bottom: 20px;
+}
+
 .msg {
     font-weight: bold;
     font-size: small;
