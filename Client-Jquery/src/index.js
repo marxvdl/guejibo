@@ -117,7 +117,7 @@ export function loadGameRooms(){
                     + gr.game.name
                     + (gr.timeStarted? `Started at ' + ${gr.timeStarted}` : '')
                     + (gr.timeEnded? `, ended at ' + ${gr.timeEnded}` : '')
-                    + `, <a href="#" onclick="client.listRoomMembers(${gr.id})">${gr.numberOfMembers} members</a>
+                    + `, <a href="#" onclick="client.createGameRoomPanel(${gr.id})">${gr.numberOfMembers} members</a>
                         <ul id="room-members-${gr.id}"></ul>
                     </li>`
                 );
@@ -140,6 +140,28 @@ export function listRoomMembers(id){
                 console.log(mul, m);
                 mul.append(`<li><strong>${m.name}</strong>, ${m.email}</li>`);
             }
+        }
+    });
+}
+
+export function createGameRoomPanel(id){
+    $.ajax({
+        type: 'GET',
+        beforeSend: authHeader,
+        url: BASEURL + 'api/gameroom/' + id,
+        success: data => {
+            let panel = $(`<div class="panel" id="gr${id}"></div>`);
+            panel.append(
+                `<h1>${data.game.name} <span class="gr-code">(${data.code})</span></h1>`,
+                `<p>Created by <strong>${data.owner.name}<strong></p>`,
+                `<p>${data.members.length} users:</p>`
+            );
+            let ul = $('<ul></ul>');
+            for(let m of data.members){
+                ul.append(`<li>${m.name}</li>`);
+            }
+            panel.append(ul);
+            $('body').append(panel);
         }
     });
 }

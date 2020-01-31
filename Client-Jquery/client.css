@@ -37,6 +37,11 @@ body {
     margin-bottom: 20px;
 }
 
+.gr-code {
+    font-size: smaller;
+    color: rgb(87, 87, 87);
+}
+
 .msg {
     font-weight: bold;
     font-size: small;
