@@ -35,7 +35,10 @@ require('./app/auth')(passport);
 require('./routes/auth-api')(app, passport);
 require('./routes/main-api')(app, passport);
 
-// Initialize
+// Initialize web socket server
+require('./app/ws')(app, passport);
+
+// Initialize HTTP server
 app.listen(port);
 console.log("Port: " + port);
 

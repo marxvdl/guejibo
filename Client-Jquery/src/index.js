@@ -1,6 +1,7 @@
 const jwtDecode = require('jwt-decode');
 
 const BASEURL = 'http://localhost:3000/';
+const WSURL = 'ws://localhost:8080/';
 
 export let global = {};
 
@@ -164,4 +165,34 @@ export function createGameRoomPanel(id){
             $('body').append(panel);
         }
     });
+}
+
+// Web sockets testing
+export function wsFillToken(){
+    $('#token-textarea').val(global.token);
+}
+
+export function wsConnect(){
+    const url = WSURL + $('#token-textarea').val();
+    global.ws = new WebSocket(url);
+
+    global.ws.onopen = () => {
+        console.log('Abriu!');
+    };
+
+    global.ws.onclose = () => {
+        console.log('Fechou!');  
+    };
+
+    global.ws.onmessage = e => {
+        console.log(e);
+    }       
+}
+
+export function wsDisconnect(){
+    global.ws.close();
+}
+
+export function wsSend(){
+    global.ws.send($('#msg-input').val());
 }

@@ -12,6 +12,26 @@
         User: <span id="top-email">unknown</span>
     </div>
 
+    <div class="panel" id="ws-panel">
+        <h1>Web sockets</h1>
+        <p>Token: <br>
+            <textarea id="token-textarea" style="width:90%;height:6em"></textarea>
+        </p>
+        <p>
+            <button onclick="client.wsFillToken()">⮤ Preencher</button>
+            <br>
+            <button onclick="client.wsConnect()">🔗 Conectar</button>
+            <button onclick="client.wsDisconnect()">⏏  Desconectar</button>
+        </p>        
+        <hr>
+        <p>
+            Mensagem: <input type="text" id="msg-input" style="width:70%">
+        </p>
+        <p>
+            <button onclick="client.wsSend()">Enviar</button>
+        </p>
+    </div>
+
     <div class="panel" id="login-panel">
         <h1>Entrar</h1>
         <p>Email: <input type="email" id="login-email"></p>
