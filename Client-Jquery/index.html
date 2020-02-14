@@ -14,21 +14,16 @@
 
     <div class="panel" id="ws-panel">
         <h1>Web sockets</h1>
-        <p>Token: <br>
-            <textarea id="token-textarea" style="width:90%;height:6em"></textarea>
-        </p>
         <p>
-            <button onclick="client.wsFillToken()">⮤ Preencher</button>
-            <br>
-            <button onclick="client.wsConnect()">🔗 Conectar</button>
-            <button onclick="client.wsDisconnect()">⏏  Desconectar</button>
+            <button onclick="client.main.wsConnect()">🔗 Conectar</button>
+            <button onclick="client.main.wsDisconnect()">⏏  Desconectar</button>
         </p>        
         <hr>
         <p>
             Mensagem: <input type="text" id="msg-input" style="width:70%">
         </p>
         <p>
-            <button onclick="client.wsSend()">Enviar</button>
+            <button onclick="client.main.wsSend({type: 'test', message: $('#msg-input').val()})">Enviar</button>
         </p>
     </div>
 
@@ -36,7 +31,7 @@
         <h1>Entrar</h1>
         <p>Email: <input type="email" id="login-email"></p>
         <p>Password: <input type="password" id="login-password"></p>
-        <button onclick="client.login()">Entrar</button>
+        <button onclick="client.main.login()">Entrar</button>
     </div>
 
     <div class="panel" id="perfil-panel" style="display:none">
@@ -46,7 +41,7 @@
             <li>Nome: <span id="perfil-nome"></span></li>
             <li>E-mail: <span id="perfil-email"></span></li>
         </ul>
-        <button onclick="client.profile()">Obter</button>
+        <button onclick="client.main.profile()">Obter</button>
     </div>
 
     <div class="panel" id="games-panel" style="display:none">

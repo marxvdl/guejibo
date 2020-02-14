@@ -55,3 +55,22 @@ body {
 .failure {
     color: rgb(150, 0, 0);
 }
+
+#code {
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    width: 4em;
+    font-family: 
+    padding:10px
+}
+
+#joincode {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    width: 4em;    
+    padding:10px;
+    text-transform: uppercase;
+    color:rgb(21, 21, 184);
+}

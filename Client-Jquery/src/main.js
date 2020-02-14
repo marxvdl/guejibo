@@ -24,15 +24,15 @@ export function login() {
 
                 $("#top-email").text(global.payload.email);
                 $("#top-email").css('color', '#3aff3a');
-                $("#login-panel").slideUp(400, () => { 
+                $("#login-panel").slideUp(400, () => {
                     $("#perfil-panel").fadeIn(400, () => {
                         loadGames();
-                        loadGameRooms();                        
-                    }) 
+                        loadGameRooms();
+                    })
                     $("#games-panel").fadeIn(400, () => {
                         $("#rooms-panel").fadeIn();
                     });
-                } );
+                });
             }
             else {
                 console.log("Could not log in: " + data.error);
@@ -41,11 +41,11 @@ export function login() {
     });
 };
 
-const authHeader = xhr => { 
-    xhr.setRequestHeader ("Authorization", "Bearer " + global.token); 
+const authHeader = xhr => {
+    xhr.setRequestHeader("Authorization", "Bearer " + global.token);
 };
 
-export function profile(){
+export function profile() {
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
@@ -53,37 +53,37 @@ export function profile(){
         success: data => {
             $('#perfil-nome').text(data.name);
             $('#perfil-email').text(data.email);
-            $('#perfil-id').text(data.id);            
+            $('#perfil-id').text(data.id);
         }
     });
 }
 
-export function loadGames(){
+export function loadGames() {
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/games',
         success: data => {
             $('#games-ul').empty();
-            for(let game of data){                
-                $('#games-ul').append( 
+            for (let game of data) {
+                $('#games-ul').append(
                     $(`
                     <li>
                         <strong>${game.name}</strong>: 
-                        <a href="#" onclick="client.createRoom(${game.id})">Create room</a> 
+                        <a href="#" onclick="client.main.createRoom(${game.id})">Create room</a> 
                         <span id="success-${game.id}" class="msg" style="display:none">
                             <span class="success">Success!</span>
                             Code: <span class="code" id="success-code-${game.id}"></span>
                         </span>
                         <span id="failure-${game.id}" class="msg failure" style="display:none">Failure</span>
-                    </li>`) 
+                    </li>`)
                 );
             }
         }
     });
 }
 
-export function createRoom(gameid){
+export function createRoom(gameid) {
     $.ajax({
         type: 'POST',
         beforeSend: authHeader,
@@ -94,31 +94,31 @@ export function createRoom(gameid){
         }),
         success: data => {
             console.log(data);
-            if(data.success){
+            if (data.success) {
                 $(`#success-code-${gameid}`).text((data.code));
                 $(`#success-${gameid}`).fadeIn();
             }
-            else{
+            else {
                 $(`#failure-${gameid}`).fadeIn();
             }
         }
     });
 }
 
-export function loadGameRooms(){
+export function loadGameRooms() {
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/mygamerooms',
         success: data => {
             $('#rooms-ul').empty();
-            for(let gr of data){
+            for (let gr of data) {
                 $('#rooms-ul').append(
                     '<li>'
                     + gr.game.name
-                    + (gr.timeStarted? `Started at ' + ${gr.timeStarted}` : '')
-                    + (gr.timeEnded? `, ended at ' + ${gr.timeEnded}` : '')
-                    + `, <a href="#" onclick="client.createGameRoomPanel(${gr.id})">${gr.numberOfMembers} members</a>
+                    + (gr.timeStarted ? `Started at ' + ${gr.timeStarted}` : '')
+                    + (gr.timeEnded ? `, ended at ' + ${gr.timeEnded}` : '')
+                    + `, <a href="#" onclick="client.main.createGameRoomPanel(${gr.id})">${gr.numberOfMembers} members</a>
                         <ul id="room-members-${gr.id}"></ul>
                     </li>`
                 );
@@ -127,7 +127,7 @@ export function loadGameRooms(){
     });
 }
 
-export function listRoomMembers(id){
+export function listRoomMembers(id) {
     console.log(id);
     $.ajax({
         type: 'GET',
@@ -137,7 +137,7 @@ export function listRoomMembers(id){
             console.log(data);
             let mul = $(`#room-members-${id}`);
             mul.empty();
-            for(let m of data.members){
+            for (let m of data.members) {
                 console.log(mul, m);
                 mul.append(`<li><strong>${m.name}</strong>, ${m.email}</li>`);
             }
@@ -145,12 +145,13 @@ export function listRoomMembers(id){
     });
 }
 
-export function createGameRoomPanel(id){
+export function createGameRoomPanel(id) {
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/gameroom/' + id,
         success: data => {
+            //Create panel
             let panel = $(`<div class="panel" id="gr${id}"></div>`);
             panel.append(
                 `<h1>${data.game.name} <span class="gr-code">(${data.code})</span></h1>`,
@@ -158,41 +159,47 @@ export function createGameRoomPanel(id){
                 `<p>${data.members.length} users:</p>`
             );
             let ul = $('<ul></ul>');
-            for(let m of data.members){
+            for (let m of data.members) {
                 ul.append(`<li>${m.name}</li>`);
             }
             panel.append(ul);
             $('body').append(panel);
+
+            //Open Web Socket connection
+            wsConnect();
         }
     });
 }
 
-// Web sockets testing
-export function wsFillToken(){
-    $('#token-textarea').val(global.token);
-}
 
-export function wsConnect(){
-    const url = WSURL + $('#token-textarea').val();
-    global.ws = new WebSocket(url);
+// Web sockets
+export function wsConnect() {
+    if (
+        ('ws' in global) &&
+        (global.ws.readyState == WebSocket.OPEN)
+    ) {
+        return;
+    }
+
+    global.ws = new WebSocket(WSURL + global.token);
 
     global.ws.onopen = () => {
         console.log('Abriu!');
     };
 
     global.ws.onclose = () => {
-        console.log('Fechou!');  
+        console.log('Fechou!');
     };
 
     global.ws.onmessage = e => {
         console.log(e);
-    }       
+    }
 }
 
-export function wsDisconnect(){
+export function wsDisconnect() {
     global.ws.close();
 }
 
-export function wsSend(){
-    global.ws.send($('#msg-input').val());
+export function wsSend(msg) {
+    global.ws.send(JSON.stringify(msg));
 }

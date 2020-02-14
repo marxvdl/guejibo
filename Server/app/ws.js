@@ -26,14 +26,21 @@ module.exports = function (app, passport) {
     });
 
     wss.on('connection', ws => {
-
-        ws.send('lalala');
-
         ws.on('message', message => {
             console.log(`Recebido ${message}`);
             ws.send('Você disse: ' + message);
-        });
 
+            let data;
+            try {
+                data = JSON.parse(message);
+            }
+            catch(e){
+                ws.send('error');
+                return;
+            }
+
+            console.log(data);
+        });
     });
 
 };
