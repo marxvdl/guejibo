@@ -2,3 +2,4 @@ node_modules
 Server/.env
 Client-Jquery/dist
 Client-Jquery/jsconfig.json
+launch.json

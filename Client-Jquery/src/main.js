@@ -166,14 +166,16 @@ export function createGameRoomPanel(id) {
             $('body').append(panel);
 
             //Open Web Socket connection
-            wsConnect();
+            wsConnect(() => {
+                console.log('Abriu!');
+            });
         }
     });
 }
 
 
 // Web sockets
-export function wsConnect() {
+export function wsConnect(onopen) {
     if (
         ('ws' in global) &&
         (global.ws.readyState == WebSocket.OPEN)
@@ -183,9 +185,7 @@ export function wsConnect() {
 
     global.ws = new WebSocket(WSURL + global.token);
 
-    global.ws.onopen = () => {
-        console.log('Abriu!');
-    };
+    global.ws.onopen = onopen;
 
     global.ws.onclose = () => {
         console.log('Fechou!');
@@ -201,5 +201,10 @@ export function wsDisconnect() {
 }
 
 export function wsSend(msg) {
-    global.ws.send(JSON.stringify(msg));
+    let func = () => { global.ws.send(JSON.stringify(msg)); };
+
+    if (global.ws && global.ws.readyState === WebSocket.OPEN)
+        func();
+    else
+        wsConnect(func);
 }

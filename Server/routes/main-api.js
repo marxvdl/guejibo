@@ -73,33 +73,6 @@ module.exports = function (app, passport) {
     });
 
     /*
-     * Joins a game room using a code.
-     */
-    app.get('/api/join', isLoggedIn(), (req, res) => {
-        GameRoom.findOne({
-            where: {
-                code: req.body.code,
-                timeStarted: null
-            }
-        })
-        .then(gr => {
-            gr.addMember(req.user.id).then(user_gr => {
-                res.send({
-                    success: true
-                });
-            });
-        })
-        .catch(e => {
-            console.log(e);
-            res.send({
-                success: false,
-                error: 'Game room not found'
-            })
-        });
-    });
-
-
-    /*
      * Returns data about a game room, including a full list of members.
      */
     app.get('/api/gameroom/:id', isLoggedIn(), (req, res) => {
