@@ -163,6 +163,9 @@ export function createGameRoomPanel(id) {
                 ul.append(`<li>${m.name}</li>`);
             }
             panel.append(ul);
+            panel.append(`<button onclick="client.main.checkReady(${id})">Check</button>`)
+
+
             $('body').append(panel);
 
             //Open Web Socket connection
@@ -173,6 +176,12 @@ export function createGameRoomPanel(id) {
     });
 }
 
+export function checkReady(gameroomID) {
+    wsSend({
+        action: 'check-players-ready',
+        gameroom: gameroomID
+    });
+}
 
 // Web sockets
 export function wsConnect(onopen) {
@@ -191,8 +200,49 @@ export function wsConnect(onopen) {
         console.log('Fechou!');
     };
 
-    global.ws.onmessage = e => {
-        console.log(e);
+    global.ws.onmessage = msg => {
+        console.log(msg.data);
+
+        let data;
+        try {
+            data = JSON.parse(msg.data);            
+        }
+        catch(e){
+            console.log(`Could not parse: ${msg.data}`);
+            return;
+        }
+
+        //Receive a response to a previously sent request
+        if(data.responseTo){
+            switch(data.responseTo){
+                case 'join':
+                    if(data.success){
+                        let gr = global.gameroom = data.gameroom;
+
+                        $('#status').text('Waiting...');
+                        $('#game-name').text(gr.game.name)
+                        $('#gr-owner').text(gr.owner.name);
+                        for(let user of gr.members){
+                            $('#users').append(`<li id="user-${user.id}">${user.name}</li>`)
+                        }
+                        $('#gameroom-panel').fadeIn();
+                    }
+                    else{
+                        console.log(`Error: could not join game: data.error`)
+                    }
+                    return;
+            }
+        }
+
+        //Receive a new unprompted request from the server
+        else if (data.req) {
+            switch (data.req) {
+                case 'player-ready':
+
+                    return;
+            }
+        }
+
     }
 }
 
