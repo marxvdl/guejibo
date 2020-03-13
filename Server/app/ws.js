@@ -30,9 +30,6 @@ module.exports = function (app, passport) {
 
     wss.on('connection', ws => {
         ws.on('message', message => {
-            console.log(`Recebido ${message}`);         
-            ws.send('Você disse: ' + message);
-
             let data;
             try {
                 data = JSON.parse(message);
@@ -57,8 +54,6 @@ module.exports = function (app, passport) {
                 ws.send('Error: invalid data');
                 return;
             }
-
-            console.log(data);
         });
     });
 

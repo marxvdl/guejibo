@@ -6,7 +6,6 @@ module.exports = {
         for (let i = 0; i < 4; i++) {
             result[i] = characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        console.log(result);
         return result.join('');
     }
     
