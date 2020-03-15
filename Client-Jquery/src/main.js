@@ -3,6 +3,8 @@ const jwtDecode = require('jwt-decode');
 const BASEURL = 'http://localhost:3000/';
 const WSURL = 'ws://localhost:8080/';
 
+import * as student from './student';
+
 export let global = {};
 
 export function login() {
@@ -216,20 +218,7 @@ export function wsConnect(onopen) {
         if(data.responseTo){
             switch(data.responseTo){
                 case 'join':
-                    if(data.success){
-                        let gr = global.gameroom = data.gameroom;
-
-                        $('#status').text('Waiting...');
-                        $('#game-name').text(gr.game.name)
-                        $('#gr-owner').text(gr.owner.name);
-                        for(let user of gr.members){
-                            $('#users').append(`<li id="user-${user.id}">${user.name}</li>`)
-                        }
-                        $('#gameroom-panel').fadeIn();
-                    }
-                    else{
-                        console.log(`Error: could not join game: data.error`)
-                    }
+                    student.doJoin(data);
                     return;
             }
         }
@@ -237,8 +226,11 @@ export function wsConnect(onopen) {
         //Receive a new unprompted request from the server
         else if (data.req) {
             switch (data.req) {
-                case 'player-ready':
+                case 'are-you-ready':
+                    student.sayReady(data);                    
+                    return;
 
+                case 'player-is-ready':
                     return;
             }
         }

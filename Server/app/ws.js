@@ -1,9 +1,12 @@
 const WebSocket = require('ws');
 const jwt = require('jwt-simple');
 const models = require('../sequelize/models');
+const GameLogic = require('../app/gamelogic');
+
 const User = models.User;
 const GameRoom = models.GameRoom;
 const Game = models.Game;
+
 
 module.exports = function (app, passport) {
 
@@ -36,6 +39,7 @@ module.exports = function (app, passport) {
 
     wss.on('connection', ws => {
         webSocketsById[currentUser.id] = ws;
+        ws.user = currentUser;
 
         ws.on('message', message => {
             let data;
@@ -53,7 +57,11 @@ module.exports = function (app, passport) {
                         return;
 
                     case 'check-players-ready':
-                        doActionCheckPlayersReady(wss, ws, data.gameroom);
+                        doActionCheckPlayersReady(data.gameroom);
+                        return;
+
+                    case 'im-ready':
+                        doActionImReady(ws, data);
                         return;
 
                     default:
@@ -63,6 +71,7 @@ module.exports = function (app, passport) {
 
             }
             catch (e) {
+                console.log(e);                
                 ws.send('Error: invalid data');
                 return;
             }
@@ -70,7 +79,7 @@ module.exports = function (app, passport) {
     });
 
     /*
-     * WS action: Joing a game, given code.
+     * 'join' -> Joing a game, given code.
      */
     function doActionJoin(ws, code) {
         GameRoom.findOne({
@@ -117,9 +126,9 @@ module.exports = function (app, passport) {
     }
 
     /*
-     * WS action: Check if all players of a game room are ready to play
+     * 'check-players-ready' -> Check if all players of a game room are ready to play
      */
-    function doActionCheckPlayersReady(wss, ws, gameroomID) {
+    function doActionCheckPlayersReady(gameroomID) {
         console.log("Check: " + gameroomID);
 
         GameRoom.findAll({
@@ -135,21 +144,46 @@ module.exports = function (app, passport) {
         })
         .then(result => {
             for (let user of result[0].members) {
-                console.log("User: ", user.id);
-
                 let userWss = webSocketsById[user.id];
                 if(userWss){
                     userWss.send(JSON.stringify(
                         {
-                            req: 'player-ready',
+                            req: 'are-you-ready',
                             gameroom: gameroomID
                         }
                     ));
                 }
-
             }
+        });
+    }
 
+    /*
+     * 'im-ready' -> Confirm that a waiting client is ready to start playing.
+     */
+    function doActionImReady(ws, data){
+        GameLogic.setPlayerReady(ws.user.id, data.gameroom);
 
+        GameRoom.findOne({
+            where: {
+                id: data.gameroom
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'owner'
+                }
+            ]
+        })
+        .then(gr => {
+            let ownerWss = webSocketsById[gr.ownerId];
+            ownerWss.send(JSON.stringify(
+                {
+                    req: 'player-is-ready',
+                    user: User.exportObject(ws.user),
+                    gameroom: data.gameroom
+                }
+            ));
+            
         });
     }
 };

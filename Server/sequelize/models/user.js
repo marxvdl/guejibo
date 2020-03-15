@@ -29,12 +29,16 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
-  User.exportObject = (user) => {
-    return {
+  User.exportObject = (user, includeEmail = false) => {
+    let obj = {
       id: user.id,
-      name: user.name,
-      email: user.email
+      name: user.name
     };
+
+    if(includeEmail)
+      obj.email = user.email;
+
+    return obj;
   };
 
   return User;

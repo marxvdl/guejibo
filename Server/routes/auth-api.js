@@ -48,13 +48,13 @@ module.exports = function (app, passport) {
      * Returns data about the current user.
      */
     app.get('/auth/profile', isLoggedIn(), (req, res) => {
-        res.send(User.exportObject(req.user));
+        res.send(User.exportObject(req.user, true));
     });
 
     ////
 
     function createJWT(obj){
-        return jwt.encode(User.exportObject(obj), process.env.JWT_SECRET);
+        return jwt.encode(User.exportObject(obj, true), process.env.JWT_SECRET);
     }
 
     function isLoggedIn() {
