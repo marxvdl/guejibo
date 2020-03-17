@@ -99,6 +99,7 @@ export function createRoom(gameid) {
             if (data.success) {
                 $(`#success-code-${gameid}`).text((data.code));
                 $(`#success-${gameid}`).fadeIn();
+                createGameRoomPanel(data.id);
             }
             else {
                 $(`#failure-${gameid}`).fadeIn();
@@ -147,12 +148,18 @@ export function listRoomMembers(id) {
     });
 }
 
+export const gameRoomMembers = {};
+
 export function createGameRoomPanel(id) {
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/gameroom/' + id,
         success: data => {
+            if (!(id in gameRoomMembers)) {
+                gameRoomMembers[id] = {};
+            }
+
             //Create panel
             let panel = $(`<div class="panel" id="gr${id}"></div>`);
             panel.append(
@@ -160,30 +167,22 @@ export function createGameRoomPanel(id) {
                 `<p>Created by <strong>${data.owner.name}<strong></p>`,
                 `<p>${data.members.length} users:</p>`
             );
-            let ul = $('<ul></ul>');
+            let ul = $(`<ul id="ul-gr${id}"></ul>`);
             for (let m of data.members) {
-                ul.append(`<li>${m.name}</li>`);
+                ul.append(`<li>${m.name} <span class="userstatus failure" id="gr${id}-user${m.id}">offline</span></li>`);
+                gameRoomMembers[id][m.id] = m;
+                gameRoomMembers[id][m.id].online = false;
             }
             panel.append(ul);
-            panel.append(`<button onclick="client.main.checkReady(${id})">Check</button>`)
-
 
             $('body').append(panel);
 
-            //Open Web Socket connection
-            wsConnect(() => {
-                console.log('Abriu!');
-            });
+            //Periodically check players online status
+            setInterval(() => { student.checkPlayersReady(id) }, 1000);
         }
     });
 }
 
-export function checkReady(gameroomID) {
-    wsSend({
-        action: 'check-players-ready',
-        gameroom: gameroomID
-    });
-}
 
 // Web sockets
 export function wsConnect(onopen) {
@@ -207,16 +206,16 @@ export function wsConnect(onopen) {
 
         let data;
         try {
-            data = JSON.parse(msg.data);            
+            data = JSON.parse(msg.data);
         }
-        catch(e){
+        catch (e) {
             console.log(`Could not parse: ${msg.data}`);
             return;
         }
 
         //Receive a response to a previously sent request
-        if(data.responseTo){
-            switch(data.responseTo){
+        if (data.responseTo) {
+            switch (data.responseTo) {
                 case 'join':
                     student.doJoin(data);
                     return;
@@ -227,10 +226,11 @@ export function wsConnect(onopen) {
         else if (data.req) {
             switch (data.req) {
                 case 'are-you-ready':
-                    student.sayReady(data);                    
+                    student.sayReady(data);
                     return;
 
                 case 'player-is-ready':
+                    student.markPlayerAsReady(data.user, data.gameroom)
                     return;
             }
         }
