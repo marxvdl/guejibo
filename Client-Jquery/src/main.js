@@ -131,17 +131,14 @@ export function loadGameRooms() {
 }
 
 export function listRoomMembers(id) {
-    console.log(id);
     $.ajax({
         type: 'GET',
         beforeSend: authHeader,
         url: BASEURL + 'api/gameroom/' + id,
         success: data => {
-            console.log(data);
             let mul = $(`#room-members-${id}`);
             mul.empty();
             for (let m of data.members) {
-                console.log(mul, m);
                 mul.append(`<li><strong>${m.name}</strong>, ${m.email}</li>`);
             }
         }
@@ -178,14 +175,14 @@ export function createGameRoomPanel(id) {
             $('body').append(panel);
 
             //Periodically check players online status
-            setInterval(() => { student.checkPlayersReady(id) }, 1000);
+            student.initPlayersReady(id);
         }
     });
 }
 
 
 // Web sockets
-export function wsConnect(onopen) {
+export function wsConnect(onopen = null) {
     if (
         ('ws' in global) &&
         (global.ws.readyState == WebSocket.OPEN)
@@ -195,15 +192,14 @@ export function wsConnect(onopen) {
 
     global.ws = new WebSocket(WSURL + global.token);
 
-    global.ws.onopen = onopen;
+    if(onopen !== null)
+        global.ws.onopen = onopen;
 
     global.ws.onclose = () => {
         console.log('Fechou!');
     };
 
     global.ws.onmessage = msg => {
-        console.log(msg.data);
-
         let data;
         try {
             data = JSON.parse(msg.data);
@@ -225,10 +221,6 @@ export function wsConnect(onopen) {
         //Receive a new unprompted request from the server
         else if (data.req) {
             switch (data.req) {
-                case 'are-you-ready':
-                    student.sayReady(data);
-                    return;
-
                 case 'player-is-ready':
                     student.markPlayerAsReady(data.user, data.gameroom)
                     return;
