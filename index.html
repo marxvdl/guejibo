@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Nave</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css">
+	<link rel="icon" type="image/png" href="img/nave.png"/>
+</head>
+
+<body>
+
+<div class="alinhados">
+	
+<div id="espaco">
+	<div id="espaco_obstaculos"></div>
+	<div id="nave">
+		<div id="laser"></div>
+	</div>
+</div>
+
+<div id="painel">
+	<h2>Painel</h2>
+
+	<h3>Número atual:</h3>
+	<h4>178</h4>
+	<h3>Objetivo:</h3>
+	<h4>132</h4>
+
+	<h3>Tempo:</h3>
+	<h4 id="tempo">60</h4>
+
+	<h3>Pontuação:</h3>
+	<h4 id="pontuacao">0</h4>
+
+	<h3>Colisões:</h3>
+	<h4 id="colisoes">0</h4>
+
+</div>
+
+<div id="bg_modal">
+	<div id="modal">
+		<h2>Game over</h2>
+		<p>Você colidiu a sua nave mais de uma vez, então ela quebrou.</p>
+		<button id="jogar_novamente">Jogar novamente</button>
+	</div>
+</div>
+
+</div>
+
+<div class="toast">
+	<div class="fechar">+</div>
+	<p class="texto_toast"></p>
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+
+</body>
+</html>
