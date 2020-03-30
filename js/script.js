@@ -1,7 +1,11 @@
-let passo_nave = 8.5;
+let passo_nave = 1;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
 let quantidade_obstaculos = 3;
+
+let vel_laser = 10;
+let vel_recarga_laser = 150;
+let passo_laser = 30;
 
 let valor_retorno = 5;
 let repelencia = 100;
@@ -201,6 +205,20 @@ function verifica_tiro($bloco) {
 		}
 	}
 
+	if (top_laser > top_bloco && top_laser < top_bloco + height_bloco) {
+		if (left_laser > left_bloco && left_laser < left_bloco + width_bloco) {
+
+			$bloco.css('background', 'tomato').css('box-shadow', '5px 5px 50px orange').css('border', '1px dotted red');
+			setTimeout(() => {
+				$bloco.fadeOut('600');
+			}, 300);
+
+			setTimeout(() => {
+				$bloco.remove();
+			}, 1000);
+		}
+	}
+
 }
 
 function verifica_limite_espaco() {
@@ -307,7 +325,7 @@ $('body').keydown(function(event) {
 
 	$('#colisoes').text(colisoes);
 
-    if (colisoes > 1) {
+    if (colisoes > 2) {
     	gameover('Opa, a sua nave quebrou!');
     	colisoes = 0;
     	exibiu = false;
@@ -346,30 +364,103 @@ $('body').keydown(function(event) {
 
 	if(tecla == 38) {
 		 // seta pra CIMA
-		$('#nave').css('top', `-=${passo_nave}`);
+		$('#nave').css('transform', 'rotate(0deg)');
+
+		let cont = 1;
+		function move_cima() {
+
+			$('#nave').css('top', `-=${passo_nave}`);
+			let id_parada = requestAnimationFrame(move_cima);
+			cont++;
+
+			if (cont == 20) {
+				cancelAnimationFrame(id_parada);
+			}
+		}
+
+		move_cima();
 	}
 
 	if(tecla == 40) {
 		// seta pra BAIXO
-		$('#nave').css('top', `+=${passo_nave}`);
+		$('#nave').css('transform', 'rotate(180deg)');
+
+		let cont = 1;
+		function move_baixo() {
+
+			$('#nave').css('top', `+=${passo_nave}`);
+			let id_parada = requestAnimationFrame(move_baixo);
+			cont++;
+
+			if (cont == 20) {
+				cancelAnimationFrame(id_parada);
+			}
+		}
+
+		move_baixo();
+
 	}
 
 	if(tecla == 39) {
 		 // seta pra DIREITA
-		$('#nave').css('left', `+=${passo_nave}`);
+		$('#nave').css('transform', 'rotate(90deg)');
+
+		let cont = 1;
+		function move_direita() {
+
+			$('#nave').css('left', `+=${passo_nave}`);
+			let id_parada = requestAnimationFrame(move_direita);
+			cont++;
+
+			if (cont == 20) {
+				cancelAnimationFrame(id_parada);
+			}
+		}
+
+		move_direita();
 	}
 
 	if(tecla == 37) {
 		 // seta pra ESQUERDA
-		$('#nave').css('left', `-=${passo_nave}`);
+
+		 $('#nave').css('transform', 'rotate(-90deg)');
+
+		let cont = 1;
+		function move_esquerda() {
+
+			$('#nave').css('left', `-=${passo_nave}`);
+			let id_parada = requestAnimationFrame(move_esquerda);
+			cont++;
+
+			if (cont == 20) {
+				cancelAnimationFrame(id_parada);
+			}
+		}
+
+		move_esquerda();
 	}
 
+
+	// diagonal direita
     if (tecla in cima_esquerda) {
         cima_esquerda[tecla] = true;
         if (cima_esquerda[38] && cima_esquerda[37]) {
 
-        	$('#nave').css('top', `-=${passo_nave}`);
-        	$('#nave').css('left', `-=${passo_nave * 2}`);
+        	$('#nave').css('transform', 'rotate(-45deg)');
+			let cont = 1;
+			function move_cima_esquerda() {
+
+	        	$('#nave').css('top', `-=${passo_nave}`);
+	        	$('#nave').css('left', `-=${passo_nave}`);
+				let id_parada = requestAnimationFrame(move_cima_esquerda);
+				cont++;
+
+				if (cont == 20) {
+					cancelAnimationFrame(id_parada);
+				}
+			}
+
+			move_cima_esquerda();
 
         }
     }
@@ -378,9 +469,21 @@ $('body').keydown(function(event) {
         cima_direita[tecla] = true;
         if (cima_direita[38] && cima_direita[39]) {
 
-        	$('#nave').css('top', `-=${passo_nave}`);
-        	$('#nave').css('left', `+=${passo_nave * 2}`);
+        	$('#nave').css('transform', 'rotate(45deg)');
+			let cont = 1;
+			function move_cima_direita() {
 
+	        	$('#nave').css('top', `-=${passo_nave}`);
+	        	$('#nave').css('left', `+=${passo_nave * 2}`);
+				let id_parada = requestAnimationFrame(move_cima_direita);
+				cont++;
+
+				if (cont == 20) {
+					cancelAnimationFrame(id_parada);
+				}
+			}
+
+			move_cima_direita();
         }
     }
 
@@ -388,8 +491,21 @@ $('body').keydown(function(event) {
         baixo_esquerda[tecla] = true;
         if (baixo_esquerda[40] && baixo_esquerda[37]) {
 
-        	$('#nave').css('top', `+=${passo_nave}`);
-        	$('#nave').css('left', `-=${passo_nave * 2}`);
+        	$('#nave').css('transform', 'rotate(225deg)');
+			let cont = 1;
+			function move_baixo_esquerda() {
+
+	        	$('#nave').css('top', `+=${passo_nave}`);
+	        	$('#nave').css('left', `-=${passo_nave}`);
+				let id_parada = requestAnimationFrame(move_baixo_esquerda);
+				cont++;
+
+				if (cont == 20) {
+					cancelAnimationFrame(id_parada);
+				}
+			}
+
+			move_baixo_esquerda();
 
         }
     }
@@ -398,9 +514,21 @@ $('body').keydown(function(event) {
         baixo_direita[tecla] = true;
         if (baixo_direita[40] && baixo_direita[39]) {
 
-        	$('#nave').css('top', `+=${passo_nave}`);
-        	$('#nave').css('left', `+=${passo_nave * 2}`);
+        	$('#nave').css('transform', 'rotate(-225deg)');
+			let cont = 1;
+			function move_baixo_direita() {
 
+	        	$('#nave').css('top', `+=${passo_nave}`);
+	        	$('#nave').css('left', `+=${passo_nave}`);
+				let id_parada = requestAnimationFrame(move_baixo_direita);
+				cont++;
+
+				if (cont == 20) {
+					cancelAnimationFrame(id_parada);
+				}
+			}
+
+			move_baixo_direita();
         }
     }
 
@@ -411,7 +539,7 @@ $('body').keydown(function(event) {
 		$('#laser').show();
 
 		function atira () {
-			$('#laser').css('top', '-=5px');
+			$('#laser').css('top', `-=${passo_laser}`);
 
 			if ($('.obstaculo').length > 0) {
 				for (let i = 0; i < $('.obstaculo').length; i++) {
@@ -421,13 +549,13 @@ $('body').keydown(function(event) {
 
 		}
 
-		let tiro = setInterval(atira, 10);
+		let tiro = setInterval(atira, vel_laser);
 
 		setTimeout(() => {
 			clearInterval(tiro);
 			$('#laser').css('top', '-35px');
 			$('#laser').hide();
-		}, 600);
+		}, vel_recarga_laser);
 	}
 
 }).keyup(function(e) {

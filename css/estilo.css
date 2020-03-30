@@ -80,6 +80,7 @@ button:hover {
 	background-image: url('../img/nave.png');
 	background-position: center;
 	background-size: cover;
+	transition: transform 0.3s;
 }
 
 #espaco_obstaculos {
