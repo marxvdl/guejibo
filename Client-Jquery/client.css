@@ -1,0 +1,80 @@
+body {
+    font-family: sans;
+    margin: 0;
+}
+
+.top {
+    background-color: rgb(39, 39, 39);
+    color: white;
+    padding: 5px;    
+}
+
+#top-email {
+    color: rgb(163, 163, 163);
+}
+
+.panel {
+    border: 2px solid rgb(36, 36, 36);
+    background-color: rgb(241, 241, 241);
+    padding: 20px;
+    width: 600px;
+    margin: 10px;
+}
+
+.panel button {
+    width: 200px;
+}
+
+.panel h1 {
+    margin-top: 0;
+}
+
+.panel li {
+    margin-top: 10px;
+}
+
+.panel ul {
+    margin-bottom: 20px;
+}
+
+.gr-code {
+    font-size: smaller;
+    color: rgb(87, 87, 87);
+}
+
+.msg {
+    font-weight: bold;
+    font-size: small;
+    margin-left: 10px;
+}
+
+.success {
+    color: rgb(73, 167, 73);
+}
+
+.failure {
+    color: rgb(150, 0, 0);
+}
+
+#code {
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    width: 4em;
+    font-family: 
+    padding:10px
+}
+
+#joincode {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    width: 4em;    
+    padding:10px;
+    text-transform: uppercase;
+    color:rgb(21, 21, 184);
+}
+
+.userstatus {
+    margin-left: 10px;
+}

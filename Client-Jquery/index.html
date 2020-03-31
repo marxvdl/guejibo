@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IacWeb Test Client</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="dist/main.js"></script>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <div class="top" >
+        User: <span id="top-email">unknown</span>
+    </div>
+
+    <div class="panel" id="ws-panel">
+        <h1>Web sockets</h1>
+        <p>
+            <button onclick="client.main.wsConnect()">🔗 Conectar</button>
+            <button onclick="client.main.wsDisconnect()">⏏  Desconectar</button>
+        </p>        
+        <hr>
+        <p>
+            Mensagem: <input type="text" id="msg-input" style="width:70%">
+        </p>
+        <p>
+            <button onclick="client.main.wsSend({type: 'test', message: $('#msg-input').val()})">Enviar</button>
+        </p>
+    </div>
+
+    <div class="panel" id="login-panel">
+        <h1>Entrar</h1>
+        <p>Email: <input type="email" id="login-email" value="teste6@testando.com"></p>
+        <p>Password: <input type="password" id="login-password" value="abc6"></p>
+        <button onclick="client.main.login()">Entrar</button>
+    </div>
+
+    <div class="panel" id="perfil-panel" style="display:none">
+        <h1>Perfil</h1>
+        <ul>
+            <li>Id: <span id="perfil-id"></span></li>
+            <li>Nome: <span id="perfil-nome"></span></li>
+            <li>E-mail: <span id="perfil-email"></span></li>
+        </ul>
+        <button onclick="client.main.profile()">Obter</button>
+    </div>
+
+    <div class="panel" id="games-panel" style="display:none">
+        <h1>Games</h1>
+        <ul id="games-ul"></ul>
+    </div>
+
+    <div class="panel" id="rooms-panel" style="display:none">
+        <h1>My Rooms</h1>
+        <ul id="rooms-ul"></ul>
+    </div>
+
+</body>
+</html>

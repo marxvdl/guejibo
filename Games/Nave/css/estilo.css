@@ -1,0 +1,200 @@
+body {
+	background: #000;
+	overflow: hidden;
+	font-family: Candara;
+}
+
+button {
+	display: block;
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+}
+
+button:focus {
+	outline: none;
+}
+
+button:hover {
+	opacity: .8;
+}
+
+#painel {
+	background: white;
+	padding: 10px;
+	height: 500px;
+	width: 300px;
+	margin: 40px 50px 0px 0px;
+	border-radius: 2px;
+	text-align: center;
+	box-shadow: 2px 2px 20px lightblue;
+	border: 2px solid #ccc;
+}
+
+#painel h2 {
+	background: #212121;
+	color: #fff;
+	padding: 10px;
+	border-radius: 1px 10px;
+	margin-top: 1px;
+}
+
+#painel h3 {
+	font-size: 15px;
+	margin-bottom: 0px;
+}
+
+#painel h4 {
+	margin-top: 0px;
+	font-size: 30px;
+}
+
+
+
+.alinhados {
+	display: flex;
+	justify-content: space-around;
+}
+
+#espaco {
+	position: relative;
+	background-image: url('../img/espaco.jpg');
+	background-position: center;
+	background-size: cover;
+	width: 800px;
+	height: 600px;
+	margin: 0 auto;
+	border: 5px solid #fff;
+	border-radius: 5%;
+}
+
+#nave {
+	width: 49px;
+	height: 70px;
+	/*background-image: linear-gradient(blue, #212121);*/
+	position: absolute;
+	top: 85%;
+	left: 50%;
+	/*border-radius: 1px 15px 2px;*/
+	/*border-top: 3px solid black;*/
+	background-image: url('../img/nave.png');
+	background-position: center;
+	background-size: cover;
+	transition: transform 0.3s;
+}
+
+#espaco_obstaculos {
+	position: absolute;
+	position: relative;
+	height: 600px;
+	top: -600px;
+	/*border-bottom: 1px solid #606060;*/
+}
+
+.bloco {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	box-shadow: 1px 1px 10px #ccc;
+}
+
+.obstaculo {
+	background-image: url('../img/planeta.jpg');
+	background-position: center;
+	background-size: cover;
+}
+
+/* TOAST */
+
+.toast {
+	position: fixed;
+	top: 25px;
+	left: 10%;
+	width: 700px;
+	z-index: 1000;
+	color: #fff;
+	padding: 10px;
+	padding-right: 20px;
+	border-radius: 5px;
+	box-shadow: 3px 3px 10px #606060;
+	display: none;
+	height: auto;
+}
+
+.toast p {
+	font-size: 20px;
+	text-align: center;
+	line-height: 0;
+	margin: 10px 0px;
+}
+
+.fechar {
+	position: absolute;
+	left: 97%;
+	top: .7px;
+	transform: rotate(45deg);
+	font-size: 30px;
+	cursor: pointer;
+}
+
+.chegou_fim {
+	display: none;
+}
+
+#laser {
+	background-image: linear-gradient(lightgreen, orange, red, lightgreen);
+	width: 5px;
+	height: 25px;
+	position: absolute;
+	left: 50%;
+	top: -35px;
+	display: none;
+}
+
+/* FIM TOAST */
+
+
+/* JANELA MODAL */
+
+#bg_modal {
+	background: rgba(0, 0, 0, .4);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+#modal {
+	background: white;
+	padding: 10px;
+	width: 500px;
+	height: 180px;
+	margin: 150px 18%;
+	border-radius: 5%;
+	text-align: center;
+	border: 3px solid tomato;
+}
+
+#modal h2 {
+	color: tomato;
+	text-shadow: 1px 1px 1px #212121;
+}
+
+#modal p {
+	text-align: center;
+}
+
+#modal button#jogar_novamente {
+	background: green;
+	margin: 6% auto;
+	color: #fff;
+}
+
+#modal img {
+	max-width: 250px;
+	max-height: 190px;
+}
+
+/* FIM JANELA MODAL */
