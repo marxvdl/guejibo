@@ -1,15 +1,17 @@
 let passo_nave = 10;
 let passo_obstaculos = 1;
-let velocidade_obstaculos = 12; // menos é mais
+let velocidade_obstaculos = 20; // menos é mais
 let qtde_inicial_obstaculos = 10;
 
-let vel_laser = 10;
-let vel_recarga_laser = 150;
-let passo_laser = 30;
+let vel_laser = 5;
+let vel_recarga_laser = 50;
+let passo_laser = 50;
 
 let valor_retorno = 5;
 let repelencia = 100;
 let parcela_correcao = 5;
+
+let top_inicial_esp_obst = 600;
 
 let min_top_aleatorio = 300;
 let max_top_aleatorio = 600;
@@ -48,17 +50,24 @@ function cria_obstaculos(quantidade) {
 		let top = aleatorio(min_top_aleatorio, max_top_aleatorio);
 		let left = aleatorio(0, $('#espaco_obstaculos').width() - 50);
 
-		let r = aleatorio(0, 2);
+		let r = aleatorio(0, 3);
 
 		if (r == 0) {
 			$($obstaculo).css('border-radius', '50%');
 			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
 		} else if (r == 1) {
-			$($obstaculo).css('border-radius', '5%');
+			$($obstaculo).css('width', '25px');
+			$($obstaculo).css('height', '25px');
+			$($obstaculo).css('border-radius', '50%');
 			$($obstaculo).css('background', `#${aleatorio(100, 999)}`);
 		} else if (r == 2) {
 			$($obstaculo).css('border-radius', '1% 50%');
 			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
+		} else {
+			$($obstaculo).css('width', '100px');
+			$($obstaculo).css('height', '100px');
+			$($obstaculo).css('border-radius', '50%');
+			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
 		}
 
 		$($obstaculo).css('top', `${top}px`);
@@ -255,7 +264,7 @@ function verifica_limite_espaco() {
 function gameover(msg) {
 
 	toast(msg, 'brown');
-	$('#bg_modal').show();
+	$('#bg_modal').fadeIn('2000');
 	$('.obstaculo').remove();
 	$('#espaco_obstaculos').css('top', '-600px');
 	clearTimeout(move_obstaculos);
@@ -292,9 +301,9 @@ let tot_destruidos = 0;
 let tot_sem_destruir = 0;
 
 let c = 0;
-let fase = 1;
+let onda = 1;
 
-toast('Fase 1', 'darkblue');
+toast('1ª onda.', 'darkblue');
 cria_obstaculos(qtde_inicial_obstaculos);
 
 // CENTRO DE AÇÕES
@@ -317,7 +326,7 @@ $('body').keydown(function(event) {
     	exibiu = false;
     }
 
-    // Aqui as fases se iniciam
+    // Aqui as ondas se iniciam
     if ($('.obstaculo').length == 0 && !quebra) {
 
     	tot_destruidos += obst_dest;
@@ -326,24 +335,27 @@ $('body').keydown(function(event) {
     	$('#pontuacao').text(tot_destruidos);
 
     	obst_fim = 0;
-    	fase++;
-
-    	// let bg = aleatorio(1, 7);
-    	// $('#espaco').css('background-image', `url('img/bg${bg}.jpg')`);
+    	onda++;
 
     	exibiu = false;
-    	$('#espaco_obstaculos').css('top', '-600px');
-
-    	if (min_top_aleatorio >= 0) {
-    		min_top_aleatorio -= 25;
-    	} 
 
     	if (qtde_inicial_obstaculos < qtde_maxima_obstaculos) {
     		qtde_inicial_obstaculos += 2;
+
+	    	top_inicial_esp_obst += 25;
+			velocidade_obstaculos -= 1;
+			max_top_aleatorio = top_inicial_esp_obst;
+
+			if (min_top_aleatorio >= 25) {
+				min_top_aleatorio -= 25;
+			}
+
+	    	$('#espaco_obstaculos').css('top', `-${top_inicial_esp_obst}px`);
+
     	}
     	
     	cria_obstaculos(qtde_inicial_obstaculos);
-    	toast(`Fase ${fase}.`, 'darkblue');
+    	toast(`${onda}ª onda.`, 'darkblue');
 
     }
 

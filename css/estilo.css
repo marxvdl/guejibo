@@ -139,11 +139,12 @@ button:hover {
 	background-image: linear-gradient(green, orange, yellow, red);
 	box-shadow: 1px 1px 10px #fff;
 	width: 5px;
-	height: 25px;
+	height: 50px;
 	position: absolute;
 	left: 50%;
 	top: -35px;
 	display: none;
+	z-index: 150;
 }
 
 /* FIM TOAST */
@@ -162,14 +163,14 @@ button:hover {
 }
 
 #modal {
-	background-image: linear-gradient(#fff, #fff, tomato);
+	background-image: linear-gradient(#fff, #fff, red, tomato);
 	padding: 10px;
 	width: 500px;
 	height: 180px;
 	margin: 150px 18%;
 	text-align: center;
-	border: 3px solid #212121;
 	font-weight: bolder;
+	box-shadow: 1px 1px 10px #fff;
 }
 
 #modal h2 {
@@ -182,11 +183,11 @@ button:hover {
 #modal p {
 	text-align: center;
 	margin-top: 30px;
-	color: #606060;
+	color: #212121;
 }
 
 #modal button#jogar_novamente {
-	background: green;
+	background: #212121;
 	margin: 6% auto;
 	color: #fff;
 }
@@ -207,6 +208,7 @@ button:hover {
 	left: 5%;
 	width: 90%;
 	background: transparent;
+	z-index: 100;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
