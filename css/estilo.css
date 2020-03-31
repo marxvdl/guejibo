@@ -27,7 +27,6 @@ button:hover {
 	margin: 40px 50px 0px 0px;
 	border-radius: 2px;
 	text-align: center;
-	box-shadow: 2px 2px 20px lightblue;
 	border: 2px solid #ccc;
 }
 
@@ -71,12 +70,9 @@ button:hover {
 #nave {
 	width: 49px;
 	height: 70px;
-	/*background-image: linear-gradient(blue, #212121);*/
 	position: absolute;
 	top: 85%;
 	left: 50%;
-	/*border-radius: 1px 15px 2px;*/
-	/*border-top: 3px solid black;*/
 	background-image: url('../img/nave.png');
 	background-position: center;
 	background-size: cover;
@@ -94,12 +90,10 @@ button:hover {
 .bloco {
 	width: 50px;
 	height: 50px;
-	border-radius: 50%;
-	box-shadow: 1px 1px 10px #ccc;
+	border: 1px solid #212121;
 }
 
 .obstaculo {
-	background-image: url('../img/planeta.jpg');
 	background-position: center;
 	background-size: cover;
 }
@@ -142,7 +136,8 @@ button:hover {
 }
 
 #laser {
-	background-image: linear-gradient(lightgreen, orange, red, lightgreen);
+	background-image: linear-gradient(green, orange, yellow, red);
+	box-shadow: 1px 1px 10px #fff;
 	width: 5px;
 	height: 25px;
 	position: absolute;
@@ -167,23 +162,27 @@ button:hover {
 }
 
 #modal {
-	background: white;
+	background-image: linear-gradient(#fff, #fff, tomato);
 	padding: 10px;
 	width: 500px;
 	height: 180px;
 	margin: 150px 18%;
-	border-radius: 5%;
 	text-align: center;
-	border: 3px solid tomato;
+	border: 3px solid #212121;
+	font-weight: bolder;
 }
 
 #modal h2 {
 	color: tomato;
 	text-shadow: 1px 1px 1px #212121;
+	font-size: 40px;
+	margin: 0;
 }
 
 #modal p {
 	text-align: center;
+	margin-top: 30px;
+	color: #606060;
 }
 
 #modal button#jogar_novamente {
@@ -198,3 +197,45 @@ button:hover {
 }
 
 /* FIM JANELA MODAL */
+
+
+/* ALTERNATIVAS */
+
+#alternativas {
+	position: absolute;
+	top: 40px;
+	left: 5%;
+	width: 90%;
+	background: transparent;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+#alternativas div {
+	background: #212121;
+	width: 57px;
+	height: 57px;
+	border-radius: 50%;
+	text-align: center;
+	font-size: 40px;
+	color: #fff;
+	border: 2px solid #ccc;
+	position: relative;
+	line-height: 45px;
+}
+
+#alternativas .ajuda {
+	font-size: 15px;
+	position: absolute;
+	top: -35px;
+	left: 20%;
+	line-height: 10px;
+	text-align: center;
+	background: darkblue;
+	padding: 5px;
+	width: 20px;
+	height: 20px;
+	line-height: 15px;
+	border-radius: 50%;
+}

@@ -1,7 +1,7 @@
-let passo_nave = 1;
+let passo_nave = 10;
 let passo_obstaculos = 1;
-let velocidade_obstaculos = 10; // menos é mais
-let quantidade_obstaculos = 3;
+let velocidade_obstaculos = 12; // menos é mais
+let qtde_inicial_obstaculos = 10;
 
 let vel_laser = 10;
 let vel_recarga_laser = 150;
@@ -21,6 +21,10 @@ let tiros_dados = 0;
 let tiros_errados = 0;
 
 let quebra = false;
+
+let qtde_movimento = 20;
+
+let qtde_maxima_obstaculos = 50;
 
 function aleatorio(min, max) {
 
@@ -44,11 +48,18 @@ function cria_obstaculos(quantidade) {
 		let top = aleatorio(min_top_aleatorio, max_top_aleatorio);
 		let left = aleatorio(0, $('#espaco_obstaculos').width() - 50);
 
-		// if (i == 0) {
-		// 	$($obstaculo).css('background', 'tomato');
-		// } else {
-		// 	$($obstaculo).css('background', `#${aleatorio(100, 999)}`);
-		// }
+		let r = aleatorio(0, 2);
+
+		if (r == 0) {
+			$($obstaculo).css('border-radius', '50%');
+			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
+		} else if (r == 1) {
+			$($obstaculo).css('border-radius', '5%');
+			$($obstaculo).css('background', `#${aleatorio(100, 999)}`);
+		} else if (r == 2) {
+			$($obstaculo).css('border-radius', '1% 50%');
+			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
+		}
 
 		$($obstaculo).css('top', `${top}px`);
 		$($obstaculo).css('left', `${left}px`);
@@ -75,7 +86,6 @@ function move_obstaculos () {
 		if ($('.obstaculo').eq(i).offset().top > $('#espaco').height() - $('.obstaculo').eq(i).width()) {
 			$('.obstaculo').eq(i).remove();
 			obst_fim++
-			console.log('removi: ' + obst_fim);
 		}
 	}
 
@@ -117,10 +127,10 @@ function detecta_colisao($bloco) {
 	let limiar_direito = left_bloco; // não pode ser menor do que isso;
 
 	function dano() {
-		$('#nave').css('border', '1px solid red');
+		$('#nave').css('box-shadow', '1px 1px 50px tomato');
 
 		setTimeout(() => {
-			$('#nave').css('border', 'none');
+			$('#nave').css('box-shadow', 'none');
 		}, 300);
 
 	}
@@ -147,22 +157,17 @@ function detecta_colisao($bloco) {
 		}
 	}
 
-	if (top_nave >= limiar_superior && top_nave < limiar_superior + parcela_correcao) {
-		if (left_nave < limiar_direito + width_nave) {
-			if (left_nave > limiar_esquerdo) {
-				//console.log('você tocou a parte de cima do bloco');
-				$('#nave').css('left', `-=${repelencia}px`);
-				dano();
-				colisoes++;
-			}
-		}
-	}
-
 	if (top_nave >= limiar_inferior && top_nave < limiar_inferior + height_bloco + parcela_correcao) {
 		if (left_nave < limiar_direito + width_nave) {
 			if (left_nave > limiar_esquerdo) {
 				//console.log('você tocou a parte de baixo do bloco');
-				$('#nave').css('left', `+=${repelencia}px`);
+
+				if (aleatorio(1, 2) == 1) {
+					$('#nave').css('left', `+=${repelencia}px`);
+				} else {
+					$('#nave').css('left', `-=${repelencia}px`);
+				}
+
 				dano();
 				colisoes++;
 			}
@@ -191,31 +196,19 @@ function verifica_tiro($bloco) {
 
 	// Se o top do bloco é 500, o top do laser tem que ser menor do que isso, para ultrapassar o bloco. Porém, o top do laser precisa ser maior do que o top do bloco menos o height do bloco.
 
-	if (top_laser < top_bloco && top_laser > top_bloco - height_bloco - height_laser) {
+	if (top_laser < top_bloco && top_laser > top_bloco - height_bloco * 2) {
 		if (left_laser > left_bloco && left_laser < left_bloco + width_bloco) {
-
-			$bloco.css('background', 'tomato').css('box-shadow', '5px 5px 50px orange').css('border', '1px dotted red');
+			$bloco.css('background-image', 'linear-gradient(red, tomato)').css('box-shadow', '1px 1px 50px orange');
 			setTimeout(() => {
 				$bloco.fadeOut('600');
-			}, 300);
+			}, 25);
 
 			setTimeout(() => {
 				$bloco.remove();
-			}, 1000);
-		}
-	}
+			}, 500);
 
-	if (top_laser > top_bloco && top_laser < top_bloco + height_bloco) {
-		if (left_laser > left_bloco && left_laser < left_bloco + width_bloco) {
-
-			$bloco.css('background', 'tomato').css('box-shadow', '5px 5px 50px orange').css('border', '1px dotted red');
-			setTimeout(() => {
-				$bloco.fadeOut('600');
-			}, 300);
-
-			setTimeout(() => {
-				$bloco.remove();
-			}, 1000);
+			$('#laser').hide();
+			$('#laser').css('top', '0px');
 		}
 	}
 
@@ -295,11 +288,6 @@ function temporizador() {
   
 temporizador();
 
-let cima_esquerda = {38: false, 37: false};
-let cima_direita = {38: false, 39: false};
-let baixo_esquerda = {40: false, 37: false};
-let baixo_direita = {40: false, 39: false};
-
 let tot_destruidos = 0;
 let tot_sem_destruir = 0;
 
@@ -307,7 +295,7 @@ let c = 0;
 let fase = 1;
 
 toast('Fase 1', 'darkblue');
-cria_obstaculos(quantidade_obstaculos);
+cria_obstaculos(qtde_inicial_obstaculos);
 
 // CENTRO DE AÇÕES
 
@@ -315,10 +303,8 @@ $('body').keydown(function(event) {
 
 	// Este evento identifica as setas que foram pressionadas para mover a nave, bem como o espaço que serve para atirar. O uso do objeto "map" serve para identificar as setas que foram pressionadas ao mesmo tempo, a fim de realizar o movimento de diagonal.
 
-	if ($('.obstaculo').length < quantidade_obstaculos) {
-		obst_dest = quantidade_obstaculos - $('.obstaculo').length - obst_fim;
-		console.log('[TEMPO REAL] Destruiu: ' + obst_dest);
-
+	if ($('.obstaculo').length < qtde_inicial_obstaculos) {
+		obst_dest = qtde_inicial_obstaculos - $('.obstaculo').length - obst_fim;
 		$('#pontuacao').text(tot_destruidos + obst_dest);
 	}
 
@@ -340,8 +326,11 @@ $('body').keydown(function(event) {
     	$('#pontuacao').text(tot_destruidos);
 
     	obst_fim = 0;
-
     	fase++;
+
+    	// let bg = aleatorio(1, 7);
+    	// $('#espaco').css('background-image', `url('img/bg${bg}.jpg')`);
+
     	exibiu = false;
     	$('#espaco_obstaculos').css('top', '-600px');
 
@@ -349,12 +338,11 @@ $('body').keydown(function(event) {
     		min_top_aleatorio -= 25;
     	} 
 
-    	if (quantidade_obstaculos < 18) {
-    		quantidade_obstaculos += 2;
-    		console.log('Nova quantidade de obstáculos: ' + quantidade_obstaculos);
+    	if (qtde_inicial_obstaculos < qtde_maxima_obstaculos) {
+    		qtde_inicial_obstaculos += 2;
     	}
     	
-    	cria_obstaculos(quantidade_obstaculos);
+    	cria_obstaculos(qtde_inicial_obstaculos);
     	toast(`Fase ${fase}.`, 'darkblue');
 
     }
@@ -362,175 +350,17 @@ $('body').keydown(function(event) {
 	let tecla = event.keyCode;
 	verifica_limite_espaco();
 
-	if(tecla == 38) {
-		 // seta pra CIMA
-		$('#nave').css('transform', 'rotate(0deg)');
-
-		let cont = 1;
-		function move_cima() {
-
-			$('#nave').css('top', `-=${passo_nave}`);
-			let id_parada = requestAnimationFrame(move_cima);
-			cont++;
-
-			if (cont == 20) {
-				cancelAnimationFrame(id_parada);
-			}
-		}
-
-		move_cima();
-	}
-
-	if(tecla == 40) {
-		// seta pra BAIXO
-		$('#nave').css('transform', 'rotate(180deg)');
-
-		let cont = 1;
-		function move_baixo() {
-
-			$('#nave').css('top', `+=${passo_nave}`);
-			let id_parada = requestAnimationFrame(move_baixo);
-			cont++;
-
-			if (cont == 20) {
-				cancelAnimationFrame(id_parada);
-			}
-		}
-
-		move_baixo();
-
-	}
-
-	if(tecla == 39) {
+	if(tecla == 39 || tecla == 68) {
 		 // seta pra DIREITA
-		$('#nave').css('transform', 'rotate(90deg)');
+		$('#nave').css('left', `+=${passo_nave}`);
 
-		let cont = 1;
-		function move_direita() {
-
-			$('#nave').css('left', `+=${passo_nave}`);
-			let id_parada = requestAnimationFrame(move_direita);
-			cont++;
-
-			if (cont == 20) {
-				cancelAnimationFrame(id_parada);
-			}
-		}
-
-		move_direita();
 	}
 
-	if(tecla == 37) {
+	if(tecla == 37 || tecla == 65) {
 		 // seta pra ESQUERDA
+		$('#nave').css('left', `-=${passo_nave}`);
 
-		 $('#nave').css('transform', 'rotate(-90deg)');
-
-		let cont = 1;
-		function move_esquerda() {
-
-			$('#nave').css('left', `-=${passo_nave}`);
-			let id_parada = requestAnimationFrame(move_esquerda);
-			cont++;
-
-			if (cont == 20) {
-				cancelAnimationFrame(id_parada);
-			}
-		}
-
-		move_esquerda();
 	}
-
-
-	// diagonal direita
-    if (tecla in cima_esquerda) {
-        cima_esquerda[tecla] = true;
-        if (cima_esquerda[38] && cima_esquerda[37]) {
-
-        	$('#nave').css('transform', 'rotate(-45deg)');
-			let cont = 1;
-			function move_cima_esquerda() {
-
-	        	$('#nave').css('top', `-=${passo_nave}`);
-	        	$('#nave').css('left', `-=${passo_nave}`);
-				let id_parada = requestAnimationFrame(move_cima_esquerda);
-				cont++;
-
-				if (cont == 20) {
-					cancelAnimationFrame(id_parada);
-				}
-			}
-
-			move_cima_esquerda();
-
-        }
-    }
-
-    if (tecla in cima_direita) {
-        cima_direita[tecla] = true;
-        if (cima_direita[38] && cima_direita[39]) {
-
-        	$('#nave').css('transform', 'rotate(45deg)');
-			let cont = 1;
-			function move_cima_direita() {
-
-	        	$('#nave').css('top', `-=${passo_nave}`);
-	        	$('#nave').css('left', `+=${passo_nave * 2}`);
-				let id_parada = requestAnimationFrame(move_cima_direita);
-				cont++;
-
-				if (cont == 20) {
-					cancelAnimationFrame(id_parada);
-				}
-			}
-
-			move_cima_direita();
-        }
-    }
-
-    if (tecla in baixo_esquerda) {
-        baixo_esquerda[tecla] = true;
-        if (baixo_esquerda[40] && baixo_esquerda[37]) {
-
-        	$('#nave').css('transform', 'rotate(225deg)');
-			let cont = 1;
-			function move_baixo_esquerda() {
-
-	        	$('#nave').css('top', `+=${passo_nave}`);
-	        	$('#nave').css('left', `-=${passo_nave}`);
-				let id_parada = requestAnimationFrame(move_baixo_esquerda);
-				cont++;
-
-				if (cont == 20) {
-					cancelAnimationFrame(id_parada);
-				}
-			}
-
-			move_baixo_esquerda();
-
-        }
-    }
-
-    if (tecla in baixo_direita) {
-        baixo_direita[tecla] = true;
-        if (baixo_direita[40] && baixo_direita[39]) {
-
-        	$('#nave').css('transform', 'rotate(-225deg)');
-			let cont = 1;
-			function move_baixo_direita() {
-
-	        	$('#nave').css('top', `+=${passo_nave}`);
-	        	$('#nave').css('left', `+=${passo_nave}`);
-				let id_parada = requestAnimationFrame(move_baixo_direita);
-				cont++;
-
-				if (cont == 20) {
-					cancelAnimationFrame(id_parada);
-				}
-			}
-
-			move_baixo_direita();
-        }
-    }
 
 	if (tecla == 32) {
 		// espaço
@@ -558,24 +388,7 @@ $('body').keydown(function(event) {
 		}, vel_recarga_laser);
 	}
 
-}).keyup(function(e) {
-	    if (e.keyCode in cima_esquerda) {
-	        cima_esquerda[e.keyCode] = false;
-	    }
-
-	    if (e.keyCode in cima_direita) {
-	        cima_direita[e.keyCode] = false;	    	
-	    }
-
-	    if (e.keyCode in baixo_esquerda) {
-	        baixo_esquerda[e.keyCode] = false;	    	
-	    }
-
-	    if (e.keyCode in baixo_direita) {
-	        baixo_direita[e.keyCode] = false;	    	
-	    }
-
-	});
+});
 
 // TOAST
 
@@ -603,3 +416,36 @@ $('.fechar').click(function() {
 });
 
 // FIM TOAST
+
+
+// ALTERNATIVAS
+
+let qtde_alternativas = 8;
+let binario = '';
+let numeros = [];
+let x = 128;
+
+numeros.push(x);
+for (let i = 0; i < qtde_alternativas; i++) {
+
+	if (x / 2 >= 1) {
+		numeros.push(x = x / 2);
+	}
+
+}
+
+for (let i = 0; i < qtde_alternativas; i++) {
+
+	let r = aleatorio(0, 1);
+
+	binario += r;
+
+	let $a = $(`<div class="alt"><span class="ajuda">${(numeros[i])}</span>${r}</div>`);
+
+	$('#alternativas').append($a);
+
+}
+
+binario = parseInt(binario, 2);
+let decimal = parseInt(binario, 10);
+$('#numero_atual').text(decimal);
