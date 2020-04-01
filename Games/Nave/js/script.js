@@ -246,11 +246,11 @@ function verifica_formacao_binaria() {
 
 	formacao_binaria = parseInt(formacao_binaria, 2);
 
+	$('#numero_atual').text(formacao_binaria);
+
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
 		toast('Parabéns, você formou o número objetivo!');
-
-		$('#numero_atual').text(formacao_binaria);
 		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
 
