@@ -48,8 +48,6 @@ button:hover {
 	font-size: 30px;
 }
 
-
-
 .alinhados {
 	display: flex;
 	justify-content: space-around;
@@ -139,10 +137,11 @@ button:hover {
 	background-image: linear-gradient(green, orange, yellow, red);
 	box-shadow: 1px 1px 10px #fff;
 	width: 5px;
-	height: 50px;
+	height: 75px;
 	position: absolute;
 	left: 50%;
 	top: -35px;
+	border-radius: 10px;
 	display: none;
 	z-index: 150;
 }
@@ -163,18 +162,18 @@ button:hover {
 }
 
 #modal {
-	background-image: linear-gradient(#fff, #fff, red, tomato);
+	background-image: linear-gradient(#fff, #212121);
 	padding: 10px;
 	width: 500px;
 	height: 180px;
 	margin: 150px 18%;
 	text-align: center;
 	font-weight: bolder;
-	box-shadow: 1px 1px 10px #fff;
+	border: 5px solid black;
 }
 
 #modal h2 {
-	color: tomato;
+	color: darkblue;
 	text-shadow: 1px 1px 1px #212121;
 	font-size: 40px;
 	margin: 0;

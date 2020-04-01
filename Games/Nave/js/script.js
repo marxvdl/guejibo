@@ -1,19 +1,18 @@
-let passo_nave = 10;
+let passo_nave = 25;
 let passo_obstaculos = 1;
-let velocidade_obstaculos = 20; // menos é mais
-let qtde_inicial_obstaculos = 10;
+let velocidade_obstaculos = 17; // menos é mais
+let qtde_inicial_obstaculos = 7;
 
-let vel_laser = 5;
-let vel_recarga_laser = 40;
-let passo_laser = 75;
+let vel_recarga_laser = 1;
+let passo_laser = 95;
+let pode_atirar = true;
+let limite_tiro = 5;
 
 let valor_retorno = 5;
 let repelencia = 100;
 let parcela_correcao = 5;
 
-let top_inicial_esp_obst = 600;
-
-let min_top_aleatorio = 300;
+let min_top_aleatorio = 400;
 let max_top_aleatorio = 600;
 
 let obst_fim = 0;
@@ -26,7 +25,7 @@ let quebra = false;
 
 let qtde_movimento = 20;
 
-let qtde_maxima_obstaculos = 50;
+let qtde_maxima_obstaculos = 25;
 
 function aleatorio(min, max) {
 
@@ -50,19 +49,11 @@ function cria_obstaculos(quantidade) {
 		let top = aleatorio(min_top_aleatorio, max_top_aleatorio);
 		let left = aleatorio(0, $('#espaco_obstaculos').width() - 50);
 
-		let r = aleatorio(0, 3);
+		let r = aleatorio(0, 1);
 
 		if (r == 0) {
 			$($obstaculo).css('border-radius', '50%');
 			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
-		} else if (r == 1) {
-			$($obstaculo).css('width', '25px');
-			$($obstaculo).css('height', '25px');
-			$($obstaculo).css('border-radius', '50%');
-			$($obstaculo).css('background', `#${aleatorio(100, 999)}`);
-		} else if (r == 2) {
-			$($obstaculo).css('border-radius', '1% 50%');
-			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
 		} else {
 			$($obstaculo).css('width', '100px');
 			$($obstaculo).css('height', '100px');
@@ -82,7 +73,7 @@ function move_obstaculos () {
 
 	// Esta função simplesmente incrementa o top cada um dos obstáculos. Ela fica dentro de um intervalo, que está logo abaixo.
 
-	if ($('#espaco_obstaculos').offset().top < 600) {
+	if ($('#espaco_obstaculos').offset().top < 1250) {
 		$('#espaco_obstaculos').css('top', `+=${passo_obstaculos}`);
 	}
 
@@ -325,7 +316,7 @@ $('body').keydown(function(event) {
     	colisoes = 0;
     	exibiu = false;
     }
-
+    
     // Aqui as ondas se iniciam
     if ($('.obstaculo').length == 0 && !quebra) {
 
@@ -336,24 +327,16 @@ $('body').keydown(function(event) {
 
     	obst_fim = 0;
     	onda++;
-
     	exibiu = false;
+    	min_top_aleatorio = 350;
+    	max_top_aleatorio = 600;
+	    $('#espaco_obstaculos').css('top', `-${600}px`);
 
-    	if (qtde_inicial_obstaculos < qtde_maxima_obstaculos) {
-    		qtde_inicial_obstaculos += 2;
+	    if (qtde_inicial_obstaculos <= 15) {
+	    	qtde_inicial_obstaculos++;
+	    }
 
-	    	top_inicial_esp_obst += 25;
-			velocidade_obstaculos -= 1;
-			max_top_aleatorio = top_inicial_esp_obst;
 
-			if (min_top_aleatorio >= 25) {
-				min_top_aleatorio -= 25;
-			}
-
-	    	$('#espaco_obstaculos').css('top', `-${top_inicial_esp_obst}px`);
-
-    	}
-    	
     	cria_obstaculos(qtde_inicial_obstaculos);
     	toast(`${onda}ª onda.`, 'darkblue');
 
@@ -379,25 +362,34 @@ $('body').keydown(function(event) {
 		tiros_dados++;
 
 		$('#laser').show();
-
+		let cont = 0;
 		function atira () {
+			pode_atirar = false;
 			$('#laser').css('top', `-=${passo_laser}`);
 
 			if ($('.obstaculo').length > 0) {
 				for (let i = 0; i < $('.obstaculo').length; i++) {
 					verifica_tiro($('.obstaculo').eq(i));
 				}
-			}		
+			}
+
+			let tiro = setTimeout(atira, vel_recarga_laser);
+
+			if (cont == limite_tiro) {
+				clearTimeout(tiro);
+				$('#laser').css('top', '-10px');
+				$('#laser').hide();
+				pode_atirar = true;
+			}
+
+			cont++;
 
 		}
 
-		let tiro = setInterval(atira, vel_laser);
+		if (pode_atirar) {
+			atira();
+		}
 
-		setTimeout(() => {
-			clearInterval(tiro);
-			$('#laser').css('top', '-35px');
-			$('#laser').hide();
-		}, vel_recarga_laser);
 	}
 
 });
