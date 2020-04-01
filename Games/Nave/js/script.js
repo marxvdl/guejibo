@@ -198,18 +198,60 @@ function verifica_tiro($bloco) {
 
 	if (top_laser < top_bloco && top_laser > top_bloco - height_bloco * 2) {
 		if (left_laser > left_bloco && left_laser < left_bloco + width_bloco) {
-			$bloco.css('background-image', 'linear-gradient(red, tomato)').css('box-shadow', '1px 1px 50px orange');
-			setTimeout(() => {
-				$bloco.fadeOut('600');
-			}, 25);
 
-			setTimeout(() => {
-				$bloco.remove();
-			}, 500);
+			if ($bloco.hasClass('alt')) {
+
+				$bloco.css('box-shadow', '1px 1px 50px lightgreen');
+
+				if ($bloco.find('.valor_binario').text() == '1') {
+					$bloco.find('.valor_binario').text('0');
+				} else if ($bloco.find('.valor_binario').text() == '0') {
+					$bloco.find('.valor_binario').text('1');
+				}
+
+				setTimeout(() => {
+					$bloco.css('box-shadow', 'none');
+				}, 250);
+
+				verifica_formacao_binaria();
+
+			} else {
+				$bloco.css('background-image', 'linear-gradient(red, tomato)').css('box-shadow', '1px 1px 50px orange');
+				setTimeout(() => {
+					$bloco.fadeOut('600');
+				}, 25);
+
+				setTimeout(() => {
+					$bloco.remove();
+				}, 500);			
+			}
 
 			$('#laser').hide();
 			$('#laser').css('top', '0px');
+
 		}
+	}
+
+}
+
+function verifica_formacao_binaria() {
+
+	let formacao_binaria = '';
+
+	for (let i = 0; i < $('.alt').length; i++) {
+
+		formacao_binaria += $('.alt').eq(i).find('.valor_binario').text();
+
+	}
+
+	formacao_binaria = parseInt(formacao_binaria, 2);
+
+	if (formacao_binaria == $('#numero_objetivo').text()) {
+
+		toast('Parabéns, você formou o número objetivo!');
+
+		$('#numero_atual').text(formacao_binaria);
+		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
 
 }
@@ -373,6 +415,10 @@ $('body').keydown(function(event) {
 				}
 			}
 
+			for (let i = 0; i < $(`.alt`).length; i++) {
+				verifica_tiro($(`.alt`).eq(i));
+			}
+
 			let tiro = setTimeout(atira, vel_recarga_laser);
 
 			if (cont == limite_tiro) {
@@ -441,11 +487,8 @@ for (let i = 0; i < qtde_alternativas; i++) {
 for (let i = 0; i < qtde_alternativas; i++) {
 
 	let r = aleatorio(0, 1);
-
 	binario += r;
-
-	let $a = $(`<div class="alt"><span class="ajuda">${(numeros[i])}</span>${r}</div>`);
-
+	let $a = $(`<div class="alt"><span class="ajuda">${(numeros[i])}</span><span class="valor_binario">${r}</span></div>`);
 	$('#alternativas').append($a);
 
 }
