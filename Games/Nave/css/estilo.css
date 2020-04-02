@@ -2,13 +2,15 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: Candara;
+	/*background-image: url('../img/espaco.jpg');*/
+	background-position: top;
+	background-size: cover;
 }
 
 button {
 	display: block;
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 }
 
 button:focus {
@@ -20,22 +22,15 @@ button:hover {
 }
 
 #painel {
-	background: white;
+	background: rgba(255, 255, 255, .3);
 	padding: 10px;
-	height: 500px;
-	width: 300px;
-	margin: 40px 50px 0px 0px;
+	height: 60%;
+	width: 10%;
+	margin: 140px 50px 0px 0px;
 	border-radius: 2px;
 	text-align: center;
-	border: 2px solid #ccc;
-}
-
-#painel h2 {
-	background: #212121;
-	color: #fff;
-	padding: 10px;
-	border-radius: 1px 10px;
-	margin-top: 1px;
+	position: absolute;
+	left: 85%;
 }
 
 #painel h3 {
@@ -54,15 +49,10 @@ button:hover {
 }
 
 #espaco {
-	position: relative;
-	background-image: url('../img/espaco.jpg');
-	background-position: center;
-	background-size: cover;
-	width: 800px;
-	height: 600px;
-	margin: 0 auto;
-	border: 5px solid #fff;
-	border-radius: 5%;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 #nave {
@@ -77,23 +67,13 @@ button:hover {
 	transition: transform 0.3s;
 }
 
-#espaco_obstaculos {
-	position: absolute;
-	position: relative;
-	height: 600px;
-	top: -600px;
-	/*border-bottom: 1px solid #606060;*/
-}
-
-.bloco {
-	width: 50px;
-	height: 50px;
-	border: 1px solid #212121;
-}
-
 .obstaculo {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
 	background-position: center;
 	background-size: cover;
+	position: absolute;
 }
 
 /* TOAST */
@@ -137,7 +117,7 @@ button:hover {
 	background-image: linear-gradient(green, orange, yellow, red);
 	box-shadow: 1px 1px 10px #fff;
 	width: 5px;
-	height: 75px;
+	height: 25px;
 	position: absolute;
 	left: 50%;
 	top: -35px;
@@ -164,12 +144,13 @@ button:hover {
 #modal {
 	background-image: linear-gradient(#fff, #212121);
 	padding: 10px;
-	width: 500px;
-	height: 180px;
+	width: 50%;
+	height: 30%;
 	margin: 150px 18%;
 	text-align: center;
 	font-weight: bolder;
 	border: 5px solid black;
+	box-shadow: 1px 1px 50px darkblue;
 }
 
 #modal h2 {
@@ -181,7 +162,7 @@ button:hover {
 
 #modal p {
 	text-align: center;
-	margin-top: 30px;
+	margin-top: 15px;
 	color: #212121;
 }
 
@@ -189,11 +170,8 @@ button:hover {
 	background: #212121;
 	margin: 6% auto;
 	color: #fff;
-}
-
-#modal img {
-	max-width: 250px;
-	max-height: 190px;
+	width: 25%;
+	height: 25%;
 }
 
 /* FIM JANELA MODAL */
@@ -205,7 +183,7 @@ button:hover {
 	position: absolute;
 	top: 40px;
 	left: 5%;
-	width: 90%;
+	width: 70%;
 	background: transparent;
 	z-index: 100;
 	display: flex;
