@@ -2,7 +2,7 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: Candara;
-	/*background-image: url('../img/espaco.jpg');*/
+	background-image: url('../img/espaco.jpg');
 	background-position: top;
 	background-size: cover;
 }

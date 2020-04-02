@@ -75,7 +75,7 @@ function cria_obstaculos(quantidade) {
 		// $($obstaculo).css('position', 'absolute');
 
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(0, 50);
+		let top = aleatorio(1, 50);
 
 		let r = aleatorio(0, 3);
 
