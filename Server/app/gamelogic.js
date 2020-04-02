@@ -24,9 +24,5 @@ module.exports = {
         let readyList = this.readyUsersInGameRoom[gameroomId];
         if(readyList.indexOf(userId) == -1)
             readyList.push(userId);
-            
-        console.log(this.readyUsersInGameRoom[gameroomId]);
-        
     }
-
-}
+};

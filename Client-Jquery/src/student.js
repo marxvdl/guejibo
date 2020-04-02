@@ -24,10 +24,9 @@ export function doJoin(data) {
         const ulgrid = `ul-gr${gr.id}`;
 
         $('#status').text('Waiting...');
-        $('#game-name').text(gr.game.name)
+        $('#game-name').text(gr.game.name);
         $('#gr-owner').text(gr.owner.name);
         $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));     
-        console.log(global.payload);
            
         $(`#${ulgrid}`).append($(`<li>${client.main.global.payload.name}<span class="userstatus success">online</span></li>`));
         for (let user of gr.members) {
@@ -46,7 +45,7 @@ export function doJoin(data) {
         }, TIMES.SHOUT_IM_HERE_INTERVAL);
     }
     else {
-        console.log(`Error: could not join game: data.error`)
+        console.log(`Error: could not join game: data.error`);
     }
 }
 

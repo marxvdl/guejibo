@@ -24,7 +24,6 @@ module.exports = function (app, passport) {
                 decoded = jwt.decode(token, process.env.JWT_SECRET);
             }
             catch (e) {
-                console.log('Invalid token!');
                 done(false);
                 return;
             }
@@ -65,13 +64,13 @@ module.exports = function (app, passport) {
                         return;
 
                     default:
-                        ws.send(`Error: invalid action "${data.action}"`)
+                        ws.send(`Error: invalid action "${data.action}"`);
                         return;
                 }
 
             }
             catch (e) {
-                console.log(e);                
+         
                 ws.send('Error: invalid data');
                 return;
             }
@@ -114,14 +113,13 @@ module.exports = function (app, passport) {
             });
         })
         .catch(e => {
-            console.log(e);
             ws.send(JSON.stringify(
                 {
                     responseTo: 'join',
                     success: false,
                     error: 'Game room not found'
                 }
-            ))
+            ));
         });
     }
 
@@ -129,8 +127,6 @@ module.exports = function (app, passport) {
      * 'check-players-ready' -> Check if all players of a game room are ready to play
      */
     function doActionCheckPlayersReady(gameroomID) {
-        console.log("Check: " + gameroomID);
-
         GameRoom.findAll({
             where: {
                 id: gameroomID
@@ -171,18 +167,26 @@ module.exports = function (app, passport) {
                 {
                     model: User,
                     as: 'owner'
+                },
+                {
+                    model: User,
+                    as: 'members'
                 }
             ]
         })
         .then(gr => {
-            let ownerWss = webSocketsById[gr.ownerId];
-            ownerWss.send(JSON.stringify(
-                {
-                    req: 'player-is-ready',
-                    user: User.exportObject(ws.user),
-                    gameroom: data.gameroom
-                }
-            ));
+            let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
+            sendToList.push(gr.ownerId);
+            
+            for(let id of sendToList){
+                webSocketsById[id].send(JSON.stringify(
+                    {
+                        req: 'player-is-ready',
+                        user: User.exportObject(ws.user),
+                        gameroom: data.gameroom
+                    }
+                ));
+            }
             
         });
     }

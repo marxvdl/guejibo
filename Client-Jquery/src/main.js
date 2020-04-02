@@ -30,7 +30,7 @@ export function login() {
                     $("#perfil-panel").fadeIn(400, () => {
                         loadGames();
                         loadGameRooms();
-                    })
+                    });
                     $("#games-panel").fadeIn(400, () => {
                         $("#rooms-panel").fadeIn();
                     });
@@ -41,7 +41,7 @@ export function login() {
             }
         }
     });
-};
+}
 
 const authHeader = xhr => {
     xhr.setRequestHeader("Authorization", "Bearer " + global.token);
@@ -95,7 +95,6 @@ export function createRoom(gameid) {
             gameid: gameid
         }),
         success: data => {
-            console.log(data);
             if (data.success) {
                 $(`#success-code-${gameid}`).text((data.code));
                 $(`#success-${gameid}`).fadeIn();
@@ -117,11 +116,11 @@ export function loadGameRooms() {
             $('#rooms-ul').empty();
             for (let gr of data) {
                 $('#rooms-ul').append(
-                    '<li>'
-                    + gr.game.name
-                    + (gr.timeStarted ? `Started at ' + ${gr.timeStarted}` : '')
-                    + (gr.timeEnded ? `, ended at ' + ${gr.timeEnded}` : '')
-                    + `, <a href="#" onclick="client.main.createGameRoomPanel(${gr.id})">${gr.numberOfMembers} members</a>
+                    '<li>' +
+                    gr.game.name +
+                    (gr.timeStarted ? `Started at ' + ${gr.timeStarted}` : '') +
+                    (gr.timeEnded ? `, ended at ' + ${gr.timeEnded}` : '') +
+                    `, <a href="#" onclick="client.main.createGameRoomPanel(${gr.id})">${gr.numberOfMembers} members</a>
                         <ul id="room-members-${gr.id}"></ul>
                     </li>`
                 );
@@ -222,12 +221,12 @@ export function wsConnect(onopen = null) {
         else if (data.req) {
             switch (data.req) {
                 case 'player-is-ready':
-                    student.markPlayerAsReady(data.user, data.gameroom)
+                    student.markPlayerAsReady(data.user, data.gameroom);
                     return;
             }
         }
 
-    }
+    };
 }
 
 export function wsDisconnect() {
