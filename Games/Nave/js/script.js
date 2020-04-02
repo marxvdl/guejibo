@@ -1,9 +1,9 @@
-let passo_nave = 5;
+let passo_nave = 2.875;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
-let qtde_inicial_obstaculos = 10;
+let qtde_inicial_obstaculos = 25;
 let vel_recarga_laser = 10;
-let passo_laser = 25;
+let passo_laser = 30;
 let pode_atirar = true;
 let limite_tiro = 25;
 let valor_retorno = 5;
@@ -16,7 +16,7 @@ let obst_dest = 0;
 let tiros_dados = 0;
 let tiros_errados = 0;
 let fim_jogo = false;
-let qtde_movimento = 20;
+let qtde_movimento = 25;
 let qtde_maxima_obstaculos = 25;
 let pontuacao = 0;
 
@@ -25,6 +25,34 @@ let acoes_nave = {
 	'moveu_direita':false,
 	'atirou':false
 };
+
+function atira () {
+
+	$('#laser').css('top', `-=${passo_laser}`);
+
+	for (let i = 0; i < $(`.alt`).length; i++) {
+		atira_alt($(`.alt`).eq(i))
+	}
+
+	for (let i = 0; i < $('.planeta').length; i++) {
+		atira_planeta($('.planeta').eq(i));
+	}
+
+	for (let i = 0; i < $(`.alien`).length; i++) {
+		atira_alien($(`.alien`).eq(i));
+	}
+
+	let tiro = window.requestAnimationFrame(atira);
+
+	if ($('#laser').offset().top < 25) {
+
+		window.cancelAnimationFrame(tiro);
+		$('#laser').hide();
+		$('#laser').css('top', '0px');
+
+	}
+
+}
 
 // ALTERNATIVAS
 
@@ -113,6 +141,8 @@ let y = false;
 
 function atualiza () {
 
+	let c = 0;
+
 	verifica_formacao_binaria();
 	verifica_limite_espaco();
     
@@ -137,92 +167,33 @@ function atualiza () {
 
 	if (acoes_nave['moveu_direita']) {
 
-		acoes_nave['moveu_direita'] = false;
-		let cont = 0;
-		function move_direita() {
-
+		while (acoes_nave['moveu_direita']) {
 			$('#nave').css('left', '+=1px');
-
-			let id_parada = requestAnimationFrame(move_direita);
-
-			if (cont == 15) {
-				cancelAnimationFrame(id_parada);
+			if (c == 5) {
+				break;
+				acoes_nave['moveu_direita'] = false;
 			}
-
-			cont++;
-
+			c++;
 		}
-
-		move_direita();
-
 	}
 
 	if (acoes_nave['moveu_esquerda']) {
 		
-		acoes_nave['moveu_esquerda'] = false;
-		let cont = 0;
-		function move_esquerda() {
-
+		while (acoes_nave['moveu_esquerda']) {
 			$('#nave').css('left', '-=1px');
-
-			let id_parada = requestAnimationFrame(move_esquerda);
-
-			if (cont == 15) {
-				cancelAnimationFrame(id_parada);
+			if (c == 5) {
+				break;
+				acoes_nave['moveu_esquerda'] = false;
 			}
-
-			cont++;
-
+			c++;
 		}
-
-		move_esquerda();
-
 	}
 
 	if (acoes_nave['atirou']) {
-		acoes_nave['atirou'] = false;
-
-		$('#laser').show();
-
-		let cont = 0;
-		function atira () {
-			
-			pode_atirar = false;
-			$('#laser').css('top', `-=${passo_laser}`);
-
-			for (let i = 0; i < $(`.alt`).length; i++) {
-				if (atira_alt($(`.alt`).eq(i))) {
-					y = true;
-				}
-			}
-
-			if (!y) {
-				for (let i = 0; i < $('.planeta').length; i++) {
-					atira_planeta($('.planeta').eq(i));
-				}
-
-				for (let i = 0; i < $(`.alien`).length; i++) {
-					atira_alien($(`.alien`).eq(i));
-				}
-			}
-
-			let tiro = setTimeout(atira, vel_recarga_laser);
-
-			if (cont == limite_tiro) {
-
-				clearTimeout(tiro);
-
-				$('#laser').hide();
-				$('#laser').css('top', '0px');
-				
-				pode_atirar = true;
-			}
-
-			cont++;
-
-		}
-
-		if (pode_atirar) {
+		
+		if (acoes_nave['atirou']) {
+			acoes_nave['atirou'] = false;
+			$('#laser').show();
 			atira();
 		}
 	}
@@ -259,7 +230,6 @@ function atira_alt(alternativa) {
 
 			setTimeout(() => {
 				$(alternativa).css('box-shadow', 'none');
-				return true;
 			}, 250);
 		}
 	}
@@ -353,7 +323,7 @@ function verifica_formacao_binaria() {
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
-		toast('Parabéns, você formou o número objetivo!');
+		toast('Parabéns, você conseguiu!');
 		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
 
@@ -376,12 +346,12 @@ function verifica_limite_espaco() {
 	let width_nave = $('#nave').width();
 
 	// direita
-	if (left_nave > width_espaco - 10) {
-		$('#nave').css('left', `${11}px`);
+	if (left_nave > width_espaco - width_nave) {
+		$('#nave').css('left', `${10}px`);
 	}
 
 	// esquerda
-	if (left_nave < left_espaco + 10) {
+	if (left_nave < left_espaco) {
 		$('#nave').css('left', `${width_espaco - width_nave}px`);
 	}
 
@@ -446,6 +416,29 @@ $('body').keydown(function(event) {
 
 });
 
+$('body').keyup(function(event) {
+
+	let tecla = event.keyCode;
+
+	if(tecla == 39 || tecla == 68) {
+		 // seta pra DIREITA ou D
+		 acoes_nave['moveu_direita'] = false;
+	}
+
+	if(tecla == 37 || tecla == 65) {
+		 // seta pra ESQUERDA ou A
+		 acoes_nave['moveu_esquerda'] = false;
+	}
+
+	// if (tecla == 32) {
+	// 	// espaço
+	// 	acoes_nave['atirou'] = false;
+	// 	$('#laser').css('top', '0px');
+	// 	$('#laser').hide();
+	// }
+
+});
+
 // TOAST
 
 function toast(texto, cor = 'green') {
@@ -470,3 +463,5 @@ function toast(texto, cor = 'green') {
 $('.fechar').click(function() {
 	$('.toast').fadeOut('500');
 });
+
+$('#numero_objetivo').text(aleatorio(1, 255));
