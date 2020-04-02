@@ -20,15 +20,23 @@ export function join(code) {
 
 export function doJoin(data) {
     if (data.success) {
-        let gr = global.gameroom = data.gameroom;
+        let gr = data.gameroom;
+        const ulgrid = `ul-gr${gr.id}`;
 
         $('#status').text('Waiting...');
         $('#game-name').text(gr.game.name)
         $('#gr-owner').text(gr.owner.name);
+        $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));     
+        console.log(global.payload);
+           
+        $(`#${ulgrid}`).append($(`<li>${client.main.global.payload.name}<span class="userstatus success">online</span></li>`));
         for (let user of gr.members) {
-            $('#users').append(`<li id="user-${user.id}">${user.name}</li>`)
+            $(`#${ulgrid}`).append(`<li>${user.name}<span class="userstatus" id="gr${gr.id}-user${user.id}"></span></li>`);
         }
         $('#gameroom-panel').fadeIn();
+
+        initPlayersReady(gr.id);
+        client.main.gameRoomMembers[gr.id] = [];
 
         setInterval(() => {
             client.main.wsSend({

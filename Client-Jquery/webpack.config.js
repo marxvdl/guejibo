@@ -7,7 +7,7 @@ module.exports = {
     output: {
         library: ["client", "[name]"],
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
         contentBase: '.',
     }
