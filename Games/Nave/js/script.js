@@ -1,16 +1,17 @@
-let passo_nave = 2.875;
+let passo_nave = 1;
+let limite_movimento = 7;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
-let qtde_inicial_obstaculos = 25;
+let qtde_inicial_obstaculos = 10;
 let vel_recarga_laser = 10;
-let passo_laser = 30;
+let passo_laser = 30 + Math.PI;
 let pode_atirar = true;
 let limite_tiro = 25;
 let valor_retorno = 5;
 let repelencia = 100;
 let parcela_correcao = 5;
-let min_left_aleatorio = -100;
-let max_left_aleatorio = 0;
+let min_left_aleatorio = 0;
+let max_left_aleatorio = 100;
 let obst_fim = 0;
 let obst_dest = 0;
 let tiros_dados = 0;
@@ -93,7 +94,7 @@ function aleatorio(min, max) {
 	 return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function cria_obstaculos(quantidade) {
+function cria_obstaculos_a(quantidade) {
 
 	// Esta função cria os obstáculos do jogo. Todos eles são gerados em posições aleatórias. O top é definido negativamente, para que eles levem um tempo para chegar ao usuário.
 
@@ -105,15 +106,9 @@ function cria_obstaculos(quantidade) {
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
 		let top = aleatorio(1, 50);
 
-		let r = aleatorio(0, 3);
+		let r = aleatorio(0, 1);
 
 		if (r == 0) {
-			$($obstaculo).css('border-radius', '50%');
-			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
-			$obstaculo.addClass('planeta');
-		} else if (r == 1) {
-			$($obstaculo).css('width', '100px');
-			$($obstaculo).css('height', '100px');
 			$($obstaculo).css('border-radius', '50%');
 			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
 			$obstaculo.addClass('planeta');
@@ -124,13 +119,42 @@ function cria_obstaculos(quantidade) {
 
 		$($obstaculo).css('top', `${top}%`);
 		$($obstaculo).css('left', `${left}%`);
-		$('#espaco').append($obstaculo);
 
+		$('#espaco_obstaculos_a').append($obstaculo);
 	}
 
 }
 
-cria_obstaculos(qtde_inicial_obstaculos);
+function cria_obstaculos_b(quantidade) {
+	for (let i = 0; i < quantidade; i++) {
+
+		let $obstaculo = $(`<div class="obstaculo"></div>`);
+		// $($obstaculo).css('position', 'absolute');
+
+		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
+		let top = aleatorio(1, 50);
+
+		let r = aleatorio(0, 1);
+
+		if (r == 0) {
+			$($obstaculo).css('border-radius', '50%');
+			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
+			$obstaculo.addClass('planeta');
+		} else {
+			$($obstaculo).css('background-image', `url('img/alien.png')`);
+			$obstaculo.addClass('alien');
+		}
+
+		$($obstaculo).css('top', `${top}%`);
+		$($obstaculo).css('left', `${left}%`);
+
+		$('#espaco_obstaculos_b').append($obstaculo);
+	}
+
+}
+
+cria_obstaculos_a(qtde_inicial_obstaculos);
+cria_obstaculos_b(qtde_inicial_obstaculos);
 
 window.addEventListener('resize', function() {
 	$('#espaco').css('width', `${window.innerWidth}px`);
@@ -147,29 +171,46 @@ function atualiza () {
 	verifica_limite_espaco();
     
     // Aqui as ondas se iniciam
-    if ($('.planeta').length == 0 && $('.alien').length == 0 && !fim_jogo) {
-    	$('.obstaculo').css('left', '-100%');
-    	cria_obstaculos(qtde_inicial_obstaculos);
-    	qtde_inicial_obstaculos++;
+    if ($('#espaco_obstaculos_b').children().length == 0) {
+    	$('#espaco_obstaculos_b').css('left', '75%');
+    	cria_obstaculos_b(qtde_inicial_obstaculos);
     }
 
-	$('.obstaculo').css('left', `+=${passo_obstaculos}`);
+    if ($('#espaco_obstaculos_a').children().length == 0) {
+    	$('#espaco_obstaculos_a').css('left', '-75%');
+    	cria_obstaculos_a(qtde_inicial_obstaculos);
+    }
 
-	for (let i = 0; i < $('.obstaculo').length; i++) {
+	$('#espaco_obstaculos_a').css('left', `+=${passo_obstaculos}`);
+	$('#espaco_obstaculos_b').css('left', `-=${passo_obstaculos}`);
 
+	let obst_a = $('#espaco_obstaculos_a').children();
+	let obst_b = $('#espaco_obstaculos_b').children();
+
+	for (let i = 0; i < $('#espaco_obstaculos_a').children().length; i++) {
 		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
-		if ($('.obstaculo').eq(i).offset().left > $('#espaco').width() - $('.obstaculo').eq(i).width()) {
-			$('.obstaculo').eq(i).remove();
+		if ($(obst_a[i]).offset().left > $('#espaco').width() - 50) {
+			$(obst_a[i]).remove();
 			obst_fim++
-			console.log('removi');
+		}
+	}
+
+
+	for (let i = 0; i < $('#espaco_obstaculos_b').children().length; i++) {
+		console.log($(obst_b[i]).offset().left);
+		console.log($('#espaco').width());
+		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
+		if ($(obst_b[i]).offset().left < 50) {
+			$(obst_b[i]).remove();
+			obst_fim++
 		}
 	}
 
 	if (acoes_nave['moveu_direita']) {
 
 		while (acoes_nave['moveu_direita']) {
-			$('#nave').css('left', '+=1px');
-			if (c == 5) {
+			$('#nave').css('left', `+=${passo_nave}`);
+			if (c == limite_movimento) {
 				break;
 				acoes_nave['moveu_direita'] = false;
 			}
@@ -180,8 +221,8 @@ function atualiza () {
 	if (acoes_nave['moveu_esquerda']) {
 		
 		while (acoes_nave['moveu_esquerda']) {
-			$('#nave').css('left', '-=1px');
-			if (c == 5) {
+			$('#nave').css('left', `-=${passo_nave}`);
+			if (c == limite_movimento) {
 				break;
 				acoes_nave['moveu_esquerda'] = false;
 			}
@@ -259,11 +300,23 @@ function atira_planeta(planeta) {
 			if (left_laser > left_planeta && left_laser < left_planeta + width_planeta) {
 
 				$('#laser').hide();
-				$('#laser').css('top', '1px');	
-				$(planeta).css('box-shadow', '1px 1px 50px tomato');
+				$('#laser').css('top', '0px');
+
+				$(planeta).css('background-image', 'linear-gradient(green, yellow)').css('box-shadow', '1px 1px 50px darkblue');
 				setTimeout(() => {
-					$(planeta).css('box-shadow', 'none')
-				}, 250);
+					$(alien).fadeOut('600');
+				}, 25);
+
+				setTimeout(() => {
+					$(planeta).remove();
+					
+					if (pontuacao > 0) {
+						pontuacao--;
+					}
+
+					toast('Você destruiu um planeta e perdeu pontos!', 'brown');
+					$('#pontuacao').text(pontuacao);
+				}, 500);
 
 
 			}
