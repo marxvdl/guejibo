@@ -145,12 +145,69 @@ button:hover {
 	z-index: 150;
 }
 
-/* FIM TOAST */
+/* --- */
 
 
-/* JANELA MODAL */
+/* INICIAR JOGO */
 
-#bg_modal {
+#bg_iniciar_jogo {
+	background: rgba(0, 0, 0, .4);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+#iniciar_jogo {
+	background-color: #fff;
+	width: 50%;
+	margin: 10% auto;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid darkblue;
+}
+
+#iniciar_jogo h2 , #pause h2 {
+	text-align: center;
+	background-image: linear-gradient(darkblue, blue);
+	color: #fff;
+	border-radius: 10px;
+}
+
+#iniciar_jogo li {
+	margin-bottom: 10px;
+}
+
+#btn_jogar {
+	background-color: darkblue;
+	padding: 10px;
+	border-radius: 5px;
+	color: #fff;
+	margin: 0 auto;
+}
+
+#input_apelido {
+	border: none;
+	border-bottom: 1px solid #606060;
+	padding: 5px;
+}
+
+input:focus {
+	outline: none;
+}
+
+label {
+	cursor: pointer;
+	margin-right: 5px;
+	margin-left: 3%;
+}
+
+/* --- */
+
+/* PAUSE */
+
+#bg_pause {
 	background: rgba(0, 0, 0, .4);
 	width: 100%;
 	height: 100%;
@@ -160,40 +217,77 @@ button:hover {
 	display: none;
 }
 
-#modal {
-	background-image: linear-gradient(#fff, #212121);
+#pause {
+	background-color: #fff;
+	width: 50%;
+	margin: 10% auto;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid darkblue;
+}
+
+#pause p {
+	text-align: center;
+}
+
+/* --- */
+
+/* GAME OVER */
+
+#bg_game_over {
+	background: rgba(0, 0, 0, .4);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+#game_over {
+	background-image: linear-gradient(#ccc, #eee);
 	padding: 10px;
 	width: 50%;
-	height: 30%;
 	margin: 150px 18%;
 	text-align: center;
 	font-weight: bolder;
 	border: 5px solid black;
-	box-shadow: 1px 1px 50px darkblue;
+	box-shadow: 1px 1px 50px tomato;
+	border-radius: 10px;
 }
 
-#modal h2 {
-	color: darkblue;
+#game_over h2 {
+	color: brown;
 	text-shadow: 1px 1px 1px #212121;
 	font-size: 40px;
 	margin: 0;
 }
 
-#modal p {
-	text-align: center;
+#game_over p {
 	margin-top: 15px;
-	color: #212121;
 }
 
-#modal button#jogar_novamente {
+#apelido {
+	font-size: 32px;
+	margin-bottom: 0px;
+	border-bottom: 1px solid #606060;
+	border-top: 1px solid #606060;
+	text-shadow: 1px 1px 10px #606060;
+}
+
+#game_over ul {
+	list-style: none;
+}
+
+#game_over #btn_jogar_novamente {
 	background: #212121;
-	margin: 6% auto;
+	margin: 0 auto;
 	color: #fff;
-	width: 25%;
-	height: 25%;
+	padding: 10px;
+	border-radius: 10px;
 }
 
-/* FIM JANELA MODAL */
+/* --- */
 
 
 /* ALTERNATIVAS */

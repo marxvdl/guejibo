@@ -20,6 +20,12 @@ let fim_jogo = false;
 let qtde_movimento = 25;
 let qtde_maxima_obstaculos = 25;
 let pontuacao = 0;
+let iniciou = false;
+let parar = false;
+
+let tempo_restante = 59;
+let tempos_acabados = 0;
+let t;
 
 let acoes_nave = {
 	'moveu_esquerda':false,
@@ -240,9 +246,11 @@ function atualiza () {
 	}
 
 	let intervalo_func = setTimeout(atualiza, velocidade_obstaculos);
-}
 
-atualiza();
+	if (parar) {
+		clearTimeout(intervalo_func);
+	}
+}
 
 function atira_alt(alternativa) {
 
@@ -314,7 +322,7 @@ function atira_planeta(planeta) {
 						pontuacao--;
 					}
 
-					toast('Você destruiu um planeta e perdeu pontos!', 'brown');
+					toast('Você destruiu um planeta e perdeu um ponto!', 'brown');
 					$('#pontuacao').text(pontuacao);
 				}, 500);
 
@@ -376,8 +384,13 @@ function verifica_formacao_binaria() {
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
-		toast('Parabéns, você conseguiu!');
+		toast('Parabéns, você conseguiu formar o número e ganhou +5 pontos!');
 		$('#numero_objetivo').text(aleatorio(0, 255));
+		$('#tempo').text('60');
+		pontuacao += 5;
+		tempo_restante = 59;
+	 	clearTimeout(t);
+		temporizador();
 	}
 
 }
@@ -413,27 +426,40 @@ function verifica_limite_espaco() {
 function gameover(msg) {
 
 	toast(msg, 'brown');
-	$('#bg_modal').fadeIn('2000');
+	$('#bg_game_over').fadeIn('2000');
 	$('.obstaculo').remove();
 	fim_jogo = true;
 	clearTimeout(intervalo_func);
+	clearTimeout(t);
 }
 
-$('#jogar_novamente').click(() => {
+$('#btn_jogar_novamente').click(() => {
 	window.location.reload();
 });
 
-
-let tempo_restante = 59;
 function temporizador() {
 
-  let t = setTimeout(function() {
+  t = setTimeout(function() {
     
   	if (tempo_restante > 0) {
   		$('#tempo').text(tempo_restante--).css('color', 'black');
   	} else {
   		$('#tempo').text(tempo_restante--).css('color', 'brown');
-  		toast('Seu tempo acabou.', 'orange');
+  		toast(`Seu tempo acabou. Resta(m) ${2 - tempos_acabados} tempo(s).`, 'orange');
+  		pontuacao -= 1;
+		$('#numero_objetivo').text(aleatorio(0, 255));
+		$('#tempo').text('60');
+  		tempos_acabados++;
+  		clearTimeout(t);
+
+  		if (tempos_acabados < 3) {
+  			tempo_restante = 59;
+  			clearTimeout(t);
+  			temporizador();
+  		} else {
+  			gameover();
+  		}
+
   	}
 
     if( tempo_restante >= 0) {
@@ -469,9 +495,29 @@ $('body').keydown(function(event) {
 
 });
 
+let toggle = true;
+
 $('body').keyup(function(event) {
 
 	let tecla = event.keyCode;
+
+
+
+	if(tecla == 80 && iniciou) {
+		 // Pause
+		 $('#bg_pause').toggle();
+		 if (toggle) {
+		 	 toggle = false;
+			 parar = true;
+			 clearTimeout(t);
+		 } else {
+		 	toggle = true;
+			parar = false;
+			atualiza();
+			temporizador();		 	
+		 }
+
+	}	
 
 	if(tecla == 39 || tecla == 68) {
 		 // seta pra DIREITA ou D
@@ -518,3 +564,11 @@ $('.fechar').click(function() {
 });
 
 $('#numero_objetivo').text(aleatorio(1, 255));
+
+$('#btn_jogar').click(function() {
+	iniciou = true;
+	$('#bg_iniciar_jogo').css('display', 'none');
+	$('#apelido').text($('#input_apelido').val());
+	atualiza();
+
+});
