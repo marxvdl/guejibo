@@ -296,17 +296,15 @@ public class PesParaMetros extends JFrame {
 		
 	}
 }`];
-document.getElementById("Pczinho").onclick=function() {click()}
-function click() {
-  pontuacao=pontuacao+1;
-  pontuacaoAcumulada=pontuacaoAcumulada+1;
-  document.getElementById("pontuacao").innerHTML = pontuacao;
-  escreverCodigo();
+$('#Pczinho').on('click', function() {pontuacao=pontuacao+1;
+	pontuacaoAcumulada=pontuacaoAcumulada+1;
+	$('#pontuacao').text(pontuacao);
+	escreverCodigo();
+});
 
-}
 function escreverCodigo() {
 	if(codigo[qualCodigo].length>pontuacaoAcumulada){
-		document.getElementById("java").innerText =codigo[qualCodigo].slice(0,pontuacaoAcumulada);
+		$("#java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
 	}
 	else{
 		pontuacaoAcumulada=0;
@@ -316,32 +314,31 @@ function escreverCodigo() {
 		else{
 			qualCodigo=0;
 		}
-		document.getElementById("java").innerText =codigo[qualCodigo].slice(0,pontuacaoAcumulada);
+		$("#java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
 	}
 }
 
-document.getElementById("Pczinho").onmouseover = function() {mouseOver()};
-document.getElementById("Pczinho").onmouseout = function() {mouseOut()};
+$("#Pczinho").mouseover(function() {
+	$('#Pczinho').attr('src',"PixelArts/Pczinho.gif");
+});
+$("#Pczinho").mouseout(function() {
+	$('#Pczinho').attr('src','PixelArts/Pczinho_frame_zero.gif');
+});
 
-function mouseOver() {
-  document.getElementById("Pczinho").src = "PixelArts/Pczinho.gif";
-}
-function mouseOut() {
-  document.getElementById("Pczinho").src = "PixelArts/Pczinho_frame_zero.gif";
-}
-document.getElementById("Pczinho").onmousedown = function() {mouseDown()};
-document.getElementById("Pczinho").onmouseup = function() {mouseUp()};
 
-function mouseDown() {
-    var w = document.getElementById("Pczinho").width-20;
-  document.getElementById("Pczinho").width = width;
-  var h = document.getElementById("Pczinho").heigth-20;
-  document.getElementById("Pczinho").height = h;
-}
 
-function mouseUp() {
-    var w = document.getElementById("Pczinho").width+20;
-    document.getElementById("Pczinho").width = w;
-    var h = document.getElementById("Pczinho").heigth+20;
-    document.getElementById("Pczinho").height = h;
-}
+$("#Pczinho").mousedown(function() {
+	$('#Pczinho').animate({
+
+		height: 'auto',
+		width: '97%'
+	},40);
+});
+$("#Pczinho").mouseup(function() {
+	$('#Pczinho').animate({
+
+		height: 'auto',
+		width: '100%'
+	},40);
+});
+
