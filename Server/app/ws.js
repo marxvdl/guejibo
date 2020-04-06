@@ -55,10 +55,6 @@ module.exports = function (app, passport) {
                         doActionJoin(ws, data.code);
                         return;
 
-                    case 'check-players-ready':
-                        doActionCheckPlayersReady(data.gameroom);
-                        return;
-
                     case 'im-ready':
                         doActionImReady(ws, data);
                         return;
@@ -120,36 +116,6 @@ module.exports = function (app, passport) {
                     error: 'Game room not found'
                 }
             ));
-        });
-    }
-
-    /*
-     * 'check-players-ready' -> Check if all players of a game room are ready to play
-     */
-    function doActionCheckPlayersReady(gameroomID) {
-        GameRoom.findAll({
-            where: {
-                id: gameroomID
-            },
-            include: [
-                {
-                    model: User,
-                    as: 'members'
-                }
-            ]
-        })
-        .then(result => {
-            for (let user of result[0].members) {
-                let userWss = webSocketsById[user.id];
-                if(userWss){
-                    userWss.send(JSON.stringify(
-                        {
-                            req: 'are-you-ready',
-                            gameroom: gameroomID
-                        }
-                    ));
-                }
-            }
         });
     }
 
