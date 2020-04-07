@@ -2,7 +2,7 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: Candara;
-	/*background-image: url('../img/espaco.jpg');*/
+	background-image: url('../img/espaco.jpg');
 	background-position: top;
 	background-size: cover;
 }
@@ -101,7 +101,7 @@ button:hover {
 	position: fixed;
 	top: 25px;
 	left: 10%;
-	width: 700px;
+	width: 80%;
 	z-index: 1000;
 	color: #fff;
 	padding: 10px;
@@ -208,13 +208,14 @@ label {
 /* PAUSE */
 
 #bg_pause {
-	background: rgba(0, 0, 0, .4);
+	background: rgba(0, 0, 0, .97);
 	width: 100%;
 	height: 100%;
 	position: fixed;
 	top: 0;
 	left: 0;
 	display: none;
+	z-index: 500;
 }
 
 #pause {
