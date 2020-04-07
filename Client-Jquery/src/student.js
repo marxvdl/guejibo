@@ -11,6 +11,8 @@ export const TIMES = {
     CHECK_PLAYERS_ONLINE_INTERVAL: 1000,
 };
 
+const GAME_BASE_PATH = '../';
+
 export function join(code) {
     client.main.wsSend({
         action: 'join',
@@ -28,8 +30,8 @@ export function doJoin(data) {
         $('#status').text('Waiting...');
         $('#game-name').text(gr.game.name);
         $('#gr-owner').text(gr.owner.name);
-        $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));     
-           
+        $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));
+
         $(`#${ulgrid}`).append($(`<li>${client.main.global.payload.name}<span class="userstatus success">online</span></li>`));
         for (let user of gr.members) {
             $(`#${ulgrid}`).append(`<li>${user.name}<span class="userstatus" id="gr${gr.id}-user${user.id}"></span></li>`);
@@ -99,20 +101,57 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
         statusElement = $(statusQuery);
     }
 
-    if(isOnline){
+    if (isOnline) {
         statusElement.text('online');
         statusElement.removeClass('failure').addClass('success');
     }
-    else{
+    else {
         statusElement.text('offline');
         statusElement.addClass('failure').removeClass('success');
     }
-    
+
 }
 
 /*
  * Starting a game (from the player perspective)
  */
-export function startGameAsPlayer(gameRoomId){
-    clearInterval(imReadyIntervals[gameRoomId]); //stop shouting "I'm ready!"
+export function startGameAsPlayer(data) {
+    clearInterval(imReadyIntervals[data.gameroom]); //stop shouting "I'm ready!"
+
+    post(
+        GAME_BASE_PATH + 'Games/' + data.path + '/index.html',
+        {
+            teste: 'tralala'
+        }
+    );
+}
+
+// https://stackoverflow.com/a/133997/641312
+/**
+ * sends a request to the specified url from a form. this will change the window location.
+ * @param {string} path the path to send the post request to
+ * @param {object} params the paramiters to add to the url
+ * @param {string} [method=post] the method to use on the form
+ */
+function post(path, params, method = 'post') {
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = params[key];
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }

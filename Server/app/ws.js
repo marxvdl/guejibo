@@ -145,8 +145,8 @@ module.exports = function (app, passport) {
             ]
         })
             .then(gr => {
-                if(gr === null) return;
-                
+                if (gr === null) return;
+
                 let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
                 sendToList.push(gr.ownerId);
 
@@ -178,11 +178,15 @@ module.exports = function (app, passport) {
                 {
                     model: User,
                     as: 'members'
+                },
+                {
+                    model: Game,
+                    as: 'game'
                 }
             ]
         })
             .then(gr => {
-                gr.timeStarted = models.sequelize.fn('NOW');
+                gr.timeStarted = toMysqlFormat(new Date());
                 gr.save().then(result => {
                     let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
                     sendToList.push(gr.ownerId);
@@ -191,7 +195,9 @@ module.exports = function (app, passport) {
                         webSocketsById[id].send(JSON.stringify(
                             {
                                 req: 'game-started',
-                                gameroom: data.gameroom
+                                gameroom: data.gameroom,
+                                startTime: gr.timeStarted,
+                                path: gr.game.basePath
                             }
                         ));
                     }
@@ -200,4 +206,14 @@ module.exports = function (app, passport) {
 
     }
 
+
+    //Adapted from https://stackoverflow.com/a/5133807/641312    
+    function toMysqlFormat(date) {
+        function pad(d) {
+            if (0 <= d && d < 10) return "0" + d.toString();
+            if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
+            return d.toString();
+        }
+        return date.getUTCFullYear() + "-" + pad(1 + date.getUTCMonth()) + "-" + pad(date.getUTCDate()) + " " + pad(date.getUTCHours()) + ":" + pad(date.getUTCMinutes()) + ":" + pad(date.getUTCSeconds());
+    }
 };

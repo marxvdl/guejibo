@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
 
   const Game = sequelize.define('Game', 
     {
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      basePath: DataTypes.STRING
     }, 
     { freezeTableName: true }
   );

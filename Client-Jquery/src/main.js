@@ -5,7 +5,7 @@ const WSURL = 'ws://localhost:8080/';
 
 import * as student from './student';
 
-export let global = {};
+export let global = { myGameRooms: {} };
 
 export function login() {
     $.ajax({
@@ -165,14 +165,18 @@ export function createGameRoomPanel(id) {
             );
             let ul = $(`<ul id="ul-gr${id}"></ul>`);
             for (let m of data.members) {
-                ul.append(`<li>${m.name} <span class="userstatus failure" id="gr${id}-user${m.id}">offline</span></li>`);
+                ul.append(`<li>${m.name} <span class="userstatus failure" id="gr${id}-user${m.id}">offline</span> <span class="score" id="score-gr${id}-user${m.id}"></span></li>`);
                 gameRoomMembers[id][m.id] = m;
                 gameRoomMembers[id][m.id].online = false;
             }
             panel.append(ul);
             panel.append(`<button onclick="client.main.startGameAsCreator(${id})">Start</button>`);
-            panel.append(`<div class="subpanel" id="running${id}" style="display:none"></div>`);
-
+            panel.append(
+                `<div class="subpanel" id="running${id}" style="display:none">
+                <p>Started on <span id="timestart${id}" class="timestamp"></span><br>
+                <p>Ended on <span id="timeend${id}" class="timestamp"></span></p>
+                </div>`
+            );
             $('body').append(panel);
 
             //Periodically check players online status
@@ -184,18 +188,25 @@ export function createGameRoomPanel(id) {
 /*
  * Starts a new game (from the game room creator perspective)
  */
-export function startGameAsCreator(gameRoomID){
+export function startGameAsCreator(gameRoomId){
+    global.myGameRooms[gameRoomId] = true;
+
     wsSend(
         {     
             action: "start-game",
-            gameroom: gameRoomID
+            gameroom: gameRoomId
         }
     );
+}
 
-    let subpanel = $(`#running${gameRoomID}`);
-    
-    subpanel.append("<p>Started on xxx</p>");
-    subpanel.fadeIn();
+/*
+ * Start monitoring a game once its start has been confirmed by the server.
+ */
+export function startMonitoringGame(data){
+    const localTime = new Date(data.startTime).toLocaleTimeString();
+
+    $(`#timestart${data.gameroom}`).text(localTime);
+    $(`#running${data.gameroom}`).fadeIn();
 }
 
 
@@ -244,7 +255,10 @@ export function wsConnect(onopen = null) {
                     return;
 
                 case 'game-started':
-                    student.startGameAsPlayer(data.gameroom);
+                    if(data.gameroom in client.main.global.myGameRooms)
+                        startMonitoringGame(data);
+                    else
+                        student.startGameAsPlayer(data);
                     return;
             }
         }
