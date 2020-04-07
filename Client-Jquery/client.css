@@ -21,6 +21,13 @@ body {
     margin: 10px;
 }
 
+.subpanel {
+    border: 2px solid rgb(48, 48, 48);
+    background-color: rgb(249, 249, 249);
+    padding: 20px;
+    margin: 10px;
+}
+
 .panel button {
     width: 200px;
 }

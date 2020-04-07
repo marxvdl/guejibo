@@ -18,6 +18,8 @@ export function join(code) {
     });
 }
 
+let imReadyIntervals = [];
+
 export function doJoin(data) {
     if (data.success) {
         let gr = data.gameroom;
@@ -37,12 +39,13 @@ export function doJoin(data) {
         initPlayersReady(gr.id);
         client.main.gameRoomMembers[gr.id] = [];
 
-        setInterval(() => {
-            client.main.wsSend({
-                action: 'im-ready',
-                gameroom: data.gameroom.id
-            });
-        }, TIMES.SHOUT_IM_HERE_INTERVAL);
+        imReadyIntervals[data.gameroom.id] =
+            setInterval(() => {
+                client.main.wsSend({
+                    action: 'im-ready',
+                    gameroom: data.gameroom.id
+                });
+            }, TIMES.SHOUT_IM_HERE_INTERVAL);
     }
     else {
         console.log(`Error: could not join game: data.error`);
@@ -105,4 +108,11 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
         statusElement.addClass('failure').removeClass('success');
     }
     
+}
+
+/*
+ * Starting a game (from the player perspective)
+ */
+export function startGameAsPlayer(gameRoomId){
+    clearInterval(imReadyIntervals[gameRoomId]); //stop shouting "I'm ready!"
 }

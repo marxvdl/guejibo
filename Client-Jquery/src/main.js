@@ -170,6 +170,8 @@ export function createGameRoomPanel(id) {
                 gameRoomMembers[id][m.id].online = false;
             }
             panel.append(ul);
+            panel.append(`<button onclick="client.main.startGameAsCreator(${id})">Start</button>`);
+            panel.append(`<div class="subpanel" id="running${id}" style="display:none"></div>`);
 
             $('body').append(panel);
 
@@ -177,6 +179,23 @@ export function createGameRoomPanel(id) {
             student.initPlayersReady(id);
         }
     });
+}
+
+/*
+ * Starts a new game (from the game room creator perspective)
+ */
+export function startGameAsCreator(gameRoomID){
+    wsSend(
+        {     
+            action: "start-game",
+            gameroom: gameRoomID
+        }
+    );
+
+    let subpanel = $(`#running${gameRoomID}`);
+    
+    subpanel.append("<p>Started on xxx</p>");
+    subpanel.fadeIn();
 }
 
 
@@ -222,6 +241,10 @@ export function wsConnect(onopen = null) {
             switch (data.req) {
                 case 'player-is-ready':
                     student.markPlayerAsReady(data.user, data.gameroom);
+                    return;
+
+                case 'game-started':
+                    student.startGameAsPlayer(data.gameroom);
                     return;
             }
         }
