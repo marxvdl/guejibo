@@ -383,11 +383,10 @@ function verifica_formacao_binaria() {
 	$('#numero_atual').text(formacao_binaria);
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
-
+		pontuacao += 5;
 		toast('Parabéns, você conseguiu formar o número e ganhou +5 pontos!');
 		$('#numero_objetivo').text(aleatorio(0, 255));
 		$('#tempo').text('60');
-		pontuacao += 5;
 		tempo_restante = 59;
 	 	clearTimeout(t);
 		temporizador();
@@ -429,7 +428,7 @@ function gameover(msg) {
 	$('#bg_game_over').fadeIn('2000');
 	$('.obstaculo').remove();
 	fim_jogo = true;
-	clearTimeout(intervalo_func);
+	parar = true;
 	clearTimeout(t);
 }
 
@@ -450,19 +449,16 @@ function temporizador() {
 		$('#numero_objetivo').text(aleatorio(0, 255));
 		$('#tempo').text('60');
   		tempos_acabados++;
-  		clearTimeout(t);
 
   		if (tempos_acabados < 3) {
   			tempo_restante = 59;
-  			clearTimeout(t);
-  			temporizador();
   		} else {
   			gameover();
   		}
 
   	}
 
-    if( tempo_restante >= 0) {
+    if(tempo_restante >= 0) {
       temporizador();
     }
   }, 1000);
@@ -568,7 +564,6 @@ $('#numero_objetivo').text(aleatorio(1, 255));
 $('#btn_jogar').click(function() {
 	iniciou = true;
 	$('#bg_iniciar_jogo').css('display', 'none');
-	$('#apelido').text($('#input_apelido').val());
 	atualiza();
 
 });
