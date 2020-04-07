@@ -173,7 +173,7 @@ function atualiza () {
 
 	let c = 0;
 
-	verifica_formacao_binaria();
+	verifica_formacao_binaria()
 	verifica_limite_espaco();
     
     // Aqui as ondas se iniciam
@@ -384,12 +384,15 @@ function verifica_formacao_binaria() {
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 		pontuacao += 5;
+		$('#pontuacao').text(pontuacao);
 		toast('Parabéns, você conseguiu formar o número e ganhou +5 pontos!');
 		$('#numero_objetivo').text(aleatorio(0, 255));
 		$('#tempo').text('60');
 		tempo_restante = 59;
 	 	clearTimeout(t);
 		temporizador();
+
+		return true;
 	}
 
 }
@@ -547,11 +550,11 @@ function toast(texto, cor = 'green') {
 		$('.toast').css('text-shadow', '1px 1px 3px #606060');
 	}
 
-	$('.toast').fadeIn('1000');
+	$('.toast').fadeIn('300');
 	$('.texto_toast').text(texto);
 
 	setTimeout(function() {
-		$('.toast').fadeOut('500');
+		$('.toast').fadeOut('3000');
 	}, 1000);
 }
 
