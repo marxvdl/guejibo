@@ -3,13 +3,10 @@ let limite_movimento = 7;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
 let qtde_inicial_obstaculos = 10;
-let vel_recarga_laser = 10;
 let passo_laser = 30 + Math.PI;
 let pode_atirar = true;
 let limite_tiro = 25;
 let valor_retorno = 5;
-let repelencia = 100;
-let parcela_correcao = 5;
 let min_left_aleatorio = 0;
 let max_left_aleatorio = 100;
 let obst_fim = 0;
@@ -22,6 +19,9 @@ let qtde_maxima_obstaculos = 25;
 let pontuacao = 0;
 let iniciou = false;
 let parar = false;
+let objetivos_concluidos = 0;
+let modo_hard = false;
+let quantidade_para_hard = 7;
 
 let tempo_restante = 59;
 let tempos_acabados = 0;
@@ -322,7 +322,7 @@ function atira_planeta(planeta) {
 						pontuacao--;
 					}
 
-					toast('Você destruiu um planeta e perdeu um ponto!', 'brown');
+					toast('-1 ponto! Você não pode destruir os planetas!', 'brown', 1000);
 					$('#pontuacao').text(pontuacao);
 				}, 500);
 
@@ -383,12 +383,33 @@ function verifica_formacao_binaria() {
 	$('#numero_atual').text(formacao_binaria);
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
-		pontuacao += 5;
-		$('#pontuacao').text(pontuacao);
-		toast('Parabéns, você conseguiu formar o número e ganhou +5 pontos!');
+		objetivos_concluidos++;
 		$('#numero_objetivo').text(aleatorio(0, 255));
-		$('#tempo').text('60');
-		tempo_restante = 59;
+
+		if (objetivos_concluidos >= quantidade_para_hard) {
+			
+			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
+				toast('Incrível! Você alcançou o MODO HARD, agora o tempo está mais curto! Seja rápido!', 'purple', 3000);
+				modo_hard = true;
+			}
+
+			$('#tempo').text('30');
+			tempo_restante = 29;
+			pontuacao += 10;
+			$('#pontuacao').text(pontuacao);
+
+			if (objetivos_concluidos > quantidade_para_hard) {
+				toast('Parabéns, você conseguiu formar o número no HARD e ganhou +10 pontos!', 'purple', 2000);
+			}
+
+		} else {
+			$('#tempo').text('60');
+			tempo_restante = 59;
+			pontuacao += 5;
+			$('#pontuacao').text(pontuacao);
+			toast('Parabéns, você conseguiu formar o número e ganhou +5 pontos!', 'green', 2000);
+		}
+
 	 	clearTimeout(t);
 		temporizador();
 
@@ -447,14 +468,19 @@ function temporizador() {
   		$('#tempo').text(tempo_restante--).css('color', 'black');
   	} else {
   		$('#tempo').text(tempo_restante--).css('color', 'brown');
-  		toast(`Seu tempo acabou. Resta(m) ${2 - tempos_acabados} tempo(s).`, 'orange');
+  		toast(`Seu tempo acabou, mas você ainda tem ${2 - tempos_acabados} chance(s)!`, 'orange');
   		pontuacao -= 1;
 		$('#numero_objetivo').text(aleatorio(0, 255));
-		$('#tempo').text('60');
   		tempos_acabados++;
 
   		if (tempos_acabados < 3) {
-  			tempo_restante = 59;
+  			if (!modo_hard) {
+    			$('#tempo').text('60');
+  				tempo_restante = 59;
+  			} else {
+    			$('#tempo').text('30');
+  				tempo_restante = 29;
+  			}
   		} else {
   			gameover();
   		}
@@ -539,7 +565,7 @@ $('body').keyup(function(event) {
 
 // TOAST
 
-function toast(texto, cor = 'green') {
+function toast(texto, cor = 'green', tempo = 2500) {
 
 	// Simplesmente exibe um toast.
 
@@ -554,8 +580,8 @@ function toast(texto, cor = 'green') {
 	$('.texto_toast').text(texto);
 
 	setTimeout(function() {
-		$('.toast').fadeOut('3000');
-	}, 1000);
+		$('.toast').fadeOut('1000');
+	}, tempo);
 }
 
 $('.fechar').click(function() {
