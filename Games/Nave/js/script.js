@@ -337,7 +337,7 @@ function atira_planeta(planeta) {
 						pontuacao--;
 					}
 
-					toast('-1 ponto', 'brown', 500);
+					toast('-1 ponto', '#CD5C5C', 500);
 					$('#pontuacao').text(pontuacao);
 				}, 500);
 
@@ -376,13 +376,8 @@ function atira_alien(alien) {
 					
 					aliens_eliminados++;
 					
-					if (modo_hard) {
-						pontuacao += 2;
-						toast('+2 pontos', 'darkgreen', 500);
-					} else {
-						pontuacao++;
-						toast('+1 ponto', 'darkgreen', 500);
-					}
+					pontuacao++;
+					toast('+1 ponto', '#3CB371', 500);
 
 					$('#tempo').text(tempo_restante);
 					$('#pontuacao').text(pontuacao);
@@ -432,7 +427,7 @@ function verifica_formacao_binaria() {
 		if (objetivos_concluidos >= quantidade_para_hard) {
 			
 			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
-				toast('Incrível! Você alcançou o MODO HARD, agora o tempo está mais curto! Seja rápido!', 'purple', 3000);
+				toast('Você alcançou o modo hard! O tempo agora está mais curto!', 'purple', 3000);
 				modo_hard = true;
 			}
 
