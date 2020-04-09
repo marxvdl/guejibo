@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export const TIMES = {
     // How often a player will send a "I'm here" message 
     // while waiting for a game to start
@@ -118,12 +120,10 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
 export function startGameAsPlayer(data) {
     clearInterval(imReadyIntervals[data.gameroom]); //stop shouting "I'm ready!"
 
-    post(
-        GAME_BASE_PATH + 'Games/' + data.path + '/index.html',
-        {
-            teste: 'tralala'
-        }
-    );
+    Cookies.set('jwt', client.main.global.token, { path: '/' });
+    Cookies.set('gameroom', data.gameroom, { path: '/' });    
+
+    window.open(GAME_BASE_PATH + 'Games/' + data.path + '/index.html', '_self');
 }
 
 // https://stackoverflow.com/a/133997/641312
