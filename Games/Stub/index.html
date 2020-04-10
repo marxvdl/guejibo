@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Stub game</title>
-    <script src="../../GamesLib/dist/gameslib.js"></script>
-    <script src="stubgame.js"></script>
+    <script src="../../GamesLib/dist/gameslib.js"></script>    
+    <style>
+        #score{
+            width: 6ex;            
+            font-size: xx-large;
+            font-weight: bold;  
+            float:left;          
+        }
+        #score, #send, #end{
+            height: 40px;
+        }
+        #send {
+            margin-left: 10px;
+        }
+        #end {
+            margin-top: 10px;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Stub!</h1>
+    <h1>Stub Game</h1>
+    <p>Score:</p>
+    <input type="number" id="score" value="0">
+    <button id="send">Send</button>
+    <p><button id="end">End game</button></p>
 </body>
+<script src="stubgame.js"></script>
 </html>

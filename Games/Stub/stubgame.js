@@ -1,3 +1,14 @@
-let conn = new gameslib.GameConnection();
+let gc = new gameslib.GameConnection();
 
-conn.test();
+document.getElementById('send').onclick = sendScoreClick;
+document.getElementById('end').onclick = endGameClick;
+
+function sendScoreClick(){
+    let score = document.getElementById('score').value;
+    gc.sendScore(score);
+}
+
+function endGameClick(){
+    let score = document.getElementById('score').value;
+    gc.sendScore(score, true);
+}
