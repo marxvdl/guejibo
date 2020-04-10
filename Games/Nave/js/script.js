@@ -120,7 +120,7 @@ function cria_obstaculos_a(quantidade) {
 		// $($obstaculo).css('position', 'absolute');
 
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(1, 50);
+		let top = aleatorio(7, 50);
 
 		let r = aleatorio(0, 2);
 
@@ -148,7 +148,7 @@ function cria_obstaculos_b(quantidade) {
 		// $($obstaculo).css('position', 'absolute');
 
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(1, 50);
+		let top = aleatorio(7, 50);
 
 		let r = aleatorio(0, 1);
 
@@ -169,12 +169,15 @@ function cria_obstaculos_b(quantidade) {
 
 }
 
-cria_obstaculos_a(qtde_inicial_obstaculos);
-cria_obstaculos_b(qtde_inicial_obstaculos);
+// cria_obstaculos_a(qtde_inicial_obstaculos);
+// cria_obstaculos_b(qtde_inicial_obstaculos);
 
 window.addEventListener('resize', function() {
 	$('#espaco').css('width', `${window.innerWidth}px`);
 	$('#espaco').css('height', `${window.innerHeight}px`);
+
+	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
+	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
 });
 
 let y = false;
@@ -213,8 +216,6 @@ function atualiza () {
 
 
 	for (let i = 0; i < $('#espaco_obstaculos_b').children().length; i++) {
-		console.log($(obst_b[i]).offset().left);
-		console.log($('#espaco').width());
 		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
 		if ($(obst_b[i]).offset().left < 50) {
 			$(obst_b[i]).remove();
@@ -522,7 +523,7 @@ function temporizador() {
   t = setTimeout(function() {
     
   	if (tempo_restante > 0) {
-  		$('#tempo').text(tempo_restante--).css('color', 'black');
+  		$('#tempo').text(tempo_restante--);
   	} else {
   		gameover();
   	}
