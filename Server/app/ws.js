@@ -10,7 +10,7 @@ const Game = models.Game;
 
 module.exports = function (app, passport) {
 
-    //Stores the user tha is currently connected on the web socket
+    //Stores the user that is currently connected on the web socket
     let currentUser = null;
 
     //Web socket server for this connection
@@ -127,7 +127,6 @@ module.exports = function (app, passport) {
      * 'im-ready' -> Confirm that a waiting client is ready to start playing.
      */
     function doActionImReady(ws, data) {
-        GameLogic.setPlayerReady(ws.user.id, data.gameroom);
         GameRoom.findOne({
             where: {
                 id: data.gameroom,

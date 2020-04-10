@@ -17,7 +17,6 @@ export class GameConnection {
      * Creates a GameConnection object from data stored in cookies.
      */
     constructor() {
-        console.log("This is TypeScript!");
         this.jwt = Cookies.get('jwt');
         this.gameRoomId = Cookies.get('gameroom');
         this.connect();

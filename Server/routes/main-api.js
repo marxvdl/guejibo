@@ -105,4 +105,4 @@ module.exports = function (app, passport) {
     function isLoggedIn() {
         return passport.authenticate('local-jwt', { session: false });
     }
-}
+};
