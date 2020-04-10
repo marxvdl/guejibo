@@ -18,7 +18,7 @@ export class GameConnection {
      */
     constructor() {
         this.jwt = Cookies.get('jwt');
-        this.gameRoomId = Cookies.get('gameroom');
+        this.gameRoomId = parseInt(Cookies.get('gameroom'));
         this.connect();
     }
 
@@ -42,11 +42,12 @@ export class GameConnection {
      * @param score The current score
      * @param endgame If true, signals that the game has ended for this player
      */
-    public sendScore(score : number, endgame=false){
+    public sendScore(score : (number|string), endgame=false){
         this.ws.send(JSON.stringify(
             {
                 action: 'update-score',
-                score: score,
+                gameroom: this.gameRoomId,
+                score: (typeof score !== 'number')? parseInt(score) : score,
                 endgame: endgame
             }
         ));

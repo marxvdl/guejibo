@@ -165,7 +165,7 @@ export function createGameRoomPanel(id) {
             );
             let ul = $(`<ul id="ul-gr${id}"></ul>`);
             for (let m of data.members) {
-                ul.append(`<li>${m.name} <span class="userstatus failure" id="gr${id}-user${m.id}">offline</span> <span class="score" id="score-gr${id}-user${m.id}"></span></li>`);
+                ul.append(`<li>${m.name} <span class="userstatus failure" id="gr${id}-user${m.id}">offline</span></li>`);
                 gameRoomMembers[id][m.id] = m;
                 gameRoomMembers[id][m.id].online = false;
             }
@@ -209,6 +209,33 @@ export function startMonitoringGame(data){
     $(`#running${data.gameroom}`).fadeIn();
 }
 
+let finishedUsers = { };
+/*
+ * Updates the value of the score in the game room panel.
+ */
+function updateScore(data){
+    if(finishedUsers[data.gameroom] && finishedUsers[data.gameroom][data.user])
+        return;
+
+    $(`#score-gr${data.gameroom}-user${data.user}`).text(data.score);
+
+    if(data.endgame === true){
+        $(`#finished-gr${data.gameroom}-user${data.user}`).text("Finished!");
+
+        if(data.gameroom in finishedUsers === false)
+            finishedUsers[data.gameroom] = {};
+
+        finishedUsers[data.gameroom][data.user] = true;
+
+        const numberOfFinished = Object.keys(finishedUsers[data.gameroom]).length;
+        const totalUsers = Object.keys(student.lastSeemOnline[data.gameroom]).length;
+        
+        if(numberOfFinished === totalUsers){
+            console.log("Game Over!");
+            
+        }
+    }
+}
 
 // Web sockets
 export function wsConnect(onopen = null) {
@@ -259,6 +286,10 @@ export function wsConnect(onopen = null) {
                         startMonitoringGame(data);
                     else
                         student.startGameAsPlayer(data);
+                    return;
+
+                case 'update-score':
+                    updateScore(data);
                     return;
             }
         }

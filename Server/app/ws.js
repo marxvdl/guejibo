@@ -51,6 +51,7 @@ module.exports = function (app, passport) {
                 }
 
                 switch (data.action) {
+                    //Waiting and joining actions
                     case 'join':
                         doActionJoin(ws, data.code);
                         return;
@@ -63,6 +64,12 @@ module.exports = function (app, passport) {
                         doActionStartGame(ws, data);
                         return;
 
+                    //In-game actions
+                    case 'update-score':
+                        doActionUpdateScore(ws, data);
+                        return;
+
+                    //
                     default:
                         ws.send(`Error: invalid action "${data.action}"`);
                         return;
@@ -214,5 +221,27 @@ module.exports = function (app, passport) {
             return d.toString();
         }
         return date.getUTCFullYear() + "-" + pad(1 + date.getUTCMonth()) + "-" + pad(date.getUTCDate()) + " " + pad(date.getUTCHours()) + ":" + pad(date.getUTCMinutes()) + ":" + pad(date.getUTCSeconds());
+    }
+
+    /**
+     * Updates the score for an ongoing game.
+     */
+    function doActionUpdateScore(ws, data) {
+        GameRoom.findOne({
+            where: {
+                id: data.gameroom
+            }
+        })
+            .then(gr => {
+                webSocketsById[gr.ownerId].send(JSON.stringify(
+                    {
+                        req: 'update-score',
+                        user: ws.user.id,
+                        gameroom: data.gameroom,
+                        score: data.score,
+                        endgame: data.endgame
+                    }
+                ));
+            });
     }
 };

@@ -82,6 +82,11 @@ body {
     color:rgb(21, 21, 184);
 }
 
-.userstatus {
+.userstatus, .score, .finished {
     margin-left: 10px;
+}
+
+.finished {
+    color: rgb(73, 167, 73);
+    font-weight: bold;   
 }

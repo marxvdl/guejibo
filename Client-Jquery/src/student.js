@@ -98,7 +98,12 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
     let statusElement = $(statusQuery);
 
     if (!statusElement.length) {
-        let li = $(`<li>${user.name} <span class="userstatus" id="gr${gameroomId}-user${user.id}"></span></li>`);
+        let li = $(`<li>${user.name} 
+            <span class="userstatus" id="gr${gameroomId}-user${user.id}"></span> 
+            <span class="score" id="score-gr${gameroomId}-user${user.id}"></span> 
+            <span class="finished" id="finished-gr${gameroomId}-user${user.id}"></span>
+            </li>`
+        );
         $(`#ul-gr${gameroomId}`).append(li);
         statusElement = $(statusQuery);
     }
@@ -121,7 +126,7 @@ export function startGameAsPlayer(data) {
     clearInterval(imReadyIntervals[data.gameroom]); //stop shouting "I'm ready!"
 
     Cookies.set('jwt', client.main.global.token, { path: '/' });
-    Cookies.set('gameroom', data.gameroom, { path: '/' });    
+    Cookies.set('gameroom', data.gameroom, { path: '/' });
 
     window.open(GAME_BASE_PATH + 'Games/' + data.path + '/index.html', '_self');
 }
