@@ -30,8 +30,8 @@ let melhor_tempo = 999;
 let planetas_destruidos = 0;
 let acuracia_tiro = 0;
 
-let tempo_inicial = 59;
-let tempo_hard = 29;
+let tempo_inicial = 29;
+let tempo_hard = 14;
 let tempo_restante = tempo_inicial;
 let t;
 
@@ -73,32 +73,15 @@ function atira () {
 
 // ALTERNATIVAS
 
-let qtde_alternativas = 8;
-let binario = '';
-let numeros = [];
-let x = 128;
-
-numeros.push(x);
-for (let i = 0; i < qtde_alternativas; i++) {
-
-	if (x / 2 >= 1) {
-		numeros.push(x = x / 2);
-	}
-
-}
+let qtde_alternativas = 5;
 
 for (let i = 0; i < qtde_alternativas; i++) {
 
-	let r = aleatorio(0, 1);
-	binario += r;
-	let $a = $(`<div class="alt"><span class="ajuda">${(numeros[i])}</span><span class="valor_binario">${r}</span></div>`);
+	let r = 'São Paulo';
+	let $a = $(`<div class="alt"><span class="valor_binario">${r}</span></div>`);
 	$('#alternativas').append($a);
 
 }
-
-binario = parseInt(binario, 2);
-let decimal = parseInt(binario, 10);
-$('#numero_atual').text(decimal);
 
 function aleatorio(min, max) {
 
@@ -172,14 +155,14 @@ function cria_obstaculos_b(quantidade) {
 // cria_obstaculos_a(qtde_inicial_obstaculos);
 // cria_obstaculos_b(qtde_inicial_obstaculos);
 
-window.addEventListener('resize', function() {
-	$('#espaco').css('width', `${window.innerWidth}px`);
-	$('#espaco').css('height', `${window.innerHeight}px`);
+// window.addEventListener('resize', function() {
+// 	$('#espaco').css('width', `${window.innerWidth}px`);
+// 	$('#espaco').css('height', `${window.innerHeight}px`);
 
-	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
-	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
+// 	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
+// 	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
 	
-});
+// });
 
 let y = false;
 
@@ -187,7 +170,7 @@ function atualiza () {
 
 	let c = 0;
 
-	verifica_formacao_binaria()
+	// verifica_formacao_binaria()
 	verifica_limite_espaco();
     
     // Aqui as ondas se iniciam
@@ -391,72 +374,72 @@ function atira_alien(alien) {
 
 }
 
-function verifica_formacao_binaria() {
+// function verifica_formacao_binaria() {
 
-	let formacao_binaria = '';
+// 	let formacao_binaria = '';
 
-	for (let i = 0; i < $('.alt').length; i++) {
+// 	for (let i = 0; i < $('.alt').length; i++) {
 
-		formacao_binaria += $('.alt').eq(i).find('.valor_binario').text();
+// 		formacao_binaria += $('.alt').eq(i).find('.valor_binario').text();
 
-	}
+// 	}
 
-	formacao_binaria = parseInt(formacao_binaria, 2);
+// 	formacao_binaria = parseInt(formacao_binaria, 2);
 
-	$('#numero_atual').text(formacao_binaria);
+// 	$('#numero_atual').text(formacao_binaria);
 
-	if (formacao_binaria == $('#numero_objetivo').text()) {
+// 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
-		if (modo_hard) {
+// 		if (modo_hard) {
 
-			if (30 - tempo_restante < melhor_tempo) {
-				melhor_tempo = 60 - tempo_restante;
-			}
+// 			if (30 - tempo_restante < melhor_tempo) {
+// 				melhor_tempo = 60 - tempo_restante;
+// 			}
 
-		} else {
+// 		} else {
 
-			if (60 - tempo_restante < melhor_tempo) {
-				melhor_tempo = 60 - tempo_restante;
-			}
+// 			if (60 - tempo_restante < melhor_tempo) {
+// 				melhor_tempo = 60 - tempo_restante;
+// 			}
 
-		}
+// 		}
 
-		numeros_formados++;
+// 		numeros_formados++;
 
-		objetivos_concluidos++;
-		$('#numero_objetivo').text(aleatorio(0, 255));
+// 		objetivos_concluidos++;
+// 		$('#numero_objetivo').text(aleatorio(0, 255));
 
-		if (objetivos_concluidos >= quantidade_para_hard) {
+// 		if (objetivos_concluidos >= quantidade_para_hard) {
 			
-			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
-				toast('Você alcançou o modo hard! O tempo agora está mais curto!', 'purple', 3000);
-				modo_hard = true;
-			}
+// 			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
+// 				toast('Você alcançou o modo hard! O tempo agora está mais curto!', 'purple', 3000);
+// 				modo_hard = true;
+// 			}
 
-			$('#tempo').text(tempo_hard + 1);
-			tempo_restante = tempo_hard;
-			pontuacao += 10;
-			$('#pontuacao').text(pontuacao);
+// 			$('#tempo').text(tempo_hard + 1);
+// 			tempo_restante = tempo_hard;
+// 			pontuacao += 10;
+// 			$('#pontuacao').text(pontuacao);
 
-			if (objetivos_concluidos > quantidade_para_hard) {
-				toast('Certa resposta! +10 pontos', 'purple', 2000);
-			}
+// 			if (objetivos_concluidos > quantidade_para_hard) {
+// 				toast('Certa resposta! +10 pontos', 'purple', 2000);
+// 			}
 
-		} else {
-			$('#tempo').text(tempo_inicial + 1);
-			tempo_restante = tempo_inicial;
-			pontuacao += 5;
-			$('#pontuacao').text(pontuacao);
-			toast('Certa resposta! +5 pontos', 'green', 2000);
-		}
+// 		} else {
+// 			$('#tempo').text(tempo_inicial + 1);
+// 			tempo_restante = tempo_inicial;
+// 			pontuacao += 5;
+// 			$('#pontuacao').text(pontuacao);
+// 			toast('Certa resposta! +5 pontos', 'green', 2000);
+// 		}
 
-	 	clearTimeout(t);
-		temporizador();
+// 	 	clearTimeout(t);
+// 		temporizador();
 
-		return true;
-	}
+// 		return true;
+// 	}
 
-}
+// }
 
 function verifica_limite_espaco() {
 
