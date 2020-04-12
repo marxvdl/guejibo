@@ -24,9 +24,9 @@
 </div>
 
 <div id="painel">
-	<img src="img/mapa_brasil.jpg">
+	<img id="imagem" src="img/mapa_brasil.jpg">
 	<h3>Pergunta:</h3>
-	<h4 id="numero_atual">Qual a capital de São Paulo?</h4>
+	<h4 id="pergunta"></h4>
 <!-- 	<h3>Objetivo:</h3>
 	<h4 id="numero_objetivo">132</h4> -->
 
@@ -44,12 +44,15 @@
 
 		<p id="pontuacao_obtida"></p>
 		<p id="aliens_eliminados"></p>
-		<p id="numeros_formados"></p>
+		<p id="respostas_corretas"></p>
+		<p id="respostas_incorretas"></p>
 		<p id="melhor_tempo"></p>
 		<p id="tiros_dados"></p>
 		<p id="acuracia_tiro"></p>
 		<p id="planetas_destruidos"></p>
 		<p id="tiros_alternativas"></p>
+
+		<p id="resposta_correta"></p>
 		
 		<button id="btn_jogar_novamente">Jogar novamente</button>
 	</div>
@@ -66,7 +69,7 @@
 
 			<li>Ao destruir alienígenas, você ganha pontos.</li>
 
-			<li>O jogo consiste em um Quiz. Uma pergunta é apresentada e seu objetivo é atirar na resposta correta. Atirar na resposta errada o fará perder 1 ponto, ao passo que, se atirar na resposta certa, de primeira, isso o fará ganhar 5 pontos. Se não for de primeira, ganhará somente 1 ponto.</li>
+			<li>O jogo consiste em um Quiz. Uma pergunta é apresentada e seu objetivo é atirar na resposta correta. Atirar na resposta errada o fará perder 1 ponto, ao passo que, atirar na resposta correta o fará ganhar 1 ponto.</li>
 
 			<li>Se o tempo chegar a zero, o jogo acaba.</li>
 

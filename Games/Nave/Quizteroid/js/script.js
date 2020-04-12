@@ -1,4 +1,4 @@
-let passo_nave = 1;
+let passo_nave = 0.75;
 let limite_movimento = 7;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
@@ -22,7 +22,8 @@ let objetivos_concluidos = 0;
 let modo_hard = false;
 let quantidade_para_hard = 10;
 
-let numeros_formados = 0;
+let respostas_corretas = 0;
+let respostas_incorretas = 0;
 let tiros_alternativas = 0;
 let pontuacao = 0;
 let aliens_eliminados = 0;
@@ -30,8 +31,8 @@ let melhor_tempo = 999;
 let planetas_destruidos = 0;
 let acuracia_tiro = 0;
 
-let tempo_inicial = 29;
-let tempo_hard = 14;
+let tempo_inicial = 9;
+let tempo_hard = 4;
 let tempo_restante = tempo_inicial;
 let t;
 
@@ -42,6 +43,72 @@ let acoes_nave = {
 	'moveu_direita':false,
 	'atirou':false
 };
+
+function aleatorio(min, max) {
+
+	// Gera um número aleatório entre o mínimo e o máximo, estando eles inclusos
+
+	 min = Math.ceil(min);
+	 max = Math.floor(max);
+
+	 return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Q&A
+
+let perguntas = ['Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Espírito Santo', 'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba', 'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantis', 'Distrito Federal'];
+
+let imagens = ['ac.jpg', 'al.jpg', 'ap.jpg', 'am.jpg', 'ba.jpg', 'ce.jpg', 'es.jpg', 'go.jpg', 'ma.jpg', 'mt.jpg', 'ms.jpg', 'mg.jpg', 'pa.jpg', 'pb.jpg', 'pr.jpg', 'pe.jpg', 'pi.jpg', 'rj.jpg', 'rn.jpg', 'rs.jpg', 'ro.jpg', 'rr.jpg', 'sc.jpg', 'sp.jpg', 'se.jpg', 'to.jpg', 'df.jpg'];
+
+let respostas = ['Rio Branco', 'Maceió', 'Macapá', 'Manaus', 'Salvador', 'Fortaleza', 'Vitória', 'Goiânia', 'São Luís', 'Cuiabá', 'Campo Grande', 'Belo Horizonte', 'Belém', 'João Pessoa', 'Curitiba', 'Recife', 'Teresina', 'Rio de Janeiro', 'Natal', 'Porto Alegre', 'Porto Velho', 'Boa Vista', 'Florianópolis', 'São Paulo', 'Aracaju', 'Palmas', 'Brasília'];
+
+let pergunta_sorteada;
+let resposta;
+let posicao_resposta;
+let qtde_alternativas = 5;
+let $a;
+
+function cria_questao() {
+
+	let alternativas_inseridas;
+	$('#alternativas').empty();
+	pergunta_sorteada = aleatorio(0, perguntas.length - 1);
+	$('#pergunta').text(perguntas[pergunta_sorteada]);
+	$('#imagem').attr('src', `img/estados_brasileiros/${imagens[pergunta_sorteada]}`);
+	resposta = pergunta_sorteada;
+	posicao_resposta = aleatorio(0, 4);
+	alternativas_inseridas = [resposta];
+
+	for (let i = 0; i < qtde_alternativas; i++) {
+
+		if (i == posicao_resposta) {
+			$('#alternativas').append($(`<div class="alt"><span class="alternativa">${respostas[resposta]}</span></div>`));
+		} else {
+
+			let fim = true;
+			let r;
+
+			do {
+
+				r = aleatorio(0, respostas.length - 1);
+
+			} while(r == resposta);
+
+			$a = $(`<div class="alt"><span class="alternativa">${respostas[r]}</span></div>`);
+			$('#alternativas').append($a);
+		}
+	}
+
+
+	if (modo_hard) {
+		tempo_restante = 5;
+	} else {
+		tempo_restante = 10;
+	}
+
+}
+
+cria_questao();
 
 function atira () {
 
@@ -69,28 +136,6 @@ function atira () {
 
 	}
 
-}
-
-// ALTERNATIVAS
-
-let qtde_alternativas = 5;
-
-for (let i = 0; i < qtde_alternativas; i++) {
-
-	let r = 'São Paulo';
-	let $a = $(`<div class="alt"><span class="valor_binario">${r}</span></div>`);
-	$('#alternativas').append($a);
-
-}
-
-function aleatorio(min, max) {
-
-	// Gera um número aleatório entre o mínimo e o máximo, estando eles inclusos
-
-	 min = Math.ceil(min);
-	 max = Math.floor(max);
-
-	 return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function cria_obstaculos_a(quantidade) {
@@ -258,24 +303,45 @@ function atira_alt(alternativa) {
 	let height_alternativa = $(alternativa).height();
 	let width_alternativa = $(alternativa).width();
 
+	let acertou;
+
 	if (top_laser < top_alternativa && top_laser > top_alternativa - height_alternativa) {
 		if (left_laser > left_alternativa && left_laser < left_alternativa + width_alternativa) {
 
 			$('#laser').hide();
 			$('#laser').css('top', '0px');
 
-			$(alternativa).css('box-shadow', '1px 1px 50px lightgreen');
-
 			tiros_alternativas++;
 
-			if ($(alternativa).find('.valor_binario').text() == '1') {
-				$(alternativa).find('.valor_binario').text('0');
-			} else if ($(alternativa).find('.valor_binario').text() == '0') {
-				$(alternativa).find('.valor_binario').text('1');
+
+			if ($(alternativa).find('.alternativa').text() == respostas[resposta]) {
+				pontuacao++;
+				respostas_corretas++;
+
+				if (10 - tempo_restante < melhor_tempo) {
+					melhor_tempo = 10 - tempo_restante;
+				}
+
+				$('#pontuacao').text(pontuacao);
+				$(alternativa).css('box-shadow', '1px 1px 50px lightgreen');
+				toast('Certa resposta! +1 ponto');
+				acertou = true;
+
+			} else {
+				pontuacao--;
+				respostas_incorretas++;
+				$('#pontuacao').text(pontuacao);
+				$(alternativa).css('box-shadow', '1px 1px 50px tomato');
+				toast('Opa, errou! -1 ponto', 'tomato');
 			}
 
 			setTimeout(() => {
 				$(alternativa).css('box-shadow', 'none');
+
+				if (acertou) {
+					cria_questao();
+				}
+
 			}, 250);
 		}
 	}
@@ -312,15 +378,13 @@ function atira_planeta(planeta) {
 				planetas_destruidos++;
 
 				setTimeout(() => {
-					$(alien).fadeOut('600');
+					$(planeta).fadeOut('600');
 				}, 25);
 
 				setTimeout(() => {
 					$(planeta).remove();
 					
-					if (pontuacao > 0) {
-						pontuacao--;
-					}
+					pontuacao--;
 
 					toast('-1 ponto', '#CD5C5C', 500);
 					$('#pontuacao').text(pontuacao);
@@ -481,15 +545,17 @@ function gameover() {
 
 	$('#melhor_tempo').text(`Melhor tempo: ${melhor_tempo} segundo(s)`);
 
-	let tiros_certos = aliens_eliminados + tiros_alternativas;
+	let tiros_certos = (aliens_eliminados + tiros_alternativas) - respostas_incorretas;
 	acuracia_tiro = ((tiros_certos / tiros_dados) * 100).toFixed(2) + '%';
 	
-	$('#numeros_formados').text(`Números formados: ${numeros_formados}`);
+	$('#respostas_corretas').text(`Respostas corretas: ${respostas_corretas}`);
+	$('#respostas_incorretas').text(`Respostas incorretas: ${respostas_incorretas}`);
 	$('#tiros_alternativas').text(`Tiros em alternativas: ${tiros_alternativas}`);
 	$('#tiros_dados').text(`Tiros dados: ${tiros_dados}`);
 	$('#acuracia_tiro').text(`Acurácia do tiro: ${acuracia_tiro}`);
 	$('#planetas_destruidos').text(`Planetas destruidos: ${planetas_destruidos}`);
 	$(`#aliens_eliminados`).text(`Aliens eliminados: ${aliens_eliminados}`)
+	$('#resposta_correta').text(`A resposta correta era: ${respostas[resposta]}`);
 
 	$('#bg_game_over').fadeIn('2000');
 	$('.obstaculo').remove();
