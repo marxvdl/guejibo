@@ -304,7 +304,7 @@ $('#Pczinho').on('click', function() {pontuacao=pontuacao+1;
 
 function escreverCodigo() {
 	if(codigo[qualCodigo].length>pontuacaoAcumulada){
-		$("#java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
+		$(".java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
 	}
 	else{
 		pontuacaoAcumulada=0;
@@ -314,8 +314,10 @@ function escreverCodigo() {
 		else{
 			qualCodigo=0;
 		}
-		$("#java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
+		$(".java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
 	}
+	hljs.initHighlighting.called = false;
+	hljs.initHighlighting();
 }
 
 $("#Pczinho").mouseover(function() {
