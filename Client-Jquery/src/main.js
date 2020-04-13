@@ -5,7 +5,7 @@ const WSURL = 'ws://localhost:8080/';
 
 import * as student from './student';
 
-export let global = {};
+export let global = { myGameRooms: {} };
 
 export function login() {
     $.ajax({
@@ -170,7 +170,13 @@ export function createGameRoomPanel(id) {
                 gameRoomMembers[id][m.id].online = false;
             }
             panel.append(ul);
-
+            panel.append(`<button onclick="client.main.startGameAsCreator(${id})">Start</button>`);
+            panel.append(
+                `<div class="subpanel" id="running${id}" style="display:none">
+                <p>Started on <span id="timestart${id}" class="timestamp"></span><br>
+                <p>Ended on <span id="timeend${id}" class="timestamp"></span></p>
+                </div>`
+            );
             $('body').append(panel);
 
             //Periodically check players online status
@@ -179,6 +185,57 @@ export function createGameRoomPanel(id) {
     });
 }
 
+/*
+ * Starts a new game (from the game room creator perspective)
+ */
+export function startGameAsCreator(gameRoomId){
+    global.myGameRooms[gameRoomId] = true;
+
+    wsSend(
+        {     
+            action: "start-game",
+            gameroom: gameRoomId
+        }
+    );
+}
+
+/*
+ * Start monitoring a game once its start has been confirmed by the server.
+ */
+export function startMonitoringGame(data){
+    const localTime = new Date(data.startTime).toLocaleTimeString();
+
+    $(`#timestart${data.gameroom}`).text(localTime);
+    $(`#running${data.gameroom}`).fadeIn();
+}
+
+let finishedUsers = { };
+/*
+ * Updates the value of the score in the game room panel.
+ */
+function updateScore(data){
+    if(finishedUsers[data.gameroom] && finishedUsers[data.gameroom][data.user])
+        return;
+
+    $(`#score-gr${data.gameroom}-user${data.user}`).text(data.score);
+
+    if(data.endgame === true){
+        $(`#finished-gr${data.gameroom}-user${data.user}`).text("Finished!");
+
+        if(data.gameroom in finishedUsers === false)
+            finishedUsers[data.gameroom] = {};
+
+        finishedUsers[data.gameroom][data.user] = true;
+
+        const numberOfFinished = Object.keys(finishedUsers[data.gameroom]).length;
+        const totalUsers = Object.keys(student.lastSeemOnline[data.gameroom]).length;
+        
+        if(numberOfFinished === totalUsers){
+            console.log("Game Over!");
+            
+        }
+    }
+}
 
 // Web sockets
 export function wsConnect(onopen = null) {
@@ -222,6 +279,17 @@ export function wsConnect(onopen = null) {
             switch (data.req) {
                 case 'player-is-ready':
                     student.markPlayerAsReady(data.user, data.gameroom);
+                    return;
+
+                case 'game-started':
+                    if(data.gameroom in client.main.global.myGameRooms)
+                        startMonitoringGame(data);
+                    else
+                        student.startGameAsPlayer(data);
+                    return;
+
+                case 'update-score':
+                    updateScore(data);
                     return;
             }
         }

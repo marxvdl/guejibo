@@ -21,39 +21,57 @@ button:hover {
 	opacity: .8;
 }
 
+#espaco {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
 #espaco_obstaculos_a, #espaco_obstaculos_b {
 	position: absolute;
+/*	display: none;*/
 }
 
 #espaco_obstaculos_a {
 	left: -80%;
 	top: 45%;
 	width: 100%;
-	height: 300px;
+	height: 45%;
 /*	background: rgba(50, 50, 50, .3);*/
 }
 
 #espaco_obstaculos_b {
 	left: 80%;
 	width: 100%;
-	height: 300px;
+	height: 45%;
 /*	background: rgba(50, 50, 50, .3);*/
 }
 
 #painel {
-	background: rgba(255, 255, 255, .3);
-	padding: 10px;
-	height: 60%;
+	/*background: rgba(255, 255, 255, .3);*/
+	color: #fff;
+/*	padding: 10px;*/
+	height: 100%;
 	width: 10%;
-	margin: 140px 50px 0px 0px;
 	border-radius: 2px;
 	text-align: center;
 	position: absolute;
-	left: 85%;
+	right: 0;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-right: 15px;
+	margin-top: 20px;
 }
 
 #painel h3 {
-	font-size: 15px;
+	font-size: 13px;
 	margin-bottom: 0px;
 }
 
@@ -67,11 +85,233 @@ button:hover {
 	justify-content: space-around;
 }
 
-#espaco {
+/* TOAST */
+
+.toast {
+	position: fixed;
+	bottom: 25px;
+	left: 25%;
+	width: 50%;
+	z-index: 1000;
+	color: #fff;
+	padding: 10px;
+	padding-right: 20px;
+	border-radius: 5px;
+	display: none;
+	height: auto;
+}
+
+.toast p {
+	font-size: 20px;
+	text-align: center;
+	line-height: 0;
+	margin: 10px 0px;
+}
+
+.chegou_fim {
+	display: none;
+}
+
+#laser {
+	background-image: linear-gradient(green, orange, yellow, red);
+	box-shadow: 1px 1px 10px #fff;
+	width: 5px;
+	height: 25px;
+	position: absolute;
+	left: 50%;
+	top: -35px;
+	border-radius: 10px;
+	display: none;
+	z-index: 150;
+}
+
+/* --- */
+
+
+/* INICIAR JOGO */
+
+#bg_iniciar_jogo {
+	background: rgba(0, 0, 0, .6);
 	width: 100%;
 	height: 100%;
-	margin: 0;
-	padding: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	z-index: 1000;
+}
+
+#iniciar_jogo {
+	background-color: #fff;
+	width: 90%;
+	margin: 20% auto;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid darkblue;
+}
+
+#iniciar_jogo h2 , #pause h2 {
+	text-align: center;
+	background-image: linear-gradient(darkblue, blue);
+	color: #fff;
+	border-radius: 10px;
+}
+
+#iniciar_jogo li {
+	margin-bottom: 10px;
+}
+
+#btn_jogar {
+	background-color: darkblue;
+	padding: 10px;
+	border-radius: 5px;
+	color: #fff;
+	margin: 0 auto;
+}
+
+#input_apelido {
+	border: none;
+	border-bottom: 1px solid #606060;
+	padding: 5px;
+}
+
+input:focus {
+	outline: none;
+}
+
+label {
+	cursor: pointer;
+	margin-right: 5px;
+	margin-left: 3%;
+}
+
+/* --- */
+
+/* PAUSE */
+
+#bg_pause {
+	background: rgba(0, 0, 0, .6);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+	z-index: 500;
+}
+
+#pause {
+	background-color: #fff;
+	width: 90%;
+	margin: 7px auto;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid darkblue;
+}
+
+#pause p {
+	text-align: center;
+}
+
+/* --- */
+
+/* GAME OVER */
+
+#mensagem_game_over {
+	padding: 5px 0px;
+	border-top: 1px solid #606060;
+	border-bottom: 1px solid #606060;
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+#bg_game_over {
+	background: rgba(0, 0, 0, .4);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	display: none;
+}
+
+#game_over {
+	background-color: #fff;
+	width: 80%;
+	margin: 10% auto;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid darkblue;
+}
+
+#game_over h2 {
+	text-align: center;
+	background-image: linear-gradient(darkblue, blue);
+	color: #fff;
+	border-radius: 10px;
+}
+
+#game_over p {
+	margin-top: 15px;
+}
+
+#btn_jogar_novamente {
+	background-color: darkblue;
+	padding: 10px;
+	border-radius: 5px;
+	color: #fff;
+	margin: 0 auto;
+}
+
+/* --- */
+
+
+/* ALTERNATIVAS */
+
+#alternativas {
+	position: absolute;
+	top: 7%;
+	left: 5%;
+	width: 90%;
+	background: transparent;
+	z-index: 100;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#alternativas .ajuda {
+	font-size: 15px;
+	position: absolute;
+	top: -35px;
+	left: 20%;
+	line-height: 10px;
+	text-align: center;
+	background: darkblue;
+	padding: 5px;
+/*	width: 20px;
+	height: 20px;*/
+	line-height: 15px;
+	border-radius: 50%;
+}
+
+
+#alternativas div {
+	background: #212121;
+	width: 57px;
+	height: 57px;
+	border-radius: 50%;
+	text-align: center;
+	font-size: 2em;
+	color: #fff;
+	border: 2px solid #ccc;
+	position: relative;
+	line-height: 45px;
 }
 
 #nave {
@@ -95,145 +335,26 @@ button:hover {
 	position: absolute;
 }
 
-/* TOAST */
-
-.toast {
-	position: fixed;
-	top: 25px;
-	left: 10%;
-	width: 700px;
-	z-index: 1000;
-	color: #fff;
-	padding: 10px;
-	padding-right: 20px;
-	border-radius: 5px;
-	box-shadow: 3px 3px 10px #606060;
-	display: none;
-	height: auto;
-}
-
-.toast p {
-	font-size: 20px;
-	text-align: center;
-	line-height: 0;
-	margin: 10px 0px;
-}
-
-.fechar {
-	position: absolute;
-	left: 97%;
-	top: .7px;
-	transform: rotate(45deg);
-	font-size: 30px;
-	cursor: pointer;
-}
-
-.chegou_fim {
-	display: none;
-}
-
-#laser {
-	background-image: linear-gradient(green, orange, yellow, red);
-	box-shadow: 1px 1px 10px #fff;
-	width: 5px;
-	height: 25px;
-	position: absolute;
-	left: 50%;
-	top: -35px;
-	border-radius: 10px;
-	display: none;
-	z-index: 150;
-}
-
-/* FIM TOAST */
+/* MEDIA QUERIES */
 
 
-/* JANELA MODAL */
+@media (max-width: 1200px) {
 
-#bg_modal {
-	background: rgba(0, 0, 0, .4);
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: none;
-}
+	.obstaculo {
+		width: 45px;
+		height: 45px;
+	}
 
-#modal {
-	background-image: linear-gradient(#fff, #212121);
-	padding: 10px;
-	width: 50%;
-	height: 30%;
-	margin: 150px 18%;
-	text-align: center;
-	font-weight: bolder;
-	border: 5px solid black;
-	box-shadow: 1px 1px 50px darkblue;
-}
+	#nave {
+		width: 29px;
+		height: 50px;		
+	}
 
-#modal h2 {
-	color: darkblue;
-	text-shadow: 1px 1px 1px #212121;
-	font-size: 40px;
-	margin: 0;
-}
+	#alternativas div {
+		width: 37px;
+		height: 37px;
+		font-size: 20px;
+		line-height: 30px;
+	}
 
-#modal p {
-	text-align: center;
-	margin-top: 15px;
-	color: #212121;
-}
-
-#modal button#jogar_novamente {
-	background: #212121;
-	margin: 6% auto;
-	color: #fff;
-	width: 25%;
-	height: 25%;
-}
-
-/* FIM JANELA MODAL */
-
-
-/* ALTERNATIVAS */
-
-#alternativas {
-	position: absolute;
-	top: 40px;
-	left: 5%;
-	width: 90%;
-	background: transparent;
-	z-index: 100;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-
-#alternativas div {
-	background: #212121;
-	width: 57px;
-	height: 57px;
-	border-radius: 50%;
-	text-align: center;
-	font-size: 40px;
-	color: #fff;
-	border: 2px solid #ccc;
-	position: relative;
-	line-height: 45px;
-}
-
-#alternativas .ajuda {
-	font-size: 15px;
-	position: absolute;
-	top: -35px;
-	left: 20%;
-	line-height: 10px;
-	text-align: center;
-	background: darkblue;
-	padding: 5px;
-	width: 20px;
-	height: 20px;
-	line-height: 15px;
-	border-radius: 50%;
 }

@@ -3,13 +3,10 @@ let limite_movimento = 7;
 let passo_obstaculos = 1;
 let velocidade_obstaculos = 10; // menos é mais
 let qtde_inicial_obstaculos = 10;
-let vel_recarga_laser = 10;
 let passo_laser = 30 + Math.PI;
 let pode_atirar = true;
 let limite_tiro = 25;
 let valor_retorno = 5;
-let repelencia = 100;
-let parcela_correcao = 5;
 let min_left_aleatorio = 0;
 let max_left_aleatorio = 100;
 let obst_fim = 0;
@@ -19,7 +16,26 @@ let tiros_errados = 0;
 let fim_jogo = false;
 let qtde_movimento = 25;
 let qtde_maxima_obstaculos = 25;
+let iniciou = false;
+let parar = false;
+let objetivos_concluidos = 0;
+let modo_hard = false;
+let quantidade_para_hard = 10;
+
+let numeros_formados = 0;
+let tiros_alternativas = 0;
 let pontuacao = 0;
+let aliens_eliminados = 0;
+let melhor_tempo = 999;
+let planetas_destruidos = 0;
+let acuracia_tiro = 0;
+
+let tempo_inicial = 59;
+let tempo_hard = 29;
+let tempo_restante = tempo_inicial;
+let t;
+
+$('#tempo').text(tempo_inicial + 1);
 
 let acoes_nave = {
 	'moveu_esquerda':false,
@@ -104,11 +120,11 @@ function cria_obstaculos_a(quantidade) {
 		// $($obstaculo).css('position', 'absolute');
 
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(1, 50);
+		let top = aleatorio(7, 50);
 
-		let r = aleatorio(0, 1);
+		let r = aleatorio(0, 2);
 
-		if (r == 0) {
+		if (r == 0 || r == 1) {
 			$($obstaculo).css('border-radius', '50%');
 			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
 			$obstaculo.addClass('planeta');
@@ -132,7 +148,7 @@ function cria_obstaculos_b(quantidade) {
 		// $($obstaculo).css('position', 'absolute');
 
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(1, 50);
+		let top = aleatorio(7, 50);
 
 		let r = aleatorio(0, 1);
 
@@ -153,12 +169,16 @@ function cria_obstaculos_b(quantidade) {
 
 }
 
-cria_obstaculos_a(qtde_inicial_obstaculos);
-cria_obstaculos_b(qtde_inicial_obstaculos);
+// cria_obstaculos_a(qtde_inicial_obstaculos);
+// cria_obstaculos_b(qtde_inicial_obstaculos);
 
 window.addEventListener('resize', function() {
 	$('#espaco').css('width', `${window.innerWidth}px`);
 	$('#espaco').css('height', `${window.innerHeight}px`);
+
+	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
+	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
+	
 });
 
 let y = false;
@@ -167,7 +187,7 @@ function atualiza () {
 
 	let c = 0;
 
-	verifica_formacao_binaria();
+	verifica_formacao_binaria()
 	verifica_limite_espaco();
     
     // Aqui as ondas se iniciam
@@ -197,8 +217,6 @@ function atualiza () {
 
 
 	for (let i = 0; i < $('#espaco_obstaculos_b').children().length; i++) {
-		console.log($(obst_b[i]).offset().left);
-		console.log($('#espaco').width());
 		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
 		if ($(obst_b[i]).offset().left < 50) {
 			$(obst_b[i]).remove();
@@ -240,9 +258,11 @@ function atualiza () {
 	}
 
 	let intervalo_func = setTimeout(atualiza, velocidade_obstaculos);
-}
 
-atualiza();
+	if (parar) {
+		clearTimeout(intervalo_func);
+	}
+}
 
 function atira_alt(alternativa) {
 
@@ -262,6 +282,8 @@ function atira_alt(alternativa) {
 			$('#laser').css('top', '0px');
 
 			$(alternativa).css('box-shadow', '1px 1px 50px lightgreen');
+
+			tiros_alternativas++;
 
 			if ($(alternativa).find('.valor_binario').text() == '1') {
 				$(alternativa).find('.valor_binario').text('0');
@@ -303,6 +325,9 @@ function atira_planeta(planeta) {
 				$('#laser').css('top', '0px');
 
 				$(planeta).css('background-image', 'linear-gradient(green, yellow)').css('box-shadow', '1px 1px 50px darkblue');
+
+				planetas_destruidos++;
+
 				setTimeout(() => {
 					$(alien).fadeOut('600');
 				}, 25);
@@ -314,7 +339,7 @@ function atira_planeta(planeta) {
 						pontuacao--;
 					}
 
-					toast('Você destruiu um planeta e perdeu pontos!', 'brown');
+					toast('-1 ponto', '#CD5C5C', 500);
 					$('#pontuacao').text(pontuacao);
 				}, 500);
 
@@ -350,7 +375,13 @@ function atira_alien(alien) {
 
 				setTimeout(() => {
 					$(alien).remove();
+					
+					aliens_eliminados++;
+					
 					pontuacao++;
+					toast('+1 ponto', '#3CB371', 500);
+
+					$('#tempo').text(tempo_restante);
 					$('#pontuacao').text(pontuacao);
 				}, 500);	
 
@@ -376,8 +407,53 @@ function verifica_formacao_binaria() {
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
-		toast('Parabéns, você conseguiu!');
+		if (modo_hard) {
+
+			if (30 - tempo_restante < melhor_tempo) {
+				melhor_tempo = 60 - tempo_restante;
+			}
+
+		} else {
+
+			if (60 - tempo_restante < melhor_tempo) {
+				melhor_tempo = 60 - tempo_restante;
+			}
+
+		}
+
+		numeros_formados++;
+
+		objetivos_concluidos++;
 		$('#numero_objetivo').text(aleatorio(0, 255));
+
+		if (objetivos_concluidos >= quantidade_para_hard) {
+			
+			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
+				toast('Você alcançou o modo hard! O tempo agora está mais curto!', 'purple', 3000);
+				modo_hard = true;
+			}
+
+			$('#tempo').text(tempo_hard + 1);
+			tempo_restante = tempo_hard;
+			pontuacao += 10;
+			$('#pontuacao').text(pontuacao);
+
+			if (objetivos_concluidos > quantidade_para_hard) {
+				toast('Certa resposta! +10 pontos', 'purple', 2000);
+			}
+
+		} else {
+			$('#tempo').text(tempo_inicial + 1);
+			tempo_restante = tempo_inicial;
+			pontuacao += 5;
+			$('#pontuacao').text(pontuacao);
+			toast('Certa resposta! +5 pontos', 'green', 2000);
+		}
+
+	 	clearTimeout(t);
+		temporizador();
+
+		return true;
 	}
 
 }
@@ -410,40 +486,55 @@ function verifica_limite_espaco() {
 
 }
 
-function gameover(msg) {
+function gameover() {
 
-	toast(msg, 'brown');
-	$('#bg_modal').fadeIn('2000');
+	// Contadores
+
+	$('#pontuacao_obtida').text(`Pontuação obtida: ${pontuacao}`);
+
+	if (melhor_tempo == 999) {
+		melhor_tempo = 0;
+	}
+
+	$('#melhor_tempo').text(`Melhor tempo: ${melhor_tempo} segundo(s)`);
+
+	let tiros_certos = aliens_eliminados + tiros_alternativas;
+	acuracia_tiro = ((tiros_certos / tiros_dados) * 100).toFixed(2) + '%';
+	
+	$('#numeros_formados').text(`Números formados: ${numeros_formados}`);
+	$('#tiros_alternativas').text(`Tiros em alternativas: ${tiros_alternativas}`);
+	$('#tiros_dados').text(`Tiros dados: ${tiros_dados}`);
+	$('#acuracia_tiro').text(`Acurácia do tiro: ${acuracia_tiro}`);
+	$('#planetas_destruidos').text(`Planetas destruidos: ${planetas_destruidos}`);
+	$(`#aliens_eliminados`).text(`Aliens eliminados: ${aliens_eliminados}`)
+
+	$('#bg_game_over').fadeIn('2000');
 	$('.obstaculo').remove();
 	fim_jogo = true;
-	clearTimeout(intervalo_func);
+	parar = true;
+	clearTimeout(t);
 }
 
-$('#jogar_novamente').click(() => {
+$('#btn_jogar_novamente').click(() => {
 	window.location.reload();
 });
 
-
-let tempo_restante = 59;
 function temporizador() {
 
-  let t = setTimeout(function() {
+  t = setTimeout(function() {
     
   	if (tempo_restante > 0) {
-  		$('#tempo').text(tempo_restante--).css('color', 'black');
+  		$('#tempo').text(tempo_restante--);
   	} else {
-  		$('#tempo').text(tempo_restante--).css('color', 'brown');
-  		toast('Seu tempo acabou.', 'orange');
+  		gameover();
   	}
 
-    if( tempo_restante >= 0) {
+    if(tempo_restante >= 0) {
       temporizador();
     }
   }, 1000);
 
 }
-  
-temporizador();
 
 // CENTRO DE AÇÕES
 
@@ -469,9 +560,29 @@ $('body').keydown(function(event) {
 
 });
 
+let toggle = true;
+
 $('body').keyup(function(event) {
 
 	let tecla = event.keyCode;
+
+
+
+	if(tecla == 80 && iniciou) {
+		 // Pause
+		 $('#bg_pause').toggle();
+		 if (toggle) {
+		 	 toggle = false;
+			 parar = true;
+			 clearTimeout(t);
+		 } else {
+		 	toggle = true;
+			parar = false;
+			atualiza();
+			temporizador();		 	
+		 }
+
+	}	
 
 	if(tecla == 39 || tecla == 68) {
 		 // seta pra DIREITA ou D
@@ -494,7 +605,7 @@ $('body').keyup(function(event) {
 
 // TOAST
 
-function toast(texto, cor = 'green') {
+function toast(texto, cor = 'green', tempo = 2500) {
 
 	// Simplesmente exibe um toast.
 
@@ -505,16 +616,20 @@ function toast(texto, cor = 'green') {
 		$('.toast').css('text-shadow', '1px 1px 3px #606060');
 	}
 
-	$('.toast').fadeIn('1000');
+	$('.toast').fadeIn('300');
 	$('.texto_toast').text(texto);
 
 	setTimeout(function() {
-		$('.toast').fadeOut('500');
-	}, 1000);
+		$('.toast').fadeOut('1000');
+	}, tempo);
 }
 
-$('.fechar').click(function() {
-	$('.toast').fadeOut('500');
-});
-
 $('#numero_objetivo').text(aleatorio(1, 255));
+
+$('#btn_jogar').click(function() {
+	iniciou = true;
+	$('#bg_iniciar_jogo').css('display', 'none');
+	atualiza();
+	temporizador();
+
+});

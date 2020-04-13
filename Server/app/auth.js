@@ -15,7 +15,7 @@ module.exports = function (passport) {
 
   passport.deserializeUser((id, done) => {
     User.findOne({ where: { id: id } })
-      .then((user) => { done(null, user) });
+      .then((user) => { done(null, user); });
   });
 
   passport.use(
@@ -50,7 +50,7 @@ module.exports = function (passport) {
               }
 
             }
-          )
+          );
       })
   );
 
@@ -85,8 +85,8 @@ module.exports = function (passport) {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET
     },
-      (jwtPayload, done) => {        
-        return done(null, jwtPayload );
+      (jwtPayload, done) => {
+        return done(null, jwtPayload);
       }
     ));
 };

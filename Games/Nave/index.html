@@ -5,16 +5,19 @@
 	<title>Nave</title>
 	<link rel="stylesheet" type="text/css" href="css/estilo.css">
 	<link rel="icon" type="image/png" href="img/nave.png"/>
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 </head>
 
 <body>
 
 <div class="alinhados">
 	
+<div id="espaco_obstaculos_a"></div>
+<div id="espaco_obstaculos_b"></div>
+
 <div id="espaco">
 	<div id="alternativas"></div>
-	<div id="espaco_obstaculos_a"></div>
-	<div id="espaco_obstaculos_b"></div>
+
 	<div id="nave">
 		<div id="laser"></div>
 	</div>
@@ -27,25 +30,63 @@
 	<h4 id="numero_objetivo">132</h4>
 
 	<h3>Tempo:</h3>
-	<h4 id="tempo">60</h4>
+	<h4 id="tempo">45</h4>
 
 	<h3>Pontuação:</h3>
 	<h4 id="pontuacao">0</h4>
-
 </div>
 
-<div id="bg_modal">
-	<div id="modal">
+<div id="bg_game_over">
+	<div id="game_over">
 		<h2>Game over</h2>
-		<p>Você colidiu a sua nave três vezes, então ela quebrou.</p>
-		<button id="jogar_novamente">Jogar novamente</button>
+		<p id="mensagem_game_over">Você não conseguiu formar o número a tempo.</p>
+
+		<p id="pontuacao_obtida"></p>
+		<p id="aliens_eliminados"></p>
+		<p id="numeros_formados"></p>
+		<p id="melhor_tempo"></p>
+		<p id="tiros_dados"></p>
+		<p id="acuracia_tiro"></p>
+		<p id="planetas_destruidos"></p>
+		<p id="tiros_alternativas"></p>
+		
+		<button id="btn_jogar_novamente">Jogar novamente</button>
+	</div>
+</div>
+
+<div id="bg_iniciar_jogo">
+	<div id="iniciar_jogo">
+		<h2>Nave</h2>
+
+		<ul>
+			<li>Utilize as setas para esquerda e direita ou as letras A e D para mover a nave. Aperte a barra de espaço para atirar e P para pausar, caso precise.</li>
+
+			<li>Destruir os planetas fará com que você perca pontos.</li>
+
+			<li>Ao destruir alienígenas, você ganha pontos.</li>
+
+			<li>O jogo inicia com um número aleatório, em binário. A sua missão é mudar os valores de 1 e 0 para formar o número objetivo. Ao atirar em um bloco 1, ele se torna 0 e vice-versa.</li>
+
+			<li>Se o tempo chegar a zero, o jogo acaba.</li>
+
+			<li>Ao conseguir formar 10 números, você entra no modo hard, onde o tempo é menor.</li>
+		</ul>
+
+		<button id="btn_jogar">Jogar</button>
+	</div>
+</div>
+
+<div id="bg_pause">
+	<div id="pause">
+		<h2>Nave</h2>
+
+		<p>Jogo pausado. Aperte P novamente para continuar de onde parou.</p>
 	</div>
 </div>
 
 </div>
 
 <div class="toast">
-	<div class="fechar">+</div>
 	<p class="texto_toast"></p>
 </div>
 

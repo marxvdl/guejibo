@@ -10,7 +10,7 @@ const Game = models.Game;
 
 module.exports = function (app, passport) {
 
-    //Stores the user tha is currently connected on the web socket
+    //Stores the user that is currently connected on the web socket
     let currentUser = null;
 
     //Web socket server for this connection
@@ -28,7 +28,7 @@ module.exports = function (app, passport) {
                 return;
             }
 
-            currentUser = await User.findOne({ where: { id: decoded.id } });            
+            currentUser = await User.findOne({ where: { id: decoded.id } });
             done(true);
         }
     });
@@ -51,18 +51,25 @@ module.exports = function (app, passport) {
                 }
 
                 switch (data.action) {
+                    //Waiting and joining actions
                     case 'join':
                         doActionJoin(ws, data.code);
-                        return;
-
-                    case 'check-players-ready':
-                        doActionCheckPlayersReady(data.gameroom);
                         return;
 
                     case 'im-ready':
                         doActionImReady(ws, data);
                         return;
 
+                    case 'start-game':
+                        doActionStartGame(ws, data);
+                        return;
+
+                    //In-game actions
+                    case 'update-score':
+                        doActionUpdateScore(ws, data);
+                        return;
+
+                    //
                     default:
                         ws.send(`Error: invalid action "${data.action}"`);
                         return;
@@ -70,7 +77,7 @@ module.exports = function (app, passport) {
 
             }
             catch (e) {
-         
+
                 ws.send('Error: invalid data');
                 return;
             }
@@ -101,67 +108,36 @@ module.exports = function (app, passport) {
                 }
             ]
         })
-        .then(gr => {
-            gr.addMember(currentUser.get().id).then(() => {
+            .then(gr => {
+                gr.addMember(currentUser.get().id).then(() => {
+                    ws.send(JSON.stringify(
+                        {
+                            responseTo: 'join',
+                            success: true,
+                            gameroom: GameRoom.exportObject(gr, true)
+                        }
+                    ));
+                });
+            })
+            .catch(e => {
                 ws.send(JSON.stringify(
                     {
                         responseTo: 'join',
-                        success: true,
-                        gameroom: GameRoom.exportObject(gr, true)
+                        success: false,
+                        error: 'Game room not found'
                     }
                 ));
             });
-        })
-        .catch(e => {
-            ws.send(JSON.stringify(
-                {
-                    responseTo: 'join',
-                    success: false,
-                    error: 'Game room not found'
-                }
-            ));
-        });
-    }
-
-    /*
-     * 'check-players-ready' -> Check if all players of a game room are ready to play
-     */
-    function doActionCheckPlayersReady(gameroomID) {
-        GameRoom.findAll({
-            where: {
-                id: gameroomID
-            },
-            include: [
-                {
-                    model: User,
-                    as: 'members'
-                }
-            ]
-        })
-        .then(result => {
-            for (let user of result[0].members) {
-                let userWss = webSocketsById[user.id];
-                if(userWss){
-                    userWss.send(JSON.stringify(
-                        {
-                            req: 'are-you-ready',
-                            gameroom: gameroomID
-                        }
-                    ));
-                }
-            }
-        });
     }
 
     /*
      * 'im-ready' -> Confirm that a waiting client is ready to start playing.
      */
-    function doActionImReady(ws, data){
-        GameLogic.setPlayerReady(ws.user.id, data.gameroom);
-
+    function doActionImReady(ws, data) {
         GameRoom.findOne({
             where: {
-                id: data.gameroom
+                id: data.gameroom,
+                timeStarted: null
             },
             include: [
                 {
@@ -174,20 +150,98 @@ module.exports = function (app, passport) {
                 }
             ]
         })
-        .then(gr => {
-            let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
-            sendToList.push(gr.ownerId);
-            
-            for(let id of sendToList){
-                webSocketsById[id].send(JSON.stringify(
+            .then(gr => {
+                if (gr === null) return;
+
+                let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
+                sendToList.push(gr.ownerId);
+
+                for (let id of sendToList) {
+                    webSocketsById[id].send(JSON.stringify(
+                        {
+                            req: 'player-is-ready',
+                            user: User.exportObject(ws.user),
+                            gameroom: data.gameroom
+                        }
+                    ));
+                }
+            });
+    }
+
+    /*
+     * Start a new game room session.
+     */
+    function doActionStartGame(ws, data) {
+        GameRoom.findOne({
+            where: {
+                id: data.gameroom
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'owner'
+                },
+                {
+                    model: User,
+                    as: 'members'
+                },
+                {
+                    model: Game,
+                    as: 'game'
+                }
+            ]
+        })
+            .then(gr => {
+                gr.timeStarted = toMysqlFormat(new Date());
+                gr.save().then(result => {
+                    let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
+                    sendToList.push(gr.ownerId);
+
+                    for (let id of sendToList) {
+                        webSocketsById[id].send(JSON.stringify(
+                            {
+                                req: 'game-started',
+                                gameroom: data.gameroom,
+                                startTime: gr.timeStarted,
+                                path: gr.game.basePath
+                            }
+                        ));
+                    }
+                });
+            });
+
+    }
+
+
+    //Adapted from https://stackoverflow.com/a/5133807/641312    
+    function toMysqlFormat(date) {
+        function pad(d) {
+            if (0 <= d && d < 10) return "0" + d.toString();
+            if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
+            return d.toString();
+        }
+        return date.getUTCFullYear() + "-" + pad(1 + date.getUTCMonth()) + "-" + pad(date.getUTCDate()) + " " + pad(date.getUTCHours()) + ":" + pad(date.getUTCMinutes()) + ":" + pad(date.getUTCSeconds());
+    }
+
+    /**
+     * Updates the score for an ongoing game.
+     */
+    function doActionUpdateScore(ws, data) {
+        GameRoom.findOne({
+            where: {
+                id: data.gameroom
+            }
+        })
+            .then(gr => {
+                webSocketsById[gr.ownerId].send(JSON.stringify(
                     {
-                        req: 'player-is-ready',
-                        user: User.exportObject(ws.user),
-                        gameroom: data.gameroom
+                        req: 'update-score',
+                        user: ws.user.id,
+                        gameroom: data.gameroom,
+                        score: data.score,
+                        endgame: data.endgame
                     }
                 ));
-            }
-            
-        });
+            });
     }
 };

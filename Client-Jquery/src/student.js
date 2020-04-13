@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export const TIMES = {
     // How often a player will send a "I'm here" message 
     // while waiting for a game to start
@@ -11,12 +13,16 @@ export const TIMES = {
     CHECK_PLAYERS_ONLINE_INTERVAL: 1000,
 };
 
+const GAME_BASE_PATH = '../';
+
 export function join(code) {
     client.main.wsSend({
         action: 'join',
         code: code
     });
 }
+
+let imReadyIntervals = [];
 
 export function doJoin(data) {
     if (data.success) {
@@ -26,8 +32,8 @@ export function doJoin(data) {
         $('#status').text('Waiting...');
         $('#game-name').text(gr.game.name);
         $('#gr-owner').text(gr.owner.name);
-        $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));     
-           
+        $('#usersdiv').append($(`<ul id="${ulgrid}"></ul>`));
+
         $(`#${ulgrid}`).append($(`<li>${client.main.global.payload.name}<span class="userstatus success">online</span></li>`));
         for (let user of gr.members) {
             $(`#${ulgrid}`).append(`<li>${user.name}<span class="userstatus" id="gr${gr.id}-user${user.id}"></span></li>`);
@@ -37,12 +43,13 @@ export function doJoin(data) {
         initPlayersReady(gr.id);
         client.main.gameRoomMembers[gr.id] = [];
 
-        setInterval(() => {
-            client.main.wsSend({
-                action: 'im-ready',
-                gameroom: data.gameroom.id
-            });
-        }, TIMES.SHOUT_IM_HERE_INTERVAL);
+        imReadyIntervals[data.gameroom.id] =
+            setInterval(() => {
+                client.main.wsSend({
+                    action: 'im-ready',
+                    gameroom: data.gameroom.id
+                });
+            }, TIMES.SHOUT_IM_HERE_INTERVAL);
     }
     else {
         console.log(`Error: could not join game: data.error`);
@@ -91,18 +98,65 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
     let statusElement = $(statusQuery);
 
     if (!statusElement.length) {
-        let li = $(`<li>${user.name} <span class="userstatus" id="gr${gameroomId}-user${user.id}"></span></li>`);
+        let li = $(`<li>${user.name} 
+            <span class="userstatus" id="gr${gameroomId}-user${user.id}"></span> 
+            <span class="score" id="score-gr${gameroomId}-user${user.id}"></span> 
+            <span class="finished" id="finished-gr${gameroomId}-user${user.id}"></span>
+            </li>`
+        );
         $(`#ul-gr${gameroomId}`).append(li);
         statusElement = $(statusQuery);
     }
 
-    if(isOnline){
+    if (isOnline) {
         statusElement.text('online');
         statusElement.removeClass('failure').addClass('success');
     }
-    else{
+    else {
         statusElement.text('offline');
         statusElement.addClass('failure').removeClass('success');
     }
-    
+
+}
+
+/*
+ * Starting a game (from the player perspective)
+ */
+export function startGameAsPlayer(data) {
+    clearInterval(imReadyIntervals[data.gameroom]); //stop shouting "I'm ready!"
+
+    Cookies.set('jwt', client.main.global.token, { path: '/' });
+    Cookies.set('gameroom', data.gameroom, { path: '/' });
+
+    window.open(GAME_BASE_PATH + 'Games/' + data.path + '/index.html', '_self');
+}
+
+// https://stackoverflow.com/a/133997/641312
+/**
+ * sends a request to the specified url from a form. this will change the window location.
+ * @param {string} path the path to send the post request to
+ * @param {object} params the paramiters to add to the url
+ * @param {string} [method=post] the method to use on the form
+ */
+function post(path, params, method = 'post') {
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = params[key];
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }

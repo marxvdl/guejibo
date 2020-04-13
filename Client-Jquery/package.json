@@ -2,9 +2,10 @@
   "name": "iacweb-jquery-client",
   "main": "webpack.config.js",
   "dependencies": {
+    "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0"
   },
-  "scripts": {    
+  "scripts": {
     "watch": "webpack --watch",
     "build": "webpack"
   },
