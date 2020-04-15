@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 export const TIMES = {
     // How often a player will send a "I'm here" message 
     // while waiting for a game to start
-    SHOUT_IM_HERE_INTERVAL: 800,
+    SHOUT_IM_HERE_INTERVAL: 800, //must be the same value in gameslib.ts
 
     // How long the host will wait for the "I'm here" message 
     // before considering that the player is offline

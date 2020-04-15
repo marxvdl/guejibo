@@ -137,7 +137,7 @@ module.exports = function (app, passport) {
         GameRoom.findOne({
             where: {
                 id: data.gameroom,
-                timeStarted: null
+                timeEnded: null
             },
             include: [
                 {

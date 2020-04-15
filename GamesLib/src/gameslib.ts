@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 
 const WSURL = 'ws://localhost:8080/';
+const SHOUT_IM_HERE_INTERVAL = 800;
 
 /**
  * Represents a connection to the web socket server.
@@ -8,7 +9,6 @@ const WSURL = 'ws://localhost:8080/';
  * messages.
  */
 export class GameConnection {
-
     private jwt: string;
     private gameRoomId: number;
     private ws: WebSocket = undefined;
@@ -35,7 +35,18 @@ export class GameConnection {
 
         this.ws = new WebSocket(WSURL + this.jwt);
         this.ws.onmessage = this.onmessage;
+        this.ws.onopen = () => {
+            setInterval(() => {
+                this.ws.send(JSON.stringify(
+                    {
+                        action: 'im-ready',
+                        gameroom: this.gameRoomId
+                    }
+                ));
+            }, SHOUT_IM_HERE_INTERVAL);
+        };
     }
+
 
     /**
      * Sends the current player score
