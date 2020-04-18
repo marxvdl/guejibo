@@ -296,9 +296,10 @@ public class PesParaMetros extends JFrame {
 		
 	}
 }`];
-$('#Pczinho').on('click', function() {pontuacao=pontuacao+1;
+$('#Pczinho').on('click', function() {
+	pontuacao=pontuacao+1;
 	pontuacaoAcumulada=pontuacaoAcumulada+1;
-	$('#pontuacao').text(pontuacao);
+	$('#pontuacao').text('Pontuação: '+pontuacao);
 	escreverCodigo();
 });
 
@@ -326,8 +327,52 @@ $("#Pczinho").mouseover(function() {
 $("#Pczinho").mouseout(function() {
 	$('#Pczinho').attr('src','PixelArts/Pczinho_frame_zero.gif');
 });
+var programadores=0;
+var custoProgramador=15;
+var producaoProgramador=0.0;
+var iniciar;
+$('#comprarProgramador').on('click', function(){
+	
+	if(pontuacao>=custoProgramador){
+		programadores+=1;
+		var imgProgramador = $('<img id="dynamic">');
+		imgProgramador.attr('src','PixelArts/COMP_Programador.png');
+		imgProgramador.appendTo('#arquivos');
+		pontuacao=pontuacao-custoProgramador;
+		$('#pontuacao').text(pontuacao);
+		if(ps===0.0){
+			gerarPontos();
+		}
+		producaoProgramador=producaoProgramador+0.1;
+		ps=ps+0.1;
+		$('#ps').text('Pontuação por segundo'+ps);
+		$('#quantidadeProgramadores').text('Quantidade de Programadores: '+programadores);
+	}
+	custoProgramador=Math.round(15*Math.pow(1.15,programadores));
+	$('#custoProgramadores').text('CustoProgramadores: '+custoProgramador);
+});
+	var vsMaior20=false;
+	function gerarPontos(){
 
-
+		if(ps<20){
+			pontuacao=pontuacao+1;
+			pontuacaoAcumulada=pontuacaoAcumulada+1;
+			$('#pontuacao').text('Pontuação: '+pontuacao);
+			escreverCodigo();
+			clearInterval(iniciar);
+    		iniciar=setInterval(gerarPontos,(1000/ps));
+		}
+		else{
+			if(!vsMaior20){
+				clearInterval(iniciar);
+    			iniciar=setInterval(gerarPontos,(50));
+			}
+			pontuacao=pontuacao+(ps/20);
+			pontuacaoAcumulada=pontuacaoAcumulada+(ps/20);
+			$('#pontuacao').text('Pontuação: '+pontuacao);
+			escreverCodigo();
+		}
+	}
 
 $("#Pczinho").mousedown(function() {
 	$('#Pczinho').animate({

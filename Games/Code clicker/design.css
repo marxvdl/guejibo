@@ -27,17 +27,19 @@
     grid-row-start: 1;
     grid-row-end: 2;
 }
-.fundo#b{
+.fundo#loja{
     grid-column-start:1;
     grid-column-end:2;
     grid-row-start:2;
     grid-row-end:3;
+    overflow: auto;
 }
-.fundo#c{
+.fundo#arquivos{
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 3;
+    overflow: auto;
 }
 .fundo#codigo{
     
@@ -50,4 +52,8 @@
 #Pczinho{
     width: 100%;
   height: auto;
+}
+#comprarProgramador{
+    width:100%;
+    height:auto;
 }
