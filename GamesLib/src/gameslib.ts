@@ -12,6 +12,7 @@ export class GameConnection {
     private jwt: string;
     private gameRoomId: number;
     private ws: WebSocket = undefined;
+    private intervalId: number;
 
     /**
      * Creates a GameConnection object from data stored in cookies.
@@ -36,7 +37,7 @@ export class GameConnection {
         this.ws = new WebSocket(WSURL + this.jwt);
         this.ws.onmessage = this.onmessage;
         this.ws.onopen = () => {
-            setInterval(() => {
+            this.intervalId = window.setInterval(() => {
                 this.ws.send(JSON.stringify(
                     {
                         action: 'im-ready',
@@ -62,6 +63,10 @@ export class GameConnection {
                 endgame: endgame
             }
         ));
+        
+        if(endgame === true){
+            window.clearInterval(this.intervalId);
+        }
     }
 
     /**

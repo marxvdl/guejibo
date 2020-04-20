@@ -6,6 +6,7 @@ const GameLogic = require('../app/gamelogic');
 const User = models.User;
 const GameRoom = models.GameRoom;
 const Game = models.Game;
+const UsersGameRooms = models.UsersGameRooms;
 
 
 module.exports = function (app, passport) {
@@ -233,6 +234,8 @@ module.exports = function (app, passport) {
             }
         })
             .then(gr => {
+
+                //Send new score to the client
                 webSocketsById[gr.ownerId].send(JSON.stringify(
                     {
                         req: 'update-score',
@@ -242,6 +245,46 @@ module.exports = function (app, passport) {
                         endgame: data.endgame
                     }
                 ));
+
+                //If this player has finished, check if the game is over for everybody else
+                if (data.endgame) {
+                    UsersGameRooms.update(
+                        { score: data.score },
+                        {
+                            where: {
+                                userId: ws.user.id,
+                                gameRoomId: data.gameroom
+                            }
+                        }
+                    )
+                        .then(n => {
+
+                            //If all players have a defined score, then the game is over
+                            UsersGameRooms.findAndCountAll({
+                                where: {
+                                    gameRoomId: data.gameroom,
+                                    score: null
+                                }
+                            })
+                                .then(obj => {
+                                    if (obj.count === 0) {
+                                        //Update the database
+                                        gr.timeEnded = toMysqlFormat(new Date());
+                                        gr.save().then(result => {
+
+                                            //Send a message to the owner
+                                            webSocketsById[gr.ownerId].send(JSON.stringify(
+                                                {
+                                                    req: 'game-over',
+                                                    gameroom: data.gameroom
+                                                }
+                                            ));
+                                        });
+                                    }
+                                });
+                        });
+                }
+
             });
     }
 };
