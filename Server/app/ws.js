@@ -259,7 +259,8 @@ module.exports = function (app, passport) {
                     {
                         where: {
                             userId: ws.user.id,
-                            gameRoomId: data.gameroom
+                            gameRoomId: data.gameroom,
+                            ended: false
                         }
                     }
                 )
