@@ -4,7 +4,12 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
       'UsersGameRooms',
-      'ended', Sequelize.BOOLEAN
+      'ended', 
+      {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
     );
   },
 

@@ -170,11 +170,12 @@ export function createGameRoomPanel(id) {
                 gameRoomMembers[id][m.id].online = false;
             }
             panel.append(ul);
-            panel.append(`<button onclick="client.main.startGameAsCreator(${id})">Start</button>`);
+            panel.append(`<button id="startbutton${id}" onclick="client.main.startGameAsCreator(${id})">Start</button>`);
             panel.append(
                 `<div class="subpanel" id="running${id}" style="display:none">
                 <p>Started on <span id="timestart${id}" class="timestamp"></span><br>
                 <p>Ended on <span id="timeend${id}" class="timestamp"></span></p>
+                <button id="endbutton${id}" onclick="client.main.endGameAsCreator(${id})">End game</button>
                 </div>`
             );
             $('body').append(panel);
@@ -194,6 +195,18 @@ export function startGameAsCreator(gameRoomId){
     wsSend(
         {     
             action: "start-game",
+            gameroom: gameRoomId
+        }
+    );
+}
+
+/*
+ * Manually ends the game.
+ */
+export function endGameAsCreator(gameRoomId){
+    wsSend(
+        {     
+            action: "end-game",
             gameroom: gameRoomId
         }
     );
@@ -235,6 +248,17 @@ function updateScore(data){
             
         }
     }
+}
+
+/*
+ * Finishes up a game.
+ */
+function gameOver(data){
+    const localTime = new Date(data.endTime).toLocaleTimeString();
+    $(`#timeend${data.gameroom}`).text(localTime);
+
+    $(`#startbutton${data.gameroom}`).fadeOut();
+    $(`#endbutton${data.gameroom}`).fadeOut();
 }
 
 // Web sockets
@@ -290,6 +314,10 @@ export function wsConnect(onopen = null) {
 
                 case 'update-score':
                     updateScore(data);
+                    return;
+
+                case 'game-over':
+                    gameOver(data);
                     return;
             }
         }

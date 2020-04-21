@@ -65,6 +65,10 @@ module.exports = function (app, passport) {
                         doActionStartGame(ws, data);
                         return;
 
+                    case 'end-game':
+                        doActionEndGame(ws, data);
+                        return;
+
                     //In-game actions
                     case 'update-score':
                         doActionUpdateScore(ws, data);
@@ -248,7 +252,7 @@ module.exports = function (app, passport) {
 
                 //If this player has finished, check if the game is over for everybody else
                 UsersGameRooms.update(
-                    { 
+                    {
                         score: data.score,
                         ended: data.endgame
                     },
@@ -271,18 +275,7 @@ module.exports = function (app, passport) {
                             })
                                 .then(obj => {
                                     if (obj.count === 0) {
-                                        //Update the database
-                                        gr.timeEnded = toMysqlFormat(new Date());
-                                        gr.save().then(result => {
-
-                                            //Send a message to the owner
-                                            webSocketsById[gr.ownerId].send(JSON.stringify(
-                                                {
-                                                    req: 'game-over',
-                                                    gameroom: data.gameroom
-                                                }
-                                            ));
-                                        });
+                                        wrapUpGameRoom(gr);
                                     }
                                 });
                         }
@@ -290,4 +283,39 @@ module.exports = function (app, passport) {
                     });
             });
     }
-};
+
+    /**
+     * Forces an ongoing game to end prematurely.
+     */
+    function doActionEndGame(ws, data) {
+        UsersGameRooms.update(
+            { ended: true },
+            { where: { gameRoomId: data.gameroom } }
+        )
+            .then(n => {
+                GameRoom.findOne(
+                    { where: { id: data.gameroom } }
+                )
+                    .then(gr => {
+                        wrapUpGameRoom(gr)
+                    });
+            });
+    }
+
+    /**
+     * Udpdates the database and send the owner a message to indicate that
+     * the game is over for a game room.
+     */
+    function wrapUpGameRoom(gr) {
+        gr.timeEnded = toMysqlFormat(new Date());
+        gr.save().then(result => {
+            webSocketsById[gr.ownerId].send(JSON.stringify(
+                {
+                    req: 'game-over',
+                    gameroom: gr.id,
+                    endTime: gr.timeEnded
+                }
+            ));
+        });
+    }
+}
