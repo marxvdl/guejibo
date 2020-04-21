@@ -247,23 +247,26 @@ module.exports = function (app, passport) {
                 ));
 
                 //If this player has finished, check if the game is over for everybody else
-                if (data.endgame) {
-                    UsersGameRooms.update(
-                        { score: data.score },
-                        {
-                            where: {
-                                userId: ws.user.id,
-                                gameRoomId: data.gameroom
-                            }
+                UsersGameRooms.update(
+                    { 
+                        score: data.score,
+                        ended: data.endgame
+                    },
+                    {
+                        where: {
+                            userId: ws.user.id,
+                            gameRoomId: data.gameroom
                         }
-                    )
-                        .then(n => {
+                    }
+                )
+                    .then(n => {
 
-                            //If all players have a defined score, then the game is over
+                        if (data.endgame) {
+                            //If all players have ended, then the game is over
                             UsersGameRooms.findAndCountAll({
                                 where: {
                                     gameRoomId: data.gameroom,
-                                    score: null
+                                    ended: false
                                 }
                             })
                                 .then(obj => {
@@ -282,9 +285,9 @@ module.exports = function (app, passport) {
                                         });
                                     }
                                 });
-                        });
-                }
+                        }
 
+                    });
             });
     }
 };
