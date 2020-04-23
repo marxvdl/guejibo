@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import base64url from "base64url";
 
 export const TIMES = {
     // How often a player will send a "I'm here" message 
@@ -14,6 +15,13 @@ export const TIMES = {
 };
 
 const GAME_BASE_PATH = '../';
+
+export function unregisteredJoin(code, name){
+    client.main.global.token = 'unregistered_' + base64url(name);
+    client.main.global.payload = { name : name };
+
+    join(code);
+}
 
 export function join(code) {
     client.main.wsSend({

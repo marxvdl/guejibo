@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IacWeb Test Client</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="dist/main.js"></script>
+    <script src="dist/student.js"></script>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <div class="panel" id="join-panel">
+        <h1>Join Game Room</h1>
+        <p>
+            Code: <input type="text" id="joincode">
+        </p>
+        <p>
+            Name: <input type="text" id="joinname">
+        </p>
+        <p>
+            <button onclick="client.student.unregisteredJoin($('#joincode').val(), $('#joinname').val())">Join!</button>
+        </p>
+    </div>
+
+    <div class="panel" id="gameroom-panel" style="display:none">
+        <h1 id="game-name"></h1>
+        <p>Created by <strong id="gr-owner"></strong></p>
+        <div id="usersdiv"></div>        
+        <p>Status: <span id="status"></span></p>
+    </div>
+</body>
+</html>

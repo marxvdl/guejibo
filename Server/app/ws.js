@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const jwt = require('jwt-simple');
+const base64url = require("base64url");
 const models = require('../sequelize/models');
 const GameLogic = require('../app/gamelogic');
 
@@ -20,16 +21,36 @@ module.exports = function (app, passport) {
         verifyClient: async (info, done) => {
             const token = info.req.url.split('/')[1];
 
-            let decoded;
-            try {
-                decoded = jwt.decode(token, process.env.JWT_SECRET);
-            }
-            catch (e) {
-                done(false);
-                return;
+            //Unregisterd user
+            if (token.startsWith('unregistered_')) {
+                let name = base64url.decode(token.substr(13));
+                if (name === '') {
+                    name = GameLogic.createRandomUserName();
+                }
+
+                currentUser = User.build(
+                    {
+                        name: name,
+                        temporary: true
+                    }
+                );
+                await currentUser.save();
             }
 
-            currentUser = await User.findOne({ where: { id: decoded.id } });
+            //Registered user
+            else {
+                let decoded;
+                try {
+                    decoded = jwt.decode(token, process.env.JWT_SECRET);
+                }
+                catch (e) {
+                    done(false);
+                    return;
+                }
+
+                currentUser = await User.findOne({ where: { id: decoded.id } });
+            }
+
             done(true);
         }
     });
