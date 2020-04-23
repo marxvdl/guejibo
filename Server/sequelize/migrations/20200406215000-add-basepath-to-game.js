@@ -10,7 +10,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeColumn(
-      'GameRoom',
+      'Game',
       'basePath'
     );
   }
