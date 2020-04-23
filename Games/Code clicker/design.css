@@ -54,6 +54,10 @@
   height: auto;
 }
 #comprarProgramador{
-    width:100%;
+    width:100px;
+    height:auto;
+}
+#imgupgradeprogramador{
+    width:50px;
     height:auto;
 }
