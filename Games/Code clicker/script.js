@@ -296,8 +296,9 @@ public class PesParaMetros extends JFrame {
 		
 	}
 }`];
+var valorclick=1;
 $('#Pczinho').on('click', function() {
-	pontuacao=pontuacao+1;
+	pontuacao=pontuacao+valorclick;
 	pontuacaoAcumulada=pontuacaoAcumulada+1;
 	$('#pontuacao').text('Pontuação: '+pontuacao);
 	escreverCodigo();
@@ -326,12 +327,14 @@ $("#Pczinho").mouseover(function() {
 });
 $("#Pczinho").mouseout(function() {
 	$('#Pczinho').attr('src','PixelArts/Pczinho_frame_zero.gif');
+	$('#Pczinho').stop(true,true);
 });
 var programadores=0;
 var custoProgramador=15;
 var producaoProgramador=0.0;
 var iniciar;
 var upgradeprogramador=1;
+var quantidadeupgradeprogramador=0;
 $('#comprarProgramador').on('click', function(){
 	
 	if(pontuacao>=custoProgramador){
@@ -341,6 +344,11 @@ $('#comprarProgramador').on('click', function(){
 		imgProgramador.appendTo('#arquivos');
 		pontuacao=pontuacao-custoProgramador;
 		$('#pontuacao').text(pontuacao);
+		if(programadores>=(10*(quantidadeupgradeprogramador))){
+			quantidadeupgradeprogramador++;
+			$('#loja').append('<p class="upgradeprogramador" id='+quantidadeupgradeprogramador+'>Aumentar Produção dos programadores e mouse em 100%. Custo: '+100*Math.pow(2,(quantidadeupgradeprogramador-1))+'</p>');
+			$('#loja').append('<img src="PixelArts\\Comp_Programador.png" alt="melhorar programador" class="imgupgradeprogramador" id='+quantidadeupgradeprogramador+'>');
+		}
 		if(ps===0.0){
 			gerarPontos();
 		}
@@ -349,22 +357,28 @@ $('#comprarProgramador').on('click', function(){
 		$('#ps').text('Pontuação por segundo'+ps);
 		$('#quantidadeProgramadores').text('Quantidade de Programadores: '+programadores);
 	}
-	custoProgramador=Math.round(15*Math.pow(1.15,programadores));
+	custoProgramador=Math.round(15*Math.pow(1.12,programadores));
 	$('#custoProgramadores').text('CustoProgramadores: '+custoProgramador);
 });
-$('#imgupgradeprogramador').on('click',function(){
-	if(pontuacao>=500){
-		pontuacao-=500;
+$(document).on('click','.imgupgradeprogramador', function(){
+	var id = $(this).attr('id');
+	
+	if(pontuacao>=(100*Math.pow(2,(id-1)))){
+		
+		 $('.upgradeprogramador#'+id).remove();
+		 $('.imgupgradeprogramador#'+id).remove();
+		pontuacao-=100*Math.pow(2,(id-1));
 		$('#pontuacao').text(pontuacao);
 		 upgradeprogramador=upgradeprogramador*2;
-		 $('#imgupgradeprogramador').remove();
-		 $('#upgradeprogramador').remove();
+		 valorclick=valorclick*2;
 		 ps-=producaoProgramador;
 		 producaoProgramador=producaoProgramador*2;
+
 		 ps+=producaoProgramador;
 		 $('#ps').text('Pontuação por segundo: '+ps);
+		 
 	}
-})
+});
 	var psMaior20=false;
 	function gerarPontos(){
 
