@@ -2,7 +2,8 @@ const WebSocket = require('ws');
 const jwt = require('jwt-simple');
 const base64url = require("base64url");
 const models = require('../sequelize/models');
-const GameLogic = require('../app/gamelogic');
+const gamelogic = require('../app/gamelogic');
+const authlogic = require('../app/authlogic');
 
 const User = models.User;
 const GameRoom = models.GameRoom;
@@ -25,7 +26,7 @@ module.exports = function (app, passport) {
             if (token.startsWith('unregistered_')) {
                 let name = base64url.decode(token.substr(13));
                 if (name === '') {
-                    name = GameLogic.createRandomUserName();
+                    name = gamelogic.createRandomUserName();
                 }
 
                 currentUser = User.build(
@@ -220,16 +221,17 @@ module.exports = function (app, passport) {
             .then(gr => {
                 gr.timeStarted = toMysqlFormat(new Date());
                 gr.save().then(result => {
-                    let sendToList = gr.members.map(m => m.id).filter(id => id != ws.user.id);
-                    sendToList.push(gr.ownerId);
+                    let sendToList = gr.members.filter(m => m.id != ws.user.id);
+                    sendToList.push(gr.owner);
 
-                    for (let id of sendToList) {
-                        webSocketsById[id].send(JSON.stringify(
+                    for (let user of sendToList) {
+                        webSocketsById[user.id].send(JSON.stringify(
                             {
                                 req: 'game-started',
                                 gameroom: data.gameroom,
                                 startTime: gr.timeStarted,
-                                path: gr.game.basePath
+                                path: gr.game.basePath,
+                                token: authlogic.createJWT(user)
                             }
                         ));
                     }

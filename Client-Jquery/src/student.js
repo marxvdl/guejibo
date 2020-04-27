@@ -133,7 +133,7 @@ function displayPlayerOnlineOffline(gameroomId, user, isOnline) {
 export function startGameAsPlayer(data) {
     clearInterval(imReadyIntervals[data.gameroom]); //stop shouting "I'm ready!"
 
-    Cookies.set('jwt', client.main.global.token, { path: '/' });
+    Cookies.set('jwt', data.token, { path: '/' });
     Cookies.set('gameroom', data.gameroom, { path: '/' });
 
     window.open(GAME_BASE_PATH + 'Games/' + data.path + '/index.html', '_self');

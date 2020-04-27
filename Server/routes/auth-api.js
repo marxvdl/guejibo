@@ -1,5 +1,5 @@
-const jwt = require("jwt-simple");
 const models = require('../sequelize/models');
+const authlogic = require('../app/authlogic');
 const User = models.User;
 
 module.exports = function (app, passport) {
@@ -24,7 +24,7 @@ module.exports = function (app, passport) {
         (req, res) => {
             res.send({
                 success: true,
-                token: createJWT(req.user)
+                token: authlogic.createJWT(req.user)
             });
         }
     );
@@ -53,13 +53,8 @@ module.exports = function (app, passport) {
 
     ////
 
-    function createJWT(obj){
-        return jwt.encode(User.exportObject(obj, true), process.env.JWT_SECRET);
-    }
-
     function isLoggedIn() {
         return passport.authenticate('local-jwt', { session: false });
     }
-
 };
 
