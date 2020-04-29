@@ -21,6 +21,21 @@
             margin-top: 10px;
             width: 200px;
         }
+        #gameoverbox {
+            margin-top: 30px;
+            border: 2px solid rgb(158, 158, 158);
+            background-color: rgb(241, 241, 241);
+            padding-left: 20px;
+            width: 400px;
+            box-shadow: 3px 3px 2px rgb(77, 77, 77);
+        }
+        #join {
+            width: 250px;
+            border: 1px solid black;
+            padding: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -29,6 +44,14 @@
     <input type="number" id="score" value="0">
     <button id="send">Send</button>
     <p><button id="end">End game</button></p>
+
+    <div id="gameoverbox" style="display:none">
+        <h3>Game Over</h3>
+        <p>Name: <span id="name"></span></p>        
+        <p>Final score: <span id="finalscore"></span></p>
+        <p><button id="completereg">Complete registration!</button></p>
+    </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="stubgame.js"></script>
 </html>

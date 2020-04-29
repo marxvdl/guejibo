@@ -262,7 +262,7 @@ module.exports = function (app, passport) {
         })
             .then(gr => {
 
-                //Send new score to the client
+                //Send new score to the game room owner
                 webSocketsById[gr.ownerId].send(JSON.stringify(
                     {
                         req: 'update-score',
@@ -273,7 +273,7 @@ module.exports = function (app, passport) {
                     }
                 ));
 
-                //If this player has finished, check if the game is over for everybody else
+                //Update database with new score and endgame status
                 UsersGameRooms.update(
                     {
                         score: data.score,
@@ -288,9 +288,20 @@ module.exports = function (app, passport) {
                     }
                 )
                     .then(n => {
+                        //If this player has finished...
+                        if (data.endgame) {          
 
-                        if (data.endgame) {
-                            //If all players have ended, then the game is over
+                            //... send a confirmation message ...
+                            webSocketsById[ws.user.id].send(JSON.stringify(
+                                {
+                                    req: 'user-game-over',
+                                    user: User.exportObject(ws.user),
+                                    gameroom: data.gameroom,
+                                    score: data.score
+                                }
+                            ));                            
+                            
+                            //... and check if the game is also over for everybody else
                             UsersGameRooms.findAndCountAll({
                                 where: {
                                     gameRoomId: data.gameroom,
@@ -321,7 +332,7 @@ module.exports = function (app, passport) {
                     { where: { id: data.gameroom } }
                 )
                     .then(gr => {
-                        wrapUpGameRoom(gr)
+                        wrapUpGameRoom(gr);
                     });
             });
     }
@@ -342,4 +353,4 @@ module.exports = function (app, passport) {
             ));
         });
     }
-}
+};

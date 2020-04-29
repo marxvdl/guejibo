@@ -13,6 +13,8 @@ export class GameConnection {
     private gameRoomId: number;
     private ws: WebSocket = undefined;
     private intervalId: number;
+    private endGameCallback: (data: GameConnection.EndGameData) => void;
+    private endGameData: GameConnection.EndGameData;
 
     /**
      * Creates a GameConnection object from data stored in cookies.
@@ -35,7 +37,8 @@ export class GameConnection {
         }
 
         this.ws = new WebSocket(WSURL + this.jwt);
-        this.ws.onmessage = this.onmessage;
+        (<GameConnection.MyWebSocket>this.ws).gameConnection = this;
+        this.ws.onmessage = onmessage;
         this.ws.onopen = () => {
             this.intervalId = window.setInterval(() => {
                 this.ws.send(JSON.stringify(
@@ -54,38 +57,131 @@ export class GameConnection {
      * @param score The current score
      * @param endgame If true, signals that the game has ended for this player
      */
-    public sendScore(score : (number|string), endgame=false){
+    public sendScore(score: (number | string), endgame = false) {
         this.ws.send(JSON.stringify(
             {
                 action: 'update-score',
                 gameroom: this.gameRoomId,
-                score: (typeof score !== 'number')? parseInt(score) : score,
+                score: (typeof score !== 'number') ? parseInt(score) : score,
                 endgame: endgame
             }
         ));
-        
-        if(endgame === true){
+
+        if (endgame === true) {
             window.clearInterval(this.intervalId);
         }
     }
 
     /**
-     * What happens when a message is received.
+     * Setter for endGameData
+     * @param endGameData
      */
-    private onmessage(ev: MessageEvent) {
-        let data: object;
+    setEndGameData(endGameData: GameConnection.EndGameData) {
+        this.endGameData = endGameData;
+    }
 
-        try {
-            data = JSON.parse(ev.data);
+    /**
+     * Sets up a function to be called upon receiving confirmation
+     * from the server that the game is over for this player.
+     * @param callback The function to be called.
+     */
+    public onEndGame(callback: (data: GameConnection.EndGameData) => void) {
+        this.endGameCallback = callback;
+    }
+
+    /**
+     * Returns the end game callback function.
+     */
+    public getEndGameCallback(): (data: GameConnection.EndGameData) => void {
+        return this.endGameCallback;
+    }
+
+    /**
+     * Loads up the page that will allow the user to complete the registration.
+     */
+    public loadJoinPage() {
+        Cookies.set('tmpuser', JSON.stringify(this.endGameData.user), { path: '/' });
+        window.open('../../Client-Jquery/completereg.html', '_self');
+    }
+
+}
+
+export namespace GameConnection {
+
+    /**
+     * The data that is avaliable to the end game callback function.
+     */
+    export interface EndGameData {
+        gameroom: number,
+        score: number,
+        user: {
+            id: number,
+            name: string
         }
-        catch (e) {
-            console.log(`Could not parse: ${ev.data}`);
-            return;
-        }
+    };
 
-        console.log("This is what I received:");
-        console.log(data);
+    /**
+     * WebSocket extension with an extra property to track the GameConnection
+     * object that created it.
+     */
+    export interface MyWebSocket extends WebSocket {
+        gameConnection: GameConnection
+    }
 
+}
+
+/**
+ * What happens when a message is received.
+ */
+function onmessage(ev: MessageEvent) {
+    let data: any;
+
+    try {
+        data = JSON.parse(ev.data);
+    }
+    catch (e) {
+        this.showParsingError(ev.data);
+        return;
+    }
+
+    if ('req' in data === false) {
+        showParsingError(data);
+        return;
+    }
+
+    switch (data.req) {
+        case 'user-game-over':
+            if ((('gameroom' in data) && ('score' in data)) === false) {
+                showParsingError(data);
+                return;
+            }
+
+            //Saves the returned data for later use
+            let endGameData =  {
+                user: {
+                    id: parseInt(data.user.id),
+                    name: data.user.name
+                },
+                gameroom: parseInt(data.gameroom),
+                score: parseInt(data.score)
+            };
+            (<GameConnection.MyWebSocket>this).gameConnection.setEndGameData(endGameData);
+
+            //Calls the callback
+            (<GameConnection.MyWebSocket>this).gameConnection.getEndGameCallback()(endGameData);
+
+            break;
+
+        default:
+            showParsingError(data);
+    }
+
+    /**
+    * Shows an error to the console indicating a parsing error.
+    * @param data The message that could not be parsed.
+    */
+    function showParsingError(data: any): void {
+        console.log(`GamesLib error; Invalid message received from server: ${data}`);
     }
 
 }

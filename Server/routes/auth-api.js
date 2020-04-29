@@ -39,7 +39,7 @@ module.exports = function (app, passport) {
         (req, res) => {
             res.send({
                 success: true,
-                token: createJWT(req.user)
+                token: authlogic.createJWT(req.user)
             });
         }
     );

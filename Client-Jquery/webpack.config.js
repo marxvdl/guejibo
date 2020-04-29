@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         main: './src/main.js',
-        student: './src/student.js'
+        student: './src/student.js',
+        completereg: './src/completereg.js',
     },
     mode: 'development',
     output: {
