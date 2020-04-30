@@ -296,10 +296,11 @@ public class PesParaMetros extends JFrame {
 		
 	}
 }`];
+var boost=1;
 var valorclick=1;
 $('#Pczinho').on('click', function() {
-	pontuacao=pontuacao+valorclick;
-	pontuacaoAcumulada=pontuacaoAcumulada+1;
+	pontuacao=pontuacao+(valorclick*boost);
+	pontuacaoAcumulada=pontuacaoAcumulada+(valorclick*boost);
 	$('#pontuacao').text('Pontuação: '+pontuacao);
 	escreverCodigo();
 });
@@ -329,12 +330,31 @@ $("#Pczinho").mouseout(function() {
 	$('#Pczinho').attr('src','PixelArts/Pczinho_frame_zero.gif');
 	$('#Pczinho').stop(true,true);
 });
+
 var programadores=0;
 var custoProgramador=15;
 var producaoProgramador=0.0;
 var iniciar;
 var upgradeprogramador=1;
 var quantidadeupgradeprogramador=0;
+setTimeout(function() {
+$( "#quiz" ).dialog({
+	resizable: false,
+	height: "auto",
+	width: 400,
+	modal: true,
+	buttons: {
+	  "Sim": function() {
+		  boost=10;
+		  setTimeout(function(){ boost=1; }, 60000);
+		$( this ).dialog( "close" );
+	  },
+	  "Não": function() {
+		$( this ).dialog( "close" );
+	  }
+	}
+  });
+},300000);
 $('#comprarProgramador').on('click', function(){
 	
 	if(pontuacao>=custoProgramador){
@@ -383,8 +403,8 @@ $(document).on('click','.imgupgradeprogramador', function(){
 	function gerarPontos(){
 
 		if(ps<20){
-			pontuacao=pontuacao+1;
-			pontuacaoAcumulada=pontuacaoAcumulada+1;
+			pontuacao=pontuacao+(1*boost);
+			pontuacaoAcumulada=pontuacaoAcumulada+(boost*1);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
 			escreverCodigo();
 			clearInterval(iniciar);
@@ -395,8 +415,8 @@ $(document).on('click','.imgupgradeprogramador', function(){
 				clearInterval(iniciar);
     			iniciar=setInterval(gerarPontos,(50));
 			}
-			pontuacao=pontuacao+(ps/20);
-			pontuacaoAcumulada=pontuacaoAcumulada+(ps/20);
+			pontuacao=pontuacao+Math.round((ps*boost)/20);
+			pontuacaoAcumulada=pontuacaoAcumulada+Math.round((ps*boost)/20);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
 			escreverCodigo();
 		}
