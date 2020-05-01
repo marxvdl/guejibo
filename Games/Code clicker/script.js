@@ -298,13 +298,14 @@ public class PesParaMetros extends JFrame {
 }`];
 var boost=1;
 var valorclick=1;
+//Adiciona pontos ao clicar na imagem do computador
 $('#Pczinho').on('click', function() {
 	pontuacao=pontuacao+(valorclick*boost);
 	pontuacaoAcumulada=pontuacaoAcumulada+(valorclick*boost);
 	$('#pontuacao').text('Pontuação: '+pontuacao);
 	escreverCodigo();
 });
-
+//Escreve algum codigo na tela baseado na pontuacao total
 function escreverCodigo() {
 	if(codigo[qualCodigo].length>pontuacaoAcumulada){
 		$(".java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
@@ -322,10 +323,11 @@ function escreverCodigo() {
 	hljs.initHighlighting.called = false;
 	hljs.initHighlighting();
 }
-
+//Anima o gif do computador quandos passamos o mouse por cima dele
 $("#Pczinho").mouseover(function() {
 	$('#Pczinho').attr('src',"PixelArts/Pczinho.gif");
 });
+//Para a animacao do gif do computador quando tiramos o mouse de cima dele
 $("#Pczinho").mouseout(function() {
 	$('#Pczinho').attr('src','PixelArts/Pczinho_frame_zero.gif');
 	$('#Pczinho').stop(true,true);
@@ -337,6 +339,7 @@ var producaoProgramador=0.0;
 var iniciar;
 var upgradeprogramador=1;
 var quantidadeupgradeprogramador=0;
+//Essa funcao faz aparecer um quiz que aumenta a producao de pontos caso o acertemos
 setTimeout(function() {
 $( "#quiz" ).dialog({
 	resizable: false,
@@ -355,6 +358,7 @@ $( "#quiz" ).dialog({
 	}
   });
 },300000);
+//Funcao para comprar o programador
 $('#comprarProgramador').on('click', function(){
 	
 	if(pontuacao>=custoProgramador){
@@ -366,7 +370,7 @@ $('#comprarProgramador').on('click', function(){
 		$('#pontuacao').text(pontuacao);
 		if(programadores>=(10*(quantidadeupgradeprogramador))){
 			quantidadeupgradeprogramador++;
-			$('#loja').append('<p class="upgradeprogramador" id='+quantidadeupgradeprogramador+'>Aumentar Produção dos programadores e mouse em 100%. Custo: '+100*Math.pow(2,(quantidadeupgradeprogramador-1))+'</p>');
+			$('#loja').append('<p class="upgradeprogramador" id='+quantidadeupgradeprogramador+'>Aumentar Produção dos programadores e mouse em 100%. Custo: '+100*Math.pow(5,(quantidadeupgradeprogramador-1))+'</p>');
 			$('#loja').append('<img src="PixelArts\\Comp_Programador.png" alt="melhorar programador" class="imgupgradeprogramador" id='+quantidadeupgradeprogramador+'>');
 		}
 		if(ps===0.0){
@@ -374,12 +378,13 @@ $('#comprarProgramador').on('click', function(){
 		}
 		producaoProgramador=producaoProgramador+(0.1*upgradeprogramador);
 		ps=ps+(0.1*upgradeprogramador);
-		$('#ps').text('Pontuação por segundo'+ps);
+		$('#ps').text('Pontuação por segundo'+ps.toFixed(1));
 		$('#quantidadeProgramadores').text('Quantidade de Programadores: '+programadores);
 	}
 	custoProgramador=Math.round(15*Math.pow(1.12,programadores));
 	$('#custoProgramadores').text('CustoProgramadores: '+custoProgramador);
 });
+//Funcao para melhorar os programadores
 $(document).on('click','.imgupgradeprogramador', function(){
 	var id = $(this).attr('id');
 	
@@ -395,14 +400,15 @@ $(document).on('click','.imgupgradeprogramador', function(){
 		 producaoProgramador=producaoProgramador*2;
 
 		 ps+=producaoProgramador;
-		 $('#ps').text('Pontuação por segundo: '+ps);
+		 $('#ps').text('Pontuação por segundo: '+ps.toFixed(1));
 		 
 	}
 });
-	var psMaior20=false;
+	var producaoProgramadorMaior20=false;
+	//Funcao responsagel pela geracao de pontos dos programadores
 	function gerarPontos(){
 
-		if(ps<20){
+		if(producaoProgramador<20){
 			pontuacao=pontuacao+(1*boost);
 			pontuacaoAcumulada=pontuacaoAcumulada+(boost*1);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
@@ -411,17 +417,18 @@ $(document).on('click','.imgupgradeprogramador', function(){
     		iniciar=setInterval(gerarPontos,(1000/ps));
 		}
 		else{
-			if(!psMaior20){
+			if(!producaoProgramadorMaior20){
 				clearInterval(iniciar);
-    			iniciar=setInterval(gerarPontos,(50));
+				iniciar=setInterval(gerarPontos,(50));
+				psMaior20=true;
 			}
-			pontuacao=pontuacao+Math.round((ps*boost)/20);
-			pontuacaoAcumulada=pontuacaoAcumulada+Math.round((ps*boost)/20);
+			pontuacao=pontuacao+Math.round((producaoProgramador*boost)/20);
+			pontuacaoAcumulada=pontuacaoAcumulada+Math.round((producaoProgramador*boost)/20);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
 			escreverCodigo();
 		}
 	}
-
+//diminui e aumenta o tamanho do gif do computador quando clicamos nele
 $("#Pczinho").mousedown(function() {
 	$('#Pczinho').animate({
 
