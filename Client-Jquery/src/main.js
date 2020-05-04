@@ -1,4 +1,5 @@
 const jwtDecode = require('jwt-decode');
+import base64url from "base64url";
 
 const BASEURL = 'http://localhost:3000/';
 const WSURL = 'ws://localhost:8080/';
@@ -85,6 +86,30 @@ export function loadGames() {
     });
 }
 
+export function guestLoadGames() {
+    $.ajax({
+        type: 'GET',
+        url: BASEURL + 'api/games',
+        success: data => {
+            $('#games-ul').empty();
+            for (let game of data) {
+                $('#games-ul').append(
+                    $(`
+                    <li>
+                        <strong>${game.name}</strong>: 
+                        <a href="#" onclick="client.main.guestCreateRoom(${game.id})">Create room</a> 
+                        <span id="success-${game.id}" class="msg" style="display:none">
+                            <span class="success">Success!</span>
+                            Code: <span class="code" id="success-code-${game.id}"></span>
+                        </span>
+                        <span id="failure-${game.id}" class="msg failure" style="display:none">Failure</span>
+                    </li>`)
+                );
+            }
+        }
+    });
+}
+
 export function createRoom(gameid) {
     $.ajax({
         type: 'POST',
@@ -98,6 +123,31 @@ export function createRoom(gameid) {
             if (data.success) {
                 $(`#success-code-${gameid}`).text((data.code));
                 $(`#success-${gameid}`).fadeIn();
+                createGameRoomPanel(data.id);
+            }
+            else {
+                $(`#failure-${gameid}`).fadeIn();
+            }
+        }
+    });
+}
+
+export function guestCreateRoom(gameid) {
+    $.ajax({
+        type: 'POST',
+        url: BASEURL + 'api/guest/gameroom',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+            gameid: gameid
+        }),
+        success: data => {
+            if (data.success) {
+                $(`#success-code-${gameid}`).text((data.code));
+                $(`#success-${gameid}`).fadeIn();                
+
+                global.token = data.token;
+                global.payload = jwtDecode(data.token);
+
                 createGameRoomPanel(data.id);
             }
             else {

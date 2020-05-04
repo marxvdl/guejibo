@@ -4,14 +4,15 @@ const User = models.User;
 const Game = models.Game;
 const GameRoom = models.GameRoom;
 
-const GameLogic = require('../app/gamelogic');
+const gamelogic = require('../app/gamelogic');
+const authlogic = require('../app/authlogic');
 
 module.exports = function (app, passport) {
 
     /*
      * Returns a list of all available games.
      */
-    app.get('/api/games', isLoggedIn(), (req, res) => {
+    app.get('/api/games', (req, res) => {
         Game.findAll().then(result => {
             res.send(
                 result.map(game => Game.exportObject(game))
@@ -28,7 +29,7 @@ module.exports = function (app, passport) {
             ownerId: req.user.id,
             timeStarted: null,
             timeEnded: null,
-            code: GameLogic.createGameRoomCode()
+            code: gamelogic.createGameRoomCode()
         });
 
         gr.save()
@@ -44,6 +45,44 @@ module.exports = function (app, passport) {
                     success: false
                 });
             });
+
+    });
+
+    /*
+     * Creates a new game room with a new unregistered user as the owner.
+     */
+    app.post('/api/guest/gameroom/', (req, res) => {
+        guestUser = User.build(
+            {
+                name: gamelogic.createRandomUserName(),
+                temporary: true
+            }
+        );
+        guestUser.save().then(() => {
+
+            const gr = GameRoom.build({
+                gameId: req.body.gameid,
+                ownerId: guestUser.id,
+                timeStarted: null,
+                timeEnded: null,
+                code: gamelogic.createGameRoomCode()
+            });
+
+            gr.save()
+                .then(result => {
+                    res.send({
+                        success: true,
+                        id: result.id,
+                        code: result.code,
+                        token: authlogic.createJWT(guestUser)
+                    });
+                })
+                .catch(error => {
+                    res.send({
+                        success: false
+                    });
+                });
+        })
 
     });
 
@@ -95,9 +134,9 @@ module.exports = function (app, passport) {
                 }
             ]
         })
-        .then(gr => {
-            res.send( GameRoom.exportObject(gr, true) );
-        });
+            .then(gr => {
+                res.send(GameRoom.exportObject(gr, true));
+            });
     });
 
     //

@@ -19,7 +19,8 @@ export function completeRegistration() {
             name: $('#name').val(),
         }),
         success: data => {
-
+            console.log("Registration complete");
+            console.log(data);
         }
     });
 }

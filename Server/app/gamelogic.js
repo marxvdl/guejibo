@@ -22,6 +22,6 @@ module.exports = {
         for (let i = 0; i < size; i++) {
             result[i] = characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        return 'User' + result.join('');
+        return 'Guest_' + result.join('');
     }
 };
