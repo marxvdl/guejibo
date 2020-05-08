@@ -1,0 +1,4 @@
+Os documentos .piskel são arquivos do software piskel, caso você queira redimensionar as
+imagens(que estão num tamanho um pouco grande, eu acho) você pode acessa o site " piskelapp.com " 
+ir em "create new sprite", arrastar o arquivo .piskel desta pasta, depois clicar no ícone de imagem e escolher
+na o tamanho que você precisar.
