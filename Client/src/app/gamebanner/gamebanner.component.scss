@@ -1,0 +1,22 @@
+:host {
+    border: 1px solid gray;
+    width: 280px;
+    height: 130px;
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+
+    div {
+        font-weight: bold;
+        font-size: 120%;
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    :host {
+        flex: 0 0 250px;
+    }
+}
