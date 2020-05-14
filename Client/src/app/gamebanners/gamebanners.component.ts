@@ -8,14 +8,14 @@ import { GamesService } from '../games.service';
 })
 export class GamebannersComponent implements OnInit {
 
-  public games;
+  public games$;
 
   constructor(
     private gamesService : GamesService
   ) { }
 
   ngOnInit(): void {
-    this.games = this.gamesService.getGames();
+    this.games$ = this.gamesService.getGames(); 
   }
 
 

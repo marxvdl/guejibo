@@ -1,6 +1,6 @@
 <section>
     <app-gamebanner
-        *ngFor="let game of games"
+        *ngFor="let game of games$ | async"
         [name]="game"
     >
     </app-gamebanner>
