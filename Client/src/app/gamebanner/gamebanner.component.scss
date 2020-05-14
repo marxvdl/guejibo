@@ -4,7 +4,7 @@
     height: 130px;
     position: relative;
     display: inline-block;
-    margin: 0.5rem;
+    margin: 8px;
 
     div {
         font-weight: bold;
@@ -17,6 +17,6 @@
 
 @media only screen and (min-width: 768px) {
     :host {
-        flex: 0 0 250px;
+        flex: 0 0 280px;
     }
 }
