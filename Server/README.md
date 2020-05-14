@@ -21,7 +21,7 @@
 
     Se tudo der certo, o banco de dados informado no passo anterior agora deve conter as tabelas `Game`, `GameRoom`, `SequelizeMeta`, `User` e `UsersGameRooms`.
 
-6. A tabela `Game` contém informação sobre os jogos existentes no sistema. O campo `basePath` deve conter o nome da pasta (dentro de `Games/` onde os arquivos do jogo se encontram no sistema de arquivos). 
+6. A tabela `Game` contém informação sobre os jogos existentes no sistema. O campo `basePath` deve conter o nome da pasta (dentro de `Games/`) onde os arquivos do jogo se encontram no sistema de arquivos. 
 
     No banco de dados, inserir nessa tabela os dados dos jogos configurados. Por exemplo:
 
