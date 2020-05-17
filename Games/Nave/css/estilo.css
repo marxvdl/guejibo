@@ -2,7 +2,7 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: Candara;
-	/*background-image: url('../img/espaco.jpg');*/
+	background-image: url('../img/fundo.png');
 	background-position: top;
 	background-size: cover;
 }
@@ -53,8 +53,8 @@ button:hover {
 }
 
 #painel {
-	/*background: rgba(255, 255, 255, .3);*/
-	color: #fff;
+	background: rgba(255, 255, 255, .9);
+	color: #212121;
 /*	padding: 10px;*/
 	height: 100%;
 	width: 10%;
@@ -66,8 +66,8 @@ button:hover {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	margin-right: 15px;
-	margin-top: 20px;
+	margin-right: 0px;
+	margin-top: 0px;
 }
 
 #painel h3 {
@@ -276,13 +276,15 @@ label {
 #alternativas {
 	position: absolute;
 	top: 7%;
-	left: 5%;
+	/*left: 5%;*/
 	width: 90%;
-	background: transparent;
+	background: rgba(0, 0, 0, .9);
+	padding-top: 5px;
+	padding-bottom: 5px;
 	z-index: 100;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: center;
 }
 
 #alternativas .ajuda {
@@ -292,7 +294,8 @@ label {
 	left: 20%;
 	line-height: 10px;
 	text-align: center;
-	background: darkblue;
+	background: orange;
+	color: #212121;
 	padding: 5px;
 /*	width: 20px;
 	height: 20px;*/
@@ -301,17 +304,21 @@ label {
 }
 
 
-#alternativas div {
-	background: #212121;
-	width: 57px;
-	height: 57px;
-	border-radius: 50%;
+#alternativas .alt {
+	width: 120px;
+	height: 60px;
+	/*border-radius: 50%;*/
 	text-align: center;
 	font-size: 2em;
 	color: #fff;
-	border: 2px solid #ccc;
 	position: relative;
 	line-height: 45px;
+	background-size: contain;
+	background-position: center;
+}
+
+.valor_binario {
+	display: hidden;
 }
 
 #nave {
@@ -327,12 +334,20 @@ label {
 }
 
 .obstaculo {
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
 	background-position: center;
 	background-size: cover;
 	position: absolute;
+}
+
+.planeta {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+.alien {
+	width: 60px;
+	height: 30px;
 }
 
 /* MEDIA QUERIES */
