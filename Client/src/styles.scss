@@ -5,12 +5,10 @@ body {
 }
 
 @media only screen and (min-width: 768px) {
-    body {
-        text-align: center;
-    }
-
     main {
         max-width: 1000px;
         display: inline-block;
+        margin: 0 auto;
+        display: block;
     }
 }

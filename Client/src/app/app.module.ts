@@ -8,6 +8,10 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { GamebannerComponent } from './homepage/gamebanner/gamebanner.component';
 import { GamebannersComponent } from './homepage/gamebanners/gamebanners.component';
 import { HomepageComponent } from './homepage/homepage/homepage.component';
+import { GameScreenComponent } from './game-screen/game-screen/game-screen.component';
+import { GameTitleComponent } from './game-screen/game-title/game-title.component';
+import { ScreenshotComponent } from './game-screen/screenshot/screenshot.component';
+import { MenuComponent } from './game-screen/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,11 @@ import { HomepageComponent } from './homepage/homepage/homepage.component';
     TopbarComponent,
     GamebannerComponent,
     GamebannersComponent,
-    HomepageComponent
+    HomepageComponent,
+    GameScreenComponent,
+    GameTitleComponent,
+    ScreenshotComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
