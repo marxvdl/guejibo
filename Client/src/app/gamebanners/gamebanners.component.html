@@ -1,7 +1,7 @@
 <section>
     <app-gamebanner
         *ngFor="let game of games$ | async"
-        [name]="game"
+        [name]="game.name"
     >
     </app-gamebanner>
 </section>

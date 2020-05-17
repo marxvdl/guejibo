@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { map } from 'rxjs/operators';
+import { GlobalConstants } from './common/global-constants';
+
+interface Game {
+  id: number,
+  name: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +16,7 @@ export class GamesService {
 
   constructor() { }
 
-  getGames() : Observable<any> {
-    return of(['Code Clicker', 'Jogo da Nave', 'Stub', 'Jogo 4', 'Jogo 5']);
+  public getGames(): Observable<Game[]> {
+    return <Observable<Game[]>> ajax.getJSON(GlobalConstants.BASEURL + 'api/games');      
   }
 }
