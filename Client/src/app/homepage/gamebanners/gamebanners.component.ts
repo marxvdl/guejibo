@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GamesService } from '../games.service';
+import { GamesService } from '../../games.service';
 
 @Component({
-  selector: 'app-gamebanners',
+  selector: 'hp-gamebanners',
   templateUrl: './gamebanners.component.html',
   styleUrls: ['./gamebanners.component.scss']
 })

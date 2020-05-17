@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-gamebanner',
+  selector: 'hp-gamebanner',
   templateUrl: './gamebanner.component.html',
   styleUrls: ['./gamebanner.component.scss']
 })

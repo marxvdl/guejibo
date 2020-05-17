@@ -3,10 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './homepage/header/header.component';
 import { TopbarComponent } from './topbar/topbar.component';
-import { GamebannerComponent } from './gamebanner/gamebanner.component';
-import { GamebannersComponent } from './gamebanners/gamebanners.component';
+import { GamebannerComponent } from './homepage/gamebanner/gamebanner.component';
+import { GamebannersComponent } from './homepage/gamebanners/gamebanners.component';
+import { HomepageComponent } from './homepage/homepage/homepage.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { GamebannersComponent } from './gamebanners/gamebanners.component';
     HeaderComponent,
     TopbarComponent,
     GamebannerComponent,
-    GamebannersComponent
+    GamebannersComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
