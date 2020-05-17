@@ -91,7 +91,16 @@ for (let i = 0; i < qtde_alternativas; i++) {
 
 	let r = aleatorio(0, 1);
 	binario += r;
-	let $a = $(`<div class="alt"><span class="ajuda">${(numeros[i])}</span><span class="valor_binario">${r}</span></div>`);
+	let $a;
+
+	if (r == 1) {
+		$a = $(`<div class="alt um"><span class="ajuda">${(numeros[i])}</span></div>`);
+		$a.css('background-image', "url('img/um.gif')");
+	} else {
+		$a = $(`<div class="alt zero"><span class="ajuda">${(numeros[i])}</span></div>`);
+		$a.css('background-image', "url('img/zero.gif')");
+	}
+
 	$('#alternativas').append($a);
 
 }
@@ -122,16 +131,30 @@ function cria_obstaculos_a(quantidade) {
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
 		let top = aleatorio(7, 50);
 
-		let r = aleatorio(0, 2);
+		let r = aleatorio(0, 7);
 
-		if (r == 0 || r == 1) {
-			$($obstaculo).css('border-radius', '50%');
-			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
-			$obstaculo.addClass('planeta');
-		} else {
-			$($obstaculo).css('background-image', `url('img/alien.png')`);
-			$obstaculo.addClass('alien');
-		}
+		switch (r) {
+			case 0:
+			case 1:
+			case 2:
+				$($obstaculo).css('background-image', `url('img/planeta_generico.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 3:
+				$($obstaculo).css('background-image', `url('img/sol.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 4:
+				$($obstaculo).css('background-image', `url('img/planeta_roxo.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 5:
+			case 6:
+			case 7:
+				$($obstaculo).css('background-image', `url('img/alien.gif')`);
+				$obstaculo.addClass('alien');
+				break;
+		};
 
 		$($obstaculo).css('top', `${top}%`);
 		$($obstaculo).css('left', `${left}%`);
@@ -150,16 +173,32 @@ function cria_obstaculos_b(quantidade) {
 		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
 		let top = aleatorio(7, 50);
 
-		let r = aleatorio(0, 1);
+		let r = aleatorio(0, 10);
 
-		if (r == 0) {
-			$($obstaculo).css('border-radius', '50%');
-			$($obstaculo).css('background-image', `linear-gradient(#${aleatorio(100, 999)}, #${aleatorio(100, 999)})`);
-			$obstaculo.addClass('planeta');
-		} else {
-			$($obstaculo).css('background-image', `url('img/alien.png')`);
-			$obstaculo.addClass('alien');
-		}
+		switch (r) {
+			case 0:
+			case 1:
+			case 2:
+			case 4:
+			case 5:
+				$($obstaculo).css('background-image', `url('img/planeta_generico.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 6:
+				$($obstaculo).css('background-image', `url('img/sol.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 7:
+				$($obstaculo).css('background-image', `url('img/planeta_roxo.gif')`);
+				$obstaculo.addClass('planeta');
+				break;
+			case 8:
+			case 9:
+			case 10:
+				$($obstaculo).css('background-image', `url('img/alien.gif')`);
+				$obstaculo.addClass('alien');
+				break;
+		};
 
 		$($obstaculo).css('top', `${top}%`);
 		$($obstaculo).css('left', `${left}%`);
@@ -172,14 +211,14 @@ function cria_obstaculos_b(quantidade) {
 // cria_obstaculos_a(qtde_inicial_obstaculos);
 // cria_obstaculos_b(qtde_inicial_obstaculos);
 
-window.addEventListener('resize', function() {
-	$('#espaco').css('width', `${window.innerWidth}px`);
-	$('#espaco').css('height', `${window.innerHeight}px`);
+// window.addEventListener('resize', function() {
+// 	$('#espaco').css('width', `${window.innerWidth}px`);
+// 	$('#espaco').css('height', `${window.innerHeight}px`);
 
-	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
-	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
+// 	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
+// 	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
 	
-});
+// });
 
 let y = false;
 
@@ -227,6 +266,7 @@ function atualiza () {
 	if (acoes_nave['moveu_direita']) {
 
 		while (acoes_nave['moveu_direita']) {
+			$('#nave').css('background-image', `url('img/nave_direita.png')`);
 			$('#nave').css('left', `+=${passo_nave}`);
 			if (c == limite_movimento) {
 				break;
@@ -239,6 +279,7 @@ function atualiza () {
 	if (acoes_nave['moveu_esquerda']) {
 		
 		while (acoes_nave['moveu_esquerda']) {
+			$('#nave').css('background-image', `url('img/nave_esquerda.png')`);
 			$('#nave').css('left', `-=${passo_nave}`);
 			if (c == limite_movimento) {
 				break;
@@ -246,6 +287,11 @@ function atualiza () {
 			}
 			c++;
 		}
+	} 
+
+
+	if (!acoes_nave['moveu_direita'] && !acoes_nave['moveu_esquerda']) {
+		$('#nave').css('background-image', `url('img/nave.png')`);
 	}
 
 	if (acoes_nave['atirou']) {
@@ -281,14 +327,16 @@ function atira_alt(alternativa) {
 			$('#laser').hide();
 			$('#laser').css('top', '0px');
 
-			$(alternativa).css('box-shadow', '1px 1px 50px lightgreen');
-
 			tiros_alternativas++;
 
-			if ($(alternativa).find('.valor_binario').text() == '1') {
-				$(alternativa).find('.valor_binario').text('0');
-			} else if ($(alternativa).find('.valor_binario').text() == '0') {
-				$(alternativa).find('.valor_binario').text('1');
+			if ($(alternativa).hasClass('um')) {
+				$(alternativa).removeClass('um');
+				$(alternativa).addClass('zero');
+				$(alternativa).css('background-image', "url('img/zero.gif')");
+			} else if ($(alternativa).hasClass('zero')) {
+				$(alternativa).removeClass('zero');
+				$(alternativa).addClass('um');
+				$(alternativa).css('background-image', "url('img/um.gif')");
 			}
 
 			setTimeout(() => {
@@ -324,7 +372,7 @@ function atira_planeta(planeta) {
 				$('#laser').hide();
 				$('#laser').css('top', '0px');
 
-				$(planeta).css('background-image', 'linear-gradient(green, yellow)').css('box-shadow', '1px 1px 50px darkblue');
+				$(planeta).css('box-shadow', '1px 1px 50px tomato');
 
 				planetas_destruidos++;
 
@@ -369,6 +417,7 @@ function atira_alien(alien) {
 				$('#laser').css('top', '0px');
 
 				$(alien).css('background-image', 'linear-gradient(red, tomato)').css('box-shadow', '1px 1px 50px orange');
+				$(alien).css('border-radius', '10px');
 				setTimeout(() => {
 					$(alien).fadeOut('600');
 				}, 25);
@@ -397,7 +446,11 @@ function verifica_formacao_binaria() {
 
 	for (let i = 0; i < $('.alt').length; i++) {
 
-		formacao_binaria += $('.alt').eq(i).find('.valor_binario').text();
+		if ( $('.alt').eq(i).hasClass('zero')) {
+			formacao_binaria += '0';
+		} else {
+			formacao_binaria += '1';
+		}
 
 	}
 
