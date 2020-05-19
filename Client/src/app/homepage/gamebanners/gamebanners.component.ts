@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GamesService } from '../../games.service';
+import { GamesService, Game } from '../../games.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'hp-gamebanners',
@@ -8,14 +9,14 @@ import { GamesService } from '../../games.service';
 })
 export class GamebannersComponent implements OnInit {
 
-  public games$;
+  public games$ : Observable<Game[]>;
 
   constructor(
     private gamesService : GamesService
   ) { }
 
   ngOnInit(): void {
-    this.games$ = this.gamesService.getGames(); 
+    this.games$ = this.gamesService.getGamesList(); 
   }
 
 

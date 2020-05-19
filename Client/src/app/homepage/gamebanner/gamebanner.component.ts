@@ -7,7 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GamebannerComponent implements OnInit {
 
-  @Input() name: String;
+  @Input() name: string;
+  @Input() id : number;
   
   constructor() { }
 

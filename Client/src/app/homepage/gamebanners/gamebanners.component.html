@@ -2,6 +2,7 @@
     <hp-gamebanner
         *ngFor="let game of games$ | async"
         [name]="game.name"
+        [id]="game.id"
     >
     </hp-gamebanner>
 </section>

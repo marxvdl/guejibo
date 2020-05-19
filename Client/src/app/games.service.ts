@@ -4,7 +4,7 @@ import { ajax } from 'rxjs/ajax';
 import { map } from 'rxjs/operators';
 import { GlobalConstants } from './common/global-constants';
 
-interface Game {
+export interface Game {
   id: number,
   name: string
 }
@@ -16,7 +16,11 @@ export class GamesService {
 
   constructor() { }
 
-  public getGames(): Observable<Game[]> {
+  public getGamesList(): Observable<Game[]> {
     return <Observable<Game[]>> ajax.getJSON(GlobalConstants.BASEURL + 'api/games');      
+  }
+
+  public getGame(id : number) : Observable<Game>{
+    return <Observable<Game>> ajax.getJSON(GlobalConstants.BASEURL + 'api/game/' + id);
   }
 }

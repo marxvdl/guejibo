@@ -1,8 +1,8 @@
-<gs-game-title gameName="Blah"></gs-game-title>
+<gs-game-title [gameName]="(game$ | async).name"></gs-game-title>
 <div id="container">
     <gs-screenshot></gs-screenshot>
     <div id="contents">
         <p>Descrição do jogo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <gs-menu></gs-menu>
+        <gs-menu [gameId]="(game$ | async).id"></gs-menu>
     </div>    
 </div>

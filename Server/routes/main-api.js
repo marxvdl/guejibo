@@ -21,6 +21,21 @@ module.exports = function (app, passport) {
     });
 
     /*
+     * Returns information about a specific game.
+     */
+    app.get('/api/game/:id', (req, res) => {
+        Game.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(result => {
+            res.send(
+                Game.exportObject(result)
+            );
+        });
+    });
+
+    /*
      * Creates a new game room with current user as the owner.
      */
     app.post('/api/gameroom', isLoggedIn(), (req, res) => {

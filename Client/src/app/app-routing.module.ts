@@ -6,7 +6,7 @@ import { GameScreenComponent } from './game-screen/game-screen/game-screen.compo
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
-  { path: 'game', component: GameScreenComponent },
+  { path: 'game/:id', component: GameScreenComponent },
 ];
 
 @NgModule({
