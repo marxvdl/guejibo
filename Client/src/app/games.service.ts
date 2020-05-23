@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { map } from 'rxjs/operators';
 import { GlobalConstants } from './common/global-constants';
+import { HttpClient } from '@angular/common/http';
 
 export interface Game {
   id: number,
@@ -14,13 +13,13 @@ export interface Game {
 })
 export class GamesService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public getGamesList(): Observable<Game[]> {
-    return <Observable<Game[]>> ajax.getJSON(GlobalConstants.BASEURL + 'api/games');      
+    return <Observable<Game[]>> this.http.get(GlobalConstants.BASEURL + 'api/games');
   }
 
   public getGame(id : number) : Observable<Game>{
-    return <Observable<Game>> ajax.getJSON(GlobalConstants.BASEURL + 'api/game/' + id);
+    return <Observable<Game>> this.http.get(GlobalConstants.BASEURL + 'api/game/' + id);
   }
 }
