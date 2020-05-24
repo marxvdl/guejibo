@@ -16,6 +16,9 @@ export class WaitingListComponent implements OnInit {
   }
 
   getHeightClass(): string {
+    if(!this.users)
+      return '';
+      
     if (this.users.length <= 30) {
       return 'height1';
     }

@@ -8,12 +8,9 @@ export interface Game {
   name: string
 }
 
-export interface NewGameRoomGuest {
+export interface NewGameRoomAsGuest {
   id: number,
-  game: {
-    id: number,
-    name: string
-  },
+  game: Game,
   code: string,
   token: string
 }
@@ -33,8 +30,8 @@ export class GamesService {
     return <Observable<Game>>this.http.get(GlobalConstants.BASEURL + 'api/game/' + id);
   }
 
-  public getNewGameRoomGuest(gameId: number): Observable<NewGameRoomGuest> {
-    return <Observable<NewGameRoomGuest>>this.http.post(
+  public getNewGameRoomAsGuest(gameId: number): Observable<NewGameRoomAsGuest> {
+    return <Observable<NewGameRoomAsGuest>>this.http.post(
       GlobalConstants.BASEURL + 'api/guest/gameroom',
       { gameid: gameId }
     );

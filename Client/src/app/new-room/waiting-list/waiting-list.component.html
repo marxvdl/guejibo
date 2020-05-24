@@ -1,5 +1,5 @@
 <div id="box">
-    <h1>Usuários conectados: {{users.length}}</h1>
+    <h1>Usuários conectados: {{users? users.length : 0}}</h1>
     <div
         id="userlist"
         [ngClass]="getHeightClass()"

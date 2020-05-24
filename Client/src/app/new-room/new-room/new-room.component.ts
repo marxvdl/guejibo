@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GamesService, NewGameRoomGuest as NewGameRoomGuest } from 'src/app/games.service';
+import { GamesService, NewGameRoomAsGuest } from 'src/app/games.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NewRoomComponent implements OnInit {
 
-  public newGameRoomGuest$: Observable<NewGameRoomGuest>;
+  public newGameRoomGuest$: Observable<NewGameRoomAsGuest>;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,7 +21,7 @@ export class NewRoomComponent implements OnInit {
     this.route.paramMap.subscribe(
       paramMap => {
         const gameid = Number(paramMap.get('gameid'));
-        this.newGameRoomGuest$ = this.gameService.getNewGameRoomGuest(gameid);
+        this.newGameRoomGuest$ = this.gameService.getNewGameRoomAsGuest(gameid);
       }
     );
   }
