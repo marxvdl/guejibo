@@ -1,0 +1,4 @@
+<div>
+    <span class="name">{{user.name}}</span>
+    <span [ngClass]="['status', user.online? 'online' : 'offline']">{{user.online? 'online' : 'offline'}}</span>
+</div>

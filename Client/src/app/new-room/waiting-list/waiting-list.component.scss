@@ -1,0 +1,43 @@
+:host {
+    text-align: center;
+    display: block;
+}
+
+#box {
+    border: 1px solid rgb(45, 45, 192);
+    padding: 10px;
+    width: 70%;
+    display: inline-block;
+    margin: auto;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: large;
+}
+
+button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+    #userlist {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;        
+        justify-content: center;
+    }
+
+    .height1 {
+        max-height: 300px;
+    }
+
+    .height2 {
+        max-height: 600px;
+    }
+
+    .height3 {
+        max-height: 900px;
+    }
+}

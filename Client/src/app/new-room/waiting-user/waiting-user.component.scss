@@ -1,0 +1,33 @@
+div {
+    text-align: left;
+    width: 200px;
+    margin: auto;
+}
+
+.name {
+    display: inline-block;
+    width: 120px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status::before {
+    content: "●";
+    margin-right: 5px;
+}
+
+.online {
+    color: green;
+    font-weight: bold;
+}
+
+.offline {
+    color: red;
+}
+
+@media only screen and (max-width: 767px) {
+    div {
+        display: inline-block;
+    }
+}

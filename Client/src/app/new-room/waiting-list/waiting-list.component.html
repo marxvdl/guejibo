@@ -1,0 +1,13 @@
+<div id="box">
+    <h1>Usuários conectados: {{users.length}}</h1>
+    <div
+        id="userlist"
+        [ngClass]="getHeightClass()"
+    >
+        <nr-waiting-user
+            *ngFor="let myuser of users"
+            [user]="myuser"
+        ></nr-waiting-user>
+    </div>
+    <button>Iniciar jogo</button>
+</div>

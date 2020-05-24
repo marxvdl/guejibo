@@ -84,12 +84,19 @@ module.exports = function (app, passport) {
             });
 
             gr.save()
-                .then(result => {
-                    res.send({
-                        success: true,
-                        id: result.id,
-                        code: result.code,
-                        token: authlogic.createJWT(guestUser)
+                .then(gameRoomResult => {
+                    Game.findOne({
+                        where: {
+                            id: req.body.gameid
+                        }
+                    }).then(gameResult => {
+                        res.send({
+                            success: true,
+                            id: gameRoomResult.id,
+                            game: Game.exportObject(gameResult),
+                            code: gameRoomResult.code,
+                            token: authlogic.createJWT(guestUser)
+                        });
                     });
                 })
                 .catch(error => {

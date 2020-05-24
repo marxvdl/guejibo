@@ -13,6 +13,9 @@ import { GameScreenComponent } from './game-screen/game-screen/game-screen.compo
 import { GameTitleComponent } from './game-screen/game-title/game-title.component';
 import { ScreenshotComponent } from './game-screen/screenshot/screenshot.component';
 import { MenuComponent } from './game-screen/menu/menu.component';
+import { NewRoomComponent } from './new-room/new-room/new-room.component';
+import { WaitingListComponent } from './new-room/waiting-list/waiting-list.component';
+import { WaitingUserComponent } from './new-room/waiting-user/waiting-user.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { MenuComponent } from './game-screen/menu/menu.component';
     GameScreenComponent,
     GameTitleComponent,
     ScreenshotComponent,
-    MenuComponent
+    MenuComponent,
+    NewRoomComponent,
+    WaitingListComponent,
+    WaitingUserComponent
   ],
   imports: [
     BrowserModule,
