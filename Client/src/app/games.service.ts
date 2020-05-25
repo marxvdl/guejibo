@@ -9,6 +9,7 @@ export interface Game {
 }
 
 export interface NewGameRoomAsGuest {
+  success: boolean
   id: number,
   game: Game,
   code: string,

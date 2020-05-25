@@ -1,9 +1,9 @@
-<ng-container *ngIf="(newGameRoomGuest$ | async) as newGameRoomGuest">
-    <gs-game-title [gameName]="newGameRoomGuest.game.name"></gs-game-title>
+<ng-container *ngIf="newGameRoomAsGuest">
+    <gs-game-title [gameName]="newGameRoomAsGuest.game.name"></gs-game-title>
     <div id="gamecode">
         <p id="p1">Código da sala:</p>
-        <div>{{newGameRoomGuest.code}}</div>
+        <div>{{newGameRoomAsGuest.code}}</div>
         <p>Para participar, os jogadores devem visitar <strong>http://xxxx.com/</strong> e digitar o código acima</p>
     </div>
-    <nr-waiting-list></nr-waiting-list>
+    <nr-waiting-list [users]="users"></nr-waiting-list>
 </ng-container>

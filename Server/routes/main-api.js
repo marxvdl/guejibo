@@ -67,43 +67,40 @@ module.exports = function (app, passport) {
      * Creates a new game room with a new unregistered user as the owner.
      */
     app.post('/api/guest/gameroom/', (req, res) => {
-        guestUser = User.build(
+        User.create(
             {
                 name: gamelogic.createRandomUserName(),
                 temporary: true
             }
-        );
-        guestUser.save().then(() => {
-
-            const gr = GameRoom.build({
+        )
+        .then(guestUser => {
+            GameRoom.create({
                 gameId: req.body.gameid,
                 ownerId: guestUser.id,
                 timeStarted: null,
                 timeEnded: null,
                 code: gamelogic.createGameRoomCode()
-            });
-
-            gr.save()
-                .then(gameRoomResult => {
-                    Game.findOne({
-                        where: {
-                            id: req.body.gameid
-                        }
-                    }).then(gameResult => {
-                        res.send({
-                            success: true,
-                            id: gameRoomResult.id,
-                            game: Game.exportObject(gameResult),
-                            code: gameRoomResult.code,
-                            token: authlogic.createJWT(guestUser)
-                        });
-                    });
-                })
-                .catch(error => {
+            })
+            .then(gameRoomResult => {
+                Game.findOne({
+                    where: {
+                        id: req.body.gameid
+                    }
+                }).then(gameResult => {
                     res.send({
-                        success: false
+                        success: true,
+                        id: gameRoomResult.id,
+                        game: Game.exportObject(gameResult),
+                        code: gameRoomResult.code,
+                        token: authlogic.createJWT(guestUser)
                     });
                 });
+            })
+            .catch(error => {
+                res.send({
+                    success: false
+                });
+            });
         })
 
     });
