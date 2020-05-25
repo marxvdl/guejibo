@@ -1,7 +1,12 @@
+@font-face {
+    src: url(../fonts/FreePixel.ttf);
+    font-family: 'Free-Pixel';    
+    font-weight: normal;
+} 
 body {
 	background: #000;
 	overflow: hidden;
-	font-family: Candara;
+	font-family: 'Free-Pixel'; 
 	background-image: url('../img/fundo.png');
 	background-position: top;
 	background-size: cover;
@@ -278,7 +283,7 @@ label {
 	top: 7%;
 	/*left: 5%;*/
 	width: 90%;
-	background: rgba(0, 0, 0, .9);
+	background: rgba(0, 0, 0, 0.5);
 	padding-top: 5px;
 	padding-bottom: 5px;
 	z-index: 100;
@@ -305,8 +310,8 @@ label {
 
 
 #alternativas .alt {
-	width: 120px;
-	height: 60px;
+	width: 128px;
+	height: 64px;
 	/*border-radius: 50%;*/
 	text-align: center;
 	font-size: 2em;
@@ -322,7 +327,7 @@ label {
 }
 
 #nave {
-	width: 49px;
+	width: 70px;
 	height: 70px;
 	position: absolute;
 	top: 85%;
@@ -346,8 +351,8 @@ label {
 }
 
 .alien {
-	width: 60px;
-	height: 30px;
+	width: 64px;
+	height: 34px;
 }
 
 /* MEDIA QUERIES */
