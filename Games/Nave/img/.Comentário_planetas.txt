@@ -1,4 +1,0 @@
-O planeta genérico será o sprite que mais aparecerá entre os planetas.
-Há uma classe no jQuery que possibilita a mudança da palheta de cores de uma imagem, estava pensando em usá-la para
-variar a cor dos planetas genéricos sem precisar de imagens diferentes.
-Há também os outros dois planetas que podem aparecer com menos frequência.

@@ -1,1 +1,0 @@
-Eu tive a ideia de usar o 0 e 1 do jogo como a representação da carga elétrica que representa os números binários dentro do computador.
