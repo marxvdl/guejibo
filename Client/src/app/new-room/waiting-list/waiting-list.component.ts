@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { WaitingUser } from '../waiting-user/waiting-user.component';
+import { WaitingListService } from 'src/app/waiting-list.service';
+import { User } from 'src/app/auth.service';
 
 @Component({
   selector: 'nr-waiting-list',
@@ -8,17 +10,20 @@ import { WaitingUser } from '../waiting-user/waiting-user.component';
 })
 export class WaitingListComponent implements OnInit {
 
-  @Input() users: WaitingUser[];
+  public users: WaitingUser[];
 
-  constructor() { }
+  constructor(
+    private waitingListService: WaitingListService
+  ) { }
 
   ngOnInit(): void {
+    this.users = this.waitingListService.getUsers();
   }
 
   getHeightClass(): string {
     if(!this.users)
       return '';
-      
+
     if (this.users.length <= 30) {
       return 'height1';
     }

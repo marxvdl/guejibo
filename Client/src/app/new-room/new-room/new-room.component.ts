@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { WaitingUser } from '../waiting-user/waiting-user.component';
+import { WaitingListService } from 'src/app/waiting-list.service';
 
 @Component({
   selector: 'app-new-room',
@@ -15,17 +16,18 @@ export class NewRoomComponent implements OnInit, OnDestroy {
 
   private newGameRoomAsGuest$: Observable<NewGameRoomAsGuest>;
   public newGameRoomAsGuest: NewGameRoomAsGuest;
-  public users: WaitingUser[];
 
   constructor(
     private route: ActivatedRoute,
     private gameService: GamesService,
-    private webSocketService: WebSocketService
-  ) {
-    this.users = [];
-  }
+    private webSocketService: WebSocketService,
+    private waitingListService: WaitingListService
+  ) { }
 
   ngOnInit(): void {
+
+    this.waitingListService.initialize();
+
     this.route.paramMap.subscribe(
       paramMap => {
         const gameid = Number(paramMap.get('gameid'));
@@ -44,9 +46,7 @@ export class NewRoomComponent implements OnInit, OnDestroy {
             outer.webSocketService.connect();
             outer.webSocketService.registerReqCallback(
               'player-is-ready',
-              obj => {
-                console.log("Recebido mensagem ready: " + JSON.stringify(obj));
-              }
+              msg => { outer.waitingListService.playerIsReady(msg.user); }
             );
           }
         });
@@ -56,5 +56,6 @@ export class NewRoomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.webSocketService.removeReqCallback('player-is-ready');
+    this.waitingListService.cleanUp();
   }
 }
