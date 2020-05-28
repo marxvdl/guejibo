@@ -54,6 +54,12 @@ export class WebSocketService {
     delete this.reqCallbacks[req];
   }
 
-
+  /**
+   * Sends a message to the web socket server.
+   * @param msg 
+   */
+  public sendMessage(msg) : void {
+    this.subject.next(msg);
+  }
 
 }

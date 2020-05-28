@@ -14,7 +14,7 @@ interface TableEntry {
 })
 export class WaitingListService {
   private outputUsers: WaitingUser[];
-  private waitingTable: { [index:number]: TableEntry }
+  private waitingTable: { [index: number]: TableEntry }
   private intervalId;
 
   constructor() {
@@ -36,14 +36,14 @@ export class WaitingListService {
    * Marks as offline any user that hasn't sent a message in a while.
    */
   checkOfflineUsers() {
-      let now = Date.now();
+    let now = Date.now();
 
-      for(let i in this.waitingTable){
-        let entry = this.waitingTable[i];
-        if(now - entry.lastSeem > GlobalConstants.TIMES.WAIT_FOR_PLAYER_SHOUT){
-          this.outputUsers[entry.position].online = false;
-        }
+    for (let i in this.waitingTable) {
+      let entry = this.waitingTable[i];
+      if (now - entry.lastSeem > GlobalConstants.TIMES.WAIT_FOR_PLAYER_SHOUT) {
+        this.outputUsers[entry.position].online = false;
       }
+    }
   }
 
   /**
@@ -62,7 +62,9 @@ export class WaitingListService {
       this.outputUsers.push(
         {
           name: user.name,
-          online: true
+          online: true,
+          finished: false,
+          score: 0
         }
       );
 
@@ -73,6 +75,18 @@ export class WaitingListService {
         lastSeem: Date.now()
       };
     }
+  }
+
+  /**
+   * Updates the player score on the list.
+   * Called whenever a user score is updated during the game.
+   */
+  updateScore(userID: number, score: number, endgame: boolean) {
+    if (userID in this.waitingTable) {
+      const user = this.outputUsers[this.waitingTable[userID].position];
+      user.score = score;
+      user.finished = endgame;
+    }    
   }
 
   /**  

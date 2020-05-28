@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { WaitingUser } from '../waiting-user/waiting-user.component';
 import { WaitingListService } from 'src/app/waiting-list.service';
-import { User } from 'src/app/auth.service';
+
+export enum State {
+  Waiting, Playing
+}
 
 @Component({
   selector: 'nr-waiting-list',
@@ -9,19 +12,25 @@ import { User } from 'src/app/auth.service';
   styleUrls: ['./waiting-list.component.scss']
 })
 export class WaitingListComponent implements OnInit {
-
+  public StateEnum = State;
+  
   public users: WaitingUser[];
+  public state: State;  
+
+  @Output() public gameStart = new EventEmitter<void>();
 
   constructor(
     private waitingListService: WaitingListService
-  ) { }
+  ) {
+    this.state = State.Waiting;
+  }
 
   ngOnInit(): void {
     this.users = this.waitingListService.getUsers();
   }
 
   getHeightClass(): string {
-    if(!this.users)
+    if (!this.users)
       return '';
 
     if (this.users.length <= 30) {
@@ -33,6 +42,11 @@ export class WaitingListComponent implements OnInit {
     else if (this.users.length <= 93) {
       return 'height3';
     }
+  }
+
+  startGame() : void {
+    this.state = State.Playing;
+    this.gameStart.emit();
   }
 
 }

@@ -5,5 +5,5 @@
         <div>{{newGameRoomAsGuest.code}}</div>
         <p>Para participar, os jogadores devem visitar <strong>http://xxxx.com/</strong> e digitar o código acima</p>
     </div>
-    <nr-waiting-list></nr-waiting-list>
+    <nr-waiting-list (gameStart)="gameStart()"></nr-waiting-list>
 </ng-container>

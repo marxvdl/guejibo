@@ -17,6 +17,14 @@ div {
     margin-right: 5px;
 }
 
+.score {
+    font-weight: bold;
+}
+
+.score::before{
+    color: green;
+}
+
 .online {
     color: green;
     font-weight: bold;
@@ -24,6 +32,15 @@ div {
 
 .offline {
     color: red;
+}
+
+.done {
+    color: blue;
+    font-weight: bold;
+}
+
+.done::before {
+    color: white;
 }
 
 @media only screen and (max-width: 767px) {

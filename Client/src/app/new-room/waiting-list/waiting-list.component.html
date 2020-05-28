@@ -1,5 +1,7 @@
 <div id="box">
-    <h1>Usuários conectados: {{users? users.length : 0}}</h1>
+    <h1>
+        Usuários conectados: {{users? users.length : 0}}
+    </h1>
     <div
         id="userlist"
         [ngClass]="getHeightClass()"
@@ -7,7 +9,14 @@
         <nr-waiting-user
             *ngFor="let myuser of users"
             [user]="myuser"
+            [state]="state"
         ></nr-waiting-user>
     </div>
-    <button>Iniciar jogo</button>
+    <button
+        *ngIf="state==StateEnum.Waiting"
+        (click)="startGame()"
+        [disabled]="users.length == 0"
+    >
+        Iniciar jogo
+    </button>
 </div>

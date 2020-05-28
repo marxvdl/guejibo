@@ -56,6 +56,22 @@ export class NewRoomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.webSocketService.removeReqCallback('player-is-ready');
+    this.webSocketService.removeReqCallback('update-score');
     this.waitingListService.cleanUp();
+  }
+
+  gameStart() {
+    this.webSocketService.registerReqCallback(
+      'update-score',
+      msg => { this.waitingListService.updateScore(msg.user, msg.score, msg.endgame); }
+    );
+
+    this.webSocketService.sendMessage(
+      {
+          action: "start-game",
+          gameroom: this.newGameRoomAsGuest.id
+      }
+    );    
+    
   }
 }
