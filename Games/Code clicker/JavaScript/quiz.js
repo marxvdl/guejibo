@@ -8,8 +8,9 @@ var respostasQuiz=[
 	['JavaScript','Phyton','C','HTML']
 
 ];
+var acertou=0;
 //Essa funcao faz aparecer um quiz que aumenta a producao de pontos caso o acertemos
-setTimeout(function() {
+setInterval(function() {
 	var qualPergunta= Math.floor(Math.random() * qualResposta.length);
 	$('#quiz').text(perguntasQuiz[qualPergunta]);
 $( "#quiz" ).dialog({
@@ -23,6 +24,7 @@ $( "#quiz" ).dialog({
 		  click: function() {
 			if(qualResposta[qualPergunta]===0){
 				boost=10;
+				acertou++;
 				$('#boost').text('x10');
 				setTimeout(function(){ 
 					boost=1; 
@@ -38,6 +40,7 @@ $( "#quiz" ).dialog({
 			click: function() {
 			  if(qualResposta[qualPergunta]===1){
 				  boost=10;
+				  acertou++;
 				$('#boost').text('x10');
 				setTimeout(function(){ 
 					boost=1; 
@@ -53,6 +56,7 @@ $( "#quiz" ).dialog({
 			click: function() {
 			  if(qualResposta[qualPergunta]===2){
 				boost=10;
+				acertou++;
 				$('#boost').text('x10');
 				setTimeout(function(){ 
 					boost=1; 
@@ -68,6 +72,7 @@ $( "#quiz" ).dialog({
 			click: function() {
 			  if(qualResposta[qualPergunta]===3){
 				boost=10;
+				acertou++;
 				$('#boost').text('x10');
 				setTimeout(function(){ 
 					boost=1; 
@@ -81,4 +86,4 @@ $( "#quiz" ).dialog({
 	  ]
 	
   });
-},5);
+},300000);

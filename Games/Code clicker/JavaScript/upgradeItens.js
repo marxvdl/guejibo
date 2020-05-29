@@ -46,7 +46,22 @@ function fUpgrade(){
 		$('#ps').text('Pontuação por segundo: '+ps.toFixed(1));
 		if(qualUpgrade===0){
 			valorclick=valorclick*2;
-			$('#ppc').text('Pontos por clique: '+valorclick)
+			$('#ppc').text('Pontos por clique: '+valorclick);
 		}
 	}
 };
+//Upgrades especiais
+$('#sacrificioP').on('click', function(){
+	if(pontuacao>=2000000){
+		$('#sacrificioP').remove();
+		quantidade[1]-=5;
+		quantoProduz[1]-=5*upgrade[1];
+		ps-=5*upgrade[1];
+		ps-=quantoProduz[4];
+		upgrade[4]=upgrade[4]*4;
+		quantoProduz[4]=quantoProduz[4]*4;
+		ps+=quantoProduz[4];
+		
+	}
+
+});

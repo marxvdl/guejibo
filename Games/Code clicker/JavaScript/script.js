@@ -1,4 +1,4 @@
-var pontuacao=99999999990;
+var pontuacao=0;
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip();
   });
@@ -8,11 +8,14 @@ var qualCodigo=0;
 var boost=1;
 var valorclick=1;
 var upgradeClick=1;
+var quantidadeClicks=0;
+var upgradeClickComprado=true; 
 //Adiciona pontos ao clicar na imagem do computador
 $('#Pczinho').on('click', function() {
 	pontuacao=pontuacao+(valorclick*boost);
 	pontuacaoAcumulada=pontuacaoAcumulada+(valorclick*boost);
 	$('#pontuacao').text('Pontuação: '+pontuacao);
+	quantidadeClicks++;
 	escreverCodigo();
 });
 //Escreve algum codigo na tela baseado na pontuacao total
@@ -32,17 +35,24 @@ function escreverCodigo() {
 	}
 	hljs.initHighlighting.called = false;
 	hljs.initHighlighting();
-	if(pontuacaoAcumulada===Math.pow(1000,upgradeClick)){
-		$('#upgrade').append('<img src="PixelArts/Pczinho_frame_zero.gif" alt="melhorar clicque" data-toggle="tooltip" title="Aumentar valor do clique em 100%. Custo: '+(Math.pow(1000,upgradeClick)/5)+' "data-placement="left"class="imgUpgradeClique" id='+upgradeClick+'>');
-		upgradeClick++;
+	if(upgradeClickComprado){
+		if(pontuacaoAcumulada>=Math.pow(10,upgradeClick)*1000){
+			upgradeClickComprado=false;
+			$('#upgrade').append('<img src="PixelArts/button_teclado_frame_zero.gif" alt="melhorar clicque" data-toggle="tooltip" title="Aumentar valor do clique em 100%. Custo: '+(Math.pow(10,upgradeClick)*500)+' "data-placement="left"class="imgUpgradeClique" id='+upgradeClick+'>');
+			upgradeClick++;
+		}
 	}
 }
-
+//Upgrade do click
 $(document).on('click','.imgUpgradeClique', function(){
 	var idClick=$(this).attr('id');
-	if(pontuação>=(Math.pow(1000,idClick)/5)){
+	if(pontuacao>=(Math.pow(10,idClick)*500)){
+		pontuacao-=Math.pow(10,idClick)*500;
 		$('.imgUpgradeClique#'+idClick).remove();
-		valorclick=valorcick*2;
+		valorclick=valorclick*2;
+		upgradeClickComprado=true;
+		$('#ppc').text('Pontos por clique: '+valorclick);
+		$('#pontuacao').text(pontuacao);
 	}
 });
 

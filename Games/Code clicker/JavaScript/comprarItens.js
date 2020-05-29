@@ -43,7 +43,7 @@ function comprar(){
 		}
 		quantoProduz[qualItem]+=producao[qualItem]*upgrade[qualItem];
 		ps+=producao[qualItem]*upgrade[qualItem];
-		
+		var sacrificio=true;
 		$('#ps').text('Pontuação por segundo: '+ps.toFixed(1));
 		//este switch contem as linhas de código específicos de cada item
 		switch(qualItem){
@@ -106,10 +106,20 @@ function comprar(){
 				var imgAlien = $('<img class="itemImg">');
 				imgAlien.attr('src','PixelArts/BAS_Alien.gif');
 				imgAlien.appendTo('#arquivos');
+				if(sacrificio){
+					if(quantidade[1]>=20){
+						if(quantidade[4]>=3){
+							sacrificio=false;
+							$('#upgrade').append('<img src="PixelArts/BAS_Alien.gif" alt="sacrificar programadores pelo bem maior" data-toggle="tooltip" title="Sacrificar 5 programadores para aumentar a produção dos Alienígenas em 200%. Custo: 2000000 "data-placement="left" id="sacrificioP">');
+					
+						}
+					}
+				}
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
+						
 						$('#upgrade').append('<img src="PixelArts/BAS_Alien.gif" alt="melhorar Alienígena" data-toggle="tooltip" title="Aumentar Produção dos Alienígenas em 100%. Custo: '+1300000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeAlien" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
