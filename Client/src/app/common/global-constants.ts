@@ -1,7 +1,14 @@
-export class GlobalConstants {
+export class GlobalConstants {    
+    //Base URL for the entire site
     public static readonly BASEURL: string = "http://localhost:3000/";
-    public static readonly WSURL  : string = 'ws://localhost:8080/';
 
+    //URL of the Web Socket Server
+    public static readonly WSURL  : string = 'ws://localhost:8080/';
+    
+    //Base URL for the Games root directory
+    public static readonly GAME_BASE_PATH = 'http://localhost/iacweb/Games/';
+    
+    //
     public static readonly TIMES = {
         // How often a player will send a "I'm here" message 
         // while waiting for a game to start

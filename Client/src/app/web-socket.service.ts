@@ -10,9 +10,11 @@ import { AuthService } from './auth.service';
 export class WebSocketService {
   private subject: Subject<any>;
   private reqCallbacks: object;
+  private responseToCallbacks: object;
 
   constructor(private authService: AuthService) {
     this.reqCallbacks = {};
+    this.responseToCallbacks = {};
   }
 
   /**
@@ -32,6 +34,11 @@ export class WebSocketService {
             this.reqCallbacks[msg.req](msg);
           }
         }
+        else if('responseTo' in msg){
+          if(msg.responseTo in this.responseToCallbacks){
+            this.responseToCallbacks[msg.responseTo](msg);
+          }
+        }
       }
     );
   }
@@ -47,11 +54,30 @@ export class WebSocketService {
   }
 
   /**
+   * Sets up a callback that will be called when the web sockets receives
+   * a specific string in the "responseTo" field.
+   * @param req Value of the "req" field in the incoming object
+   * @param callback Function to be called
+   */
+  
+  public registerResponseToCallback(responseTo: string, callback: (obj: any) => void): void {
+    this.responseToCallbacks[responseTo] = callback;
+  }
+
+  /**
    * Removes a callback that was set up with registerReqCallback.
    * @param req 
    */
   public removeReqCallback(req: string): void {
     delete this.reqCallbacks[req];
+  }
+
+    /**
+   * Removes a callback that was set up with registerResponseToCallback.
+   * @param req 
+   */
+  public removeResponseToCallback(req: string): void {
+    delete this.responseToCallbacks[req];
   }
 
   /**

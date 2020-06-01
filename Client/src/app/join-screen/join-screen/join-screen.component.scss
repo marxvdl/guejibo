@@ -1,0 +1,50 @@
+:host {
+    text-align: center;
+}
+
+p {
+    margin-top: 2rem;
+}
+
+input, button {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: Jost;
+}
+
+input {
+    text-align: center;
+    background-color: rgb(219, 219, 219);
+    border: 1px solid rgb(31, 31, 31);
+    width: 200px;
+}
+
+input:focus {
+    box-shadow: 0px 0px 9px 3px rgb(79, 79, 255);
+}
+
+#code {    
+    font-size: 250%;
+    font-weight: bold;        
+}
+
+#name {
+    font-size: 150%;
+}
+
+button {
+    margin-top: 3rem;
+    font-size: 150%;
+    font-weight: bold;
+    padding: 10px 30px;
+    background-color: #76cc88;
+    border: 2px solid rgb(0, 83, 0);
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: #9de4ad;
+    box-shadow: 0px 0px 9px 3px rgb(82, 145, 82);
+    cursor: pointer;
+}

@@ -30,7 +30,7 @@ export class WaitingListService {
       () => { this.checkOfflineUsers(); },
       GlobalConstants.TIMES.CHECK_PLAYERS_ONLINE_INTERVAL
     );
-  }
+  }  
 
   /**
    * Marks as offline any user that hasn't sent a message in a while.
@@ -94,6 +94,8 @@ export class WaitingListService {
    */
   cleanUp() {
     clearInterval(this.intervalId);
+    this.outputUsers = [];
+    this.waitingTable = {};    
   }
 
   getUsers(): WaitingUser[] {

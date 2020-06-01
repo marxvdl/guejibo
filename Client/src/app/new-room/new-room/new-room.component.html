@@ -3,7 +3,11 @@
     <div id="gamecode">
         <p id="p1">Código da sala:</p>
         <div>{{newGameRoomAsGuest.code}}</div>
-        <p>Para participar, os jogadores devem visitar <strong>http://xxxx.com/</strong> e digitar o código acima</p>
+        <p>
+            Para participar, os jogadores devem visitar
+            <strong>http://xxxx.com/</strong>
+            e digitar o código acima
+        </p>
     </div>
-    <nr-waiting-list (gameStart)="gameStart()"></nr-waiting-list>
+    <nr-waiting-list (gameStart)="gameStart()" showStartGameButton="true"></nr-waiting-list>
 </ng-container>

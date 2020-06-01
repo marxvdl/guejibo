@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule }   from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { MenuComponent } from './game-screen/menu/menu.component';
 import { NewRoomComponent } from './new-room/new-room/new-room.component';
 import { WaitingListComponent } from './new-room/waiting-list/waiting-list.component';
 import { WaitingUserComponent } from './new-room/waiting-user/waiting-user.component';
+import { JoinScreenComponent } from './join-screen/join-screen/join-screen.component';
 
 @NgModule({
   declarations: [
@@ -31,12 +33,14 @@ import { WaitingUserComponent } from './new-room/waiting-user/waiting-user.compo
     MenuComponent,
     NewRoomComponent,
     WaitingListComponent,
-    WaitingUserComponent
+    WaitingUserComponent,
+    JoinScreenComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

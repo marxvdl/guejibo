@@ -1,0 +1,38 @@
+<form
+    #joinForm="ngForm"
+    *ngIf="!joined"
+>
+    <p>Código da sala:</p>
+    <input
+        id="code"
+        type="text"
+        maxlength="4"
+        required
+        placeholder="????"
+        autofocus
+        autocomplete="off"
+        oninput="this.value = this.value.toUpperCase()"
+        [(ngModel)]="code"
+        name="code"
+    >
+    <p>Nome de usuário:</p>
+    <input
+        id="name"
+        type="text"
+        required
+        [(ngModel)]="name"
+        name="name"
+    >
+    <button (click)="join()">Entrar</button>
+</form>
+<div *ngIf="joined">
+    <h1>Esperando o jogo começar...</h1>
+    <nr-waiting-list [permanentOnlineUser]="
+    {
+        name: name,
+        online: true,
+        finished: false,
+        score: 0
+    }
+    "></nr-waiting-list>
+</div>

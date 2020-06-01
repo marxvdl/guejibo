@@ -17,6 +17,9 @@ export class WaitingListComponent implements OnInit {
   public users: WaitingUser[];
   public state: State;  
 
+  @Input() showStartGameButton = false;
+  @Input() permanentOnlineUser = null;
+
   @Output() public gameStart = new EventEmitter<void>();
 
   constructor(
