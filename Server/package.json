@@ -1,6 +1,6 @@
 {
  "name": "iacweb-server",
- "main": "server.js",
+ "main": "index.js",
  "scripts": {
   "start": "node ./server"
  },

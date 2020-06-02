@@ -1,0 +1,13 @@
+{
+  "name": "iacweb",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marxvdl/iacweb.git"
+  },
+  "homepage": "https://github.com/marxvdl/iacweb#readme",
+  "devDependencies": {
+    "del": "^5.1.0",
+    "gulp": "^4.0.2"
+  }
+}

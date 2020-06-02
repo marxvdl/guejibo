@@ -2,7 +2,7 @@ const jwtDecode = require('jwt-decode');
 import base64url from "base64url";
 
 const BASEURL = 'http://localhost:3000/';
-const WSURL = 'ws://localhost:8080/';
+const WSURL = 'ws://localhost:3000/';
 
 import * as student from './student';
 

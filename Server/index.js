@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const http = require('http');
 
 /* ******************************************* */
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 /* ******************************************* */
 
@@ -35,11 +36,14 @@ require('./app/auth')(passport);
 require('./routes/auth-api')(app, passport);
 require('./routes/main-api')(app, passport);
 
+// Create HTTP server
+const httpServer = http.createServer(app);
+
 // Initialize web socket server
-require('./app/ws')(app, passport);
+require('./app/ws')(app, httpServer, passport);
 
 // Initialize HTTP server
-app.listen(port);
+httpServer.listen(port);
 console.log("Port: " + port);
 
 /* ******************************************* */

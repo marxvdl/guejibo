@@ -11,14 +11,14 @@ const Game = models.Game;
 const UsersGameRooms = models.UsersGameRooms;
 
 
-module.exports = function (app, passport) {
+module.exports = function (app, httpServer, passport) {
 
     //Stores the user that is currently connected on the web socket
     let currentUser = null;
 
     //Web socket server for this connection
     const wss = new WebSocket.Server({
-        port: 8080,
+        server: httpServer,
         verifyClient: async (info, done) => {
             const token = info.req.url.split('/')[1];
 

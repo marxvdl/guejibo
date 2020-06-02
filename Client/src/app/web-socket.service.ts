@@ -3,6 +3,7 @@ import { webSocket } from "rxjs/webSocket";
 import { Subject } from 'rxjs';
 import { GlobalConstants } from './common/global-constants';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class WebSocketService {
       return;
     }
 
-    this.subject = webSocket(GlobalConstants.WSURL + AuthService.token);
+    this.subject = webSocket(environment.wsUrl + AuthService.token);
     this.subject.subscribe(
       msg => {
         if('req' in msg){

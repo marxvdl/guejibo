@@ -5,6 +5,7 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 import { WaitingListService } from 'src/app/waiting-list.service';
 import base64url from 'base64url';
 import Cookies from 'js-cookie';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-join-screen',
@@ -80,7 +81,7 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
         Cookies.set('jwt', msg.token, { path: '/' });
         Cookies.set('gameroom', msg.gameroom, { path: '/' });
     
-        window.open(GlobalConstants.GAME_BASE_PATH + msg.path + '/index.html', '_self');
+        window.open(environment.gamesPath + msg.path + '/index.html', '_self');
       }
     );
 

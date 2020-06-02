@@ -1,3 +1,5 @@
+const express = require('express');
+const path = require('path');
 const models = require('../sequelize/models');
 
 const User = models.User;
@@ -158,8 +160,15 @@ module.exports = function (app, passport) {
             });
     });
 
-    //
+    /*
+     * All other routes are redirected to the Angular client.
+     */
+    app.use(express.static('client'));
+    app.get('/*', (req, res) => {
+        res.sendFile('client/index.html', { root: path.join(__dirname, '..') });
+    });
 
+    //    
     function isLoggedIn() {
         return passport.authenticate('local-jwt', { session: false });
     }

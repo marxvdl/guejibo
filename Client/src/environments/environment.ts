@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  apiUrl: "http://localhost:3000/",
+  wsUrl: 'ws://localhost:3000/',
+  gamesPath: 'http://localhost/iacweb/Games/'
 };
 
 /*
