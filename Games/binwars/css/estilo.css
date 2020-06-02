@@ -7,9 +7,9 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: 'Free-Pixel'; 
-	background-image: url('../img/fundo.png');
+	background-image: url('../img/fundo.gif');
 	background-position: top;
-	background-size: cover;
+	background-repeat: repeat;
 }
 
 button {
