@@ -16,10 +16,21 @@
     
 }
 .fundo{
-    border: 10px solid #9f9f9f;
+    margin: 10px;
+    background-color: #ff4444;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+}
+.fundodafrente{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
     padding: 10px;
     margin: 10px;
-    background-color: #444444;
+    overflow: hidden;
+    background-color: #4444ff;
 }
 .fundo#click{
     grid-column-start: 1;

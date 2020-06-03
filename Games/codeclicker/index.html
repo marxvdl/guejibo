@@ -1,57 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Code Clicker</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="design.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
+
 <body>
-    <div id = "quiz" title = "Quiz">Vc não deveria estar lendo isso.</div>
+    <div id="quiz" title="Quiz">Vc não deveria estar lendo isso.</div>
     <div class="fundoprincipal">
-    
-        <div id="click" class = "fundo">
-            <img src="PixelArts/button_teclado_frame_zero.gif" alt="Click" id="Pczinho"> 
+
+        <div id="click" class="fundo">
+            <div class="fundodafrente">
+                <img src="PixelArts/button_teclado_frame_zero.gif" alt="Click" id="Pczinho">
+            </div>
         </div>
-        <div id="loja" class = "fundo">
-            <p class="itens"id="custoIa">Custo Ia: 15</p>
-            <img src="PixelArts/BAS_IA.gif" class="imgItens" alt="comprar ia" id="comprarIa" data-toggle="tooltip" title="produção por segundo=0,1"data-placement="rigth">
-            <p id="custoProgramadores" class="itens">Custo Programadores: 100</p>
-            <img src="PixelArts/BAS_Programador.gif" class="imgItens" alt="comprar programador" id="comprarProgramador" data-toggle="tooltip" title="produção por segundo=1"data-placement="rigth">
-            <p id="custoKarem" class="itens">Custo Robotrons: 1100</p>
-            <img src="PixelArts/BAS_Karen.gif" class="imgItens" alt="comprar Robotrom" id="comprarKarem" data-toggle="tooltip" title="produção por segundo=8"data-placement="rigth">
-            <p id="custoStartUp" class="itens">Custo StartUp: 12000</p>
-            <img src="PixelArts/Startup.gif" class="imgItens" alt="comprar StartUp" id="comprarStartUp" data-toggle="tooltip" title="produção por segundo=47"data-placement="rigth">
-            <p id="custoAlien" class="itens">Custo Alienígena: 130000</p>
-            <img src="PixelArts/BAS_Alien.gif" class="imgItens" alt="comprar Alienígena" id="comprarAlien" data-toggle="tooltip" title="produção por segundo=260"data-placement="rigth">
-            <p id="custoWanghley" class="itens">Custo Deus da Programação: 1400000</p>
-            <img src="PixelArts/BAS_deus da programação.png" class="imgItens" alt="comprar Deus da Programação" id="comprarWanghley" data-toggle="tooltip" title="produção por segundo=1400"data-placement="rigth">
-            
+        <div id="loja" class="fundo">
+            <div class="fundodafrente">
+                <p class="itens" id="custoIa">Custo Ia: 15</p>
+                <img src="PixelArts/BAS_IA.gif" class="imgItens" alt="comprar ia" id="comprarIa" data-toggle="tooltip"
+                    title="produção por segundo=0,1" data-placement="rigth">
+                <p id="custoProgramadores" class="itens">Custo Programadores: 100</p>
+                <img src="PixelArts/BAS_Programador.gif" class="imgItens" alt="comprar programador"
+                    id="comprarProgramador" data-toggle="tooltip" title="produção por segundo=1" data-placement="rigth">
+                <p id="custoKarem" class="itens">Custo Robotrons: 1100</p>
+                <img src="PixelArts/BAS_Karen.gif" class="imgItens" alt="comprar Robotrom" id="comprarKarem"
+                    data-toggle="tooltip" title="produção por segundo=8" data-placement="rigth">
+                <p id="custoStartUp" class="itens">Custo StartUp: 12000</p>
+                <img src="PixelArts/Startup.gif" class="imgItens" alt="comprar StartUp" id="comprarStartUp"
+                    data-toggle="tooltip" title="produção por segundo=47" data-placement="rigth">
+                <p id="custoAlien" class="itens">Custo Alienígena: 130000</p>
+                <img src="PixelArts/BAS_Alien.gif" class="imgItens" alt="comprar Alienígena" id="comprarAlien"
+                    data-toggle="tooltip" title="produção por segundo=260" data-placement="rigth">
+                <p id="custoWanghley" class="itens">Custo Deus da Programação: 1400000</p>
+                <img src="PixelArts/BAS_deus da programação.png" class="imgItens" alt="comprar Deus da Programação"
+                    id="comprarWanghley" data-toggle="tooltip" title="produção por segundo=1400" data-placement="rigth">
+            </div>
         </div>
         <div id='upgrade' class='fundo'>
-            
+            <div class="fundodafrente">
+
+            </div>
         </div>
-        <div id="arquivos" class = "fundo">
-            <p id="quantidadeIas">Quantidade de Ias: 0</p>
-            <p id="quantidadeProgramadores">Quantidade de Programadores: 0</p>
-            <p id="quantidadeKarens">Quantidade de Robotrons: 0</p>
-            <p id="quantidadeStartUps">Quantidade de SartUps: 0</p>
-            <p id="quantidadeAliens">Quantidade de Aliens: 0</p>
-            <p id="quantidadeWanghley">Quantidade de Deuses da Programação: 0</p>
+        <div id="arquivos" class="fundo">
+            <div class="fundodafrente">
+                <p id="quantidadeIas">Quantidade de Ias: 0</p>
+                <p id="quantidadeProgramadores">Quantidade de Programadores: 0</p>
+                <p id="quantidadeKarens">Quantidade de Robotrons: 0</p>
+                <p id="quantidadeStartUps">Quantidade de SartUps: 0</p>
+                <p id="quantidadeAliens">Quantidade de Aliens: 0</p>
+                <p id="quantidadeWanghley">Quantidade de Deuses da Programação: 0</p>
+            </div>
         </div>
         <div id="codigo" class="fundo">
-            <div id="pontuacao">Pontuação: 0</div>
-            <p id="ppc">Pontos por clique=1</p>
-            <div id="ps">Pontos por segundo: 0.0</div>
-            <p id="boost"></p>
-			<pre ><code class="java"></code></pre>
+            <div class="fundodafrente">
+                <div id="pontuacao">Pontuação: 0</div>
+                <p id="ppc">Pontos por clique=1</p>
+                <div id="ps">Pontos por segundo: 0.0</div>
+                <p id="boost"></p>
+                <pre><code class="java"></code></pre>
+            </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js">
@@ -67,4 +91,5 @@
 <link rel="stylesheet" href="vs2015.css">
 <script src="highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+
 </html>
