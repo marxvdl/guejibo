@@ -29,7 +29,7 @@
     grid-column-end: 2;
     padding: 10px;
     margin: 10px;
-    overflow: hidden;
+    overflow: auto;
     background-color: #4444ff;
 }
 .fundo#click{
@@ -45,7 +45,7 @@
     grid-row-end:4;
     overflow: auto;
 }
-.fundo#arquivos{
+.fundo#arquivos1{
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 3;
@@ -60,7 +60,7 @@
     grid-row-end: 4;
     overflow: auto;
 }
-.fundo#upgrade{
+.fundo#upgrade1{
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
