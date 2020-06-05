@@ -12,12 +12,13 @@
     display: grid;
     grid-template-columns: 20% auto 20%;
     grid-template-rows: 26% 14% 60%;
-    background-color: #ffffff;
-    
+    background-image: url("../codeclicker/PixelArts/fundao.png");
+    background-size: cover;
 }
 .fundo{
     margin: 10px;
-    background-color: #ff4444;
+    background-image: url("../codeclicker/PixelArts/borda.png");
+    background-size: cover;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 100%;
@@ -30,7 +31,8 @@
     padding: 10px;
     margin: 10px;
     overflow: auto;
-    background-color: #4444ff;
+    background-image: url("../codeclicker/PixelArts/fundo.png");
+    background-size: cover;
 }
 .fundo#click{
     grid-column-start: 1;
