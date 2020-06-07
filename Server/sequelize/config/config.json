@@ -8,10 +8,10 @@
     "operatorsAliases": 0
   },
   "production": {
-    "username": "admin",
-    "password": "123",
-    "database": "iacweb",
-    "host": "127.0.0.1",
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
     "dialect": "mariadb",
     "operatorsAliases": 0,
     "logging": false
