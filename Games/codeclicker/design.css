@@ -34,6 +34,13 @@
     background-image: url("../codeclicker/PixelArts/fundo.png");
     background-size: cover;
 }
+.quiz#quiz{
+    border: 25%;
+    border-color: rgba(0, 0, 0, 0.4);
+    padding: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: ivory;
+}
 .fundo#click{
     grid-column-start: 1;
     grid-column-end: 2;

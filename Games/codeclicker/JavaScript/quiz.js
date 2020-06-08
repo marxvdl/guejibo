@@ -20,7 +20,7 @@ setInterval(function() {
 $( "#quiz" ).dialog({
 	resizable: false,
 	height: "auto",
-	width: 400,
+	width: "80%",
 	modal: true,
 	buttons: [
 		{
