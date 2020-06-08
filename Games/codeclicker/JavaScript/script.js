@@ -3,6 +3,7 @@ $(function () {
 	$('[data-toggle="tooltip"]').tooltip();
   });
 pontuacaoAcumulada=0;
+gc.sendScore(pontuacaoAcumulada);
 var ps=0.0;
 var qualCodigo=0;
 var boost=1;
@@ -14,6 +15,7 @@ var upgradeClickComprado=true;
 $('#Pczinho').on('click', function() {
 	pontuacao=pontuacao+(valorclick*boost);
 	pontuacaoAcumulada=pontuacaoAcumulada+(valorclick*boost);
+	gc.sendScore(pontuacaoAcumulada);
 	$('#pontuacao').text('Pontuação: '+pontuacao);
 	quantidadeClicks++;
 	escreverCodigo();
@@ -25,6 +27,7 @@ function escreverCodigo() {
 	}
 	else{
 		pontuacaoAcumulada=0;
+		gc.sendScore(pontuacaoAcumulada);
 		if(qualCodigo===0){
 			qualCodigo=1;
 		}
@@ -65,6 +68,7 @@ var iniciar;
 		if(ps<20){
 			pontuacao=pontuacao+(1*boost);
 			pontuacaoAcumulada=pontuacaoAcumulada+(boost*1);
+			gc.sendScore(pontuacaoAcumulada);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
 			escreverCodigo();
 			clearInterval(iniciar);
@@ -82,6 +86,7 @@ var iniciar;
 	function gerarPontos20(){
 		pontuacao=pontuacao+Math.round((ps*boost)/20);
 			pontuacaoAcumulada=pontuacaoAcumulada+Math.round((ps*boost)/20);
+			gc.sendScore(pontuacaoAcumulada);
 			$('#pontuacao').text('Pontuação: '+pontuacao);
 
 			escreverCodigo();
