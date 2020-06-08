@@ -15,6 +15,7 @@ export class GameConnection {
     private intervalId: number;
     private endGameCallback: (data: GameConnection.EndGameData) => void;
     private endGameData: GameConnection.EndGameData;
+    private queuedMessageCallbacks: (() => void)[] = [];
 
     /**
      * Creates a GameConnection object from data stored in cookies.
@@ -48,6 +49,11 @@ export class GameConnection {
                     }
                 ));
             }, SHOUT_IM_HERE_INTERVAL);
+
+            for(let sendMessage of this.queuedMessageCallbacks){
+                sendMessage();
+            }
+            this.queuedMessageCallbacks = [];
         };
     }
 
@@ -58,14 +64,23 @@ export class GameConnection {
      * @param endgame If true, signals that the game has ended for this player
      */
     public sendScore(score: (number | string), endgame = false) {
-        this.ws.send(JSON.stringify(
-            {
-                action: 'update-score',
-                gameroom: this.gameRoomId,
-                score: (typeof score !== 'number') ? parseInt(score) : score,
-                endgame: endgame
-            }
-        ));
+        let doit = () => {
+            this.ws.send(JSON.stringify(
+                {
+                    action: 'update-score',
+                    gameroom: this.gameRoomId,
+                    score: (typeof score !== 'number') ? parseInt(score) : score,
+                    endgame: endgame
+                }
+            ));
+        };
+
+        if (this.ws && this.ws.readyState === WebSocket.OPEN){
+            doit();
+        }
+        else{
+            this.queuedMessageCallbacks.push(doit);
+        }
 
         if (endgame === true) {
             window.clearInterval(this.intervalId);
