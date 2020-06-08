@@ -2,7 +2,7 @@
  "name": "iacweb-server",
  "main": "index.js",
  "scripts": {
-  "start": "node ./server"
+  "start": "node ./index"
  },
  "dependencies": {
   "base64url": "^3.0.1",

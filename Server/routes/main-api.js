@@ -163,9 +163,25 @@ module.exports = function (app, passport) {
     /*
      * All other routes are redirected to the Angular client.
      */
-    app.use(express.static('client'));
-    app.get('/*', (req, res) => {
-        res.sendFile('client/index.html', { root: path.join(__dirname, '..') });
+    app.use(express.static('client'));    
+    app.get('/*', (req, res, next) => {
+        if (req.url.startsWith('/games')) {
+            res.sendFile(
+                req.url.substr(1),
+                { root: path.join(__dirname, '..') },
+                err => {
+                    if (err) {
+                        if (err.code == 'EISDIR')
+                            res.redirect(req.url + '/');
+                        else
+                            next(err);
+                    }
+                }
+            );
+        }
+        else {
+            res.sendFile('client/index.html', { root: path.join(__dirname, '..') });
+        }
     });
 
     //    

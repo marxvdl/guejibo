@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const WSURL = 'ws://localhost:8080/';
+declare const WSURL: string;
 const SHOUT_IM_HERE_INTERVAL = 800;
 
 /**

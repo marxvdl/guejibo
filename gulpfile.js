@@ -1,5 +1,8 @@
 const { src, dest, parallel, series } = require('gulp');
+const filter = require('gulp-filter');
+const replace = require('gulp-replace');
 const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const fs = require('fs');
 var del = require('del');
 
@@ -73,9 +76,40 @@ function games(cb) {
   if (!fs.existsSync('dist/games'))
     fs.mkdirSync('dist/games');
 
+  const indexHtml = filter('Games/*/index.html', { restore: true });
   src('Games/**/*')
+    .pipe(indexHtml)
+    .pipe(
+      replace(
+        '"\.\.\/\.\.\/GamesLib\/dist\/gameslib\.js"',
+        '"../gameslib.min.js"'
+      )
+    )
+    .pipe(indexHtml.restore)
     .pipe(dest('dist/games'));
-  
+
+  cb();
+}
+
+/*
+ * Deploys the GamesLib library that games use to communicate with the backend.
+ */
+function gameslib(cb) {
+  execSync(
+    'npm run build',
+    {
+      cwd: 'GamesLib',
+      stdio: 'inherit'
+    }
+  );
+  src('GamesLib/dist/gameslib.min.js')
+  .pipe(
+    replace(
+      'ws://localhost:8080/',
+      'ws://localhost:3000/'
+    )
+  )
+  .pipe(dest('dist/games'));
   cb();
 }
 
@@ -91,5 +125,6 @@ function clean(cb) {
 exports.client = client;
 exports.server = server;
 exports.games = games;
+exports.gameslib = gameslib;
 exports.clean = clean;
-exports.default = parallel(client, series(server, games));
+exports.default = parallel(client, series(server, games, gameslib));

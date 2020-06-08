@@ -18,7 +18,5 @@ module.exports = {
         library: 'gameslib',
         filename: 'gameslib.js',
         path: path.resolve(__dirname, 'dist'),
-    },
-    mode: 'development',
-    devtool: 'source-map'
+    }
 };
