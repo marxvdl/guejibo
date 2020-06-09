@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Game.exportObject = (game) => {
     return {
       id: game.id,
-      name: game.name
+      name: game.name,
+      path: game.basePath
     };
   };
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GamesService, Game } from 'src/app/games.service';
 import { Observable } from 'rxjs';
+import { GameMetadataService } from 'src/app/game-metadata.service';
 
 @Component({
   selector: 'app-game-screen',
@@ -11,10 +12,12 @@ import { Observable } from 'rxjs';
 export class GameScreenComponent implements OnInit {
 
   public game$: Observable<Game>;
+  public description$: Observable<string>;
 
   constructor(
     private route: ActivatedRoute,
-    private gameService: GamesService
+    private gameService: GamesService,
+    private gameMetadataService: GameMetadataService
   ) { }
 
   ngOnInit(): void {
@@ -22,8 +25,13 @@ export class GameScreenComponent implements OnInit {
       paramMap => {
         const id = Number(paramMap.get('id'));
         this.game$ = this.gameService.getGame(id);
+
+        this.game$.subscribe(game => {
+          this.description$ = this.gameMetadataService.getDescription(game);
+        });
       }
     );
   }
+
 
 }

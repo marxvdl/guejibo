@@ -1,12 +1,12 @@
 <ng-container *ngIf="(game$ | async) as game">
-    <gs-game-title [gameName]="game.name"></gs-game-title>
+    <gs-game-title [game]="game"></gs-game-title>
     <div id="container">
-        <gs-screenshot></gs-screenshot>
+        <gs-screenshot [game]="game"></gs-screenshot>
         <div id="contents">
             <p>
-                Descrição do jogo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                {{description$ | async}}
             </p>
-            <gs-menu [gameId]="game.id"></gs-menu>
+            <gs-menu [game]="game"></gs-menu>
         </div>
     </div>
 </ng-container>

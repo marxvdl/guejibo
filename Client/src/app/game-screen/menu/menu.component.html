@@ -1,5 +1,5 @@
 <ul>
-    <li><a [routerLink]="['/newroom', gameId]">Criar sala</a></li>
-    <li><a [routerLink]="['/soloplay', gameId]">Jogar solo</a></li>
-    <li><a [routerLink]="['/joingame', gameId]">Entrar em sala existente</a></li>
+    <li><a [routerLink]="['/newroom', game.id]">Criar sala</a></li>
+    <li><a [href]="localGameUrl()">Jogar solo</a></li>
+    <li><a [routerLink]="'/join'">Entrar em sala existente</a></li>
 </ul>

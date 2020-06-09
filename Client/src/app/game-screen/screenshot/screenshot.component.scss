@@ -1,6 +1,4 @@
 div {
-    border: 1px solid green;
-    background-color: peachpuff;
     width: 320px;
     height: 213px;
 }
@@ -12,7 +10,7 @@ div {
 }
 
 @media only screen and (min-width: 768px) {
-    div {        
+    div {
         margin-right: 1rem;
     }
 }

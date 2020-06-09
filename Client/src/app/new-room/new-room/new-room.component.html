@@ -1,13 +1,23 @@
 <ng-container *ngIf="newGameRoomAsGuest">
-    <gs-game-title [gameName]="newGameRoomAsGuest.game.name"></gs-game-title>
+    <gs-game-title [game]="newGameRoomAsGuest.game"></gs-game-title>
     <div id="gamecode">
         <p id="p1">Código da sala:</p>
         <div>{{newGameRoomAsGuest.code}}</div>
-        <p>
+        <p id="p2">
             Para participar, os jogadores devem visitar
-            <strong>http://xxxx.com/</strong>
+            <br>
+            <a
+                href="http://iacweb.herokuapp.com/join"
+                target="_blank"
+            >
+                <strong>http://iacweb.herokuapp.com/join</strong>
+            </a>
+            <br>
             e digitar o código acima
         </p>
     </div>
-    <nr-waiting-list (gameStart)="gameStart()" showStartGameButton="true"></nr-waiting-list>
+    <nr-waiting-list
+        (gameStart)="gameStart()"
+        showStartGameButton="true"
+    ></nr-waiting-list>
 </ng-container>

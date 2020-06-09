@@ -1,5 +1,8 @@
-<a [routerLink]="['/game', id]">
-    <div id="banner">
-        <div id="label">{{name}}</div>
+<a [routerLink]="['/game', game.id]">
+    <div
+        id="banner"
+        [style.background-image]="'url('+bannerUrl()+')'"
+    >
+        <div id="label">{{game.name}}</div>
     </div>
 </a>

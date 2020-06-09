@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Game } from 'src/app/games.service';
+import { GameMetadataService } from 'src/app/game-metadata.service';
 
 @Component({
   selector: 'gs-game-title',
@@ -7,11 +9,17 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GameTitleComponent implements OnInit {
 
-  @Input() gameName : string;
+  @Input() game: Game;
 
-  constructor() { }
+  constructor(
+    private gameMetadataService: GameMetadataService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  public backgroundUrl(){
+    return this.gameMetadataService.getBackgroundUrl(this.game);
   }
 
 }

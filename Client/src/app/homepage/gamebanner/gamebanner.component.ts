@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Game } from 'src/app/games.service';
+import { GameMetadataService } from 'src/app/game-metadata.service';
 
 @Component({
   selector: 'hp-gamebanner',
@@ -7,12 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GamebannerComponent implements OnInit {
 
-  @Input() name: string;
-  @Input() id : number;
+  @Input() game: Game;
   
-  constructor() { }
+  constructor(
+    private gameMetadataService: GameMetadataService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  public bannerUrl(): string {
+    console.log(this.gameMetadataService.getBannerUrl(this.game));
+    return this.gameMetadataService.getBannerUrl(this.game);    
   }
 
 }
