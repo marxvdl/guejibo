@@ -103,13 +103,31 @@ function gameslib(cb) {
     }
   );
   src('GamesLib/dist/gameslib.min.js')
-  .pipe(
-    replace(
-      'ws://localhost:8080/',
-      'ws://localhost:3000/'
+    .pipe(
+      replace(
+        'ws://localhost:8080/',
+        'ws://localhost:3000/'
+      )
     )
-  )
-  .pipe(dest('dist/games'));
+    .pipe(dest('dist/games'));
+  cb();
+}
+
+/*
+ * Commits the dist directory and pushes it to the Heroku server.
+ */
+function deploy(cb) {
+  const opt = {
+    cwd: 'dist',
+    stdio: 'inherit'
+  };
+
+  const today = (new Date()).toISOString().split('T')[0];
+    
+  execSync( 'git add -A', opt );
+  execSync( `git commit -m"Deploy ${today}"`, opt);
+  execSync( 'git push heroku master', opt );
+  
   cb();
 }
 
@@ -126,5 +144,6 @@ exports.client = client;
 exports.server = server;
 exports.games = games;
 exports.gameslib = gameslib;
+exports.deploy = deploy;
 exports.clean = clean;
 exports.default = parallel(client, series(server, games, gameslib));
