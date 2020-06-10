@@ -1,3 +1,5 @@
+let gc = new gameslib.GameConnection();
+
 let passo_nave = 1;
 let limite_movimento = 7;
 let passo_obstaculos = 1;
@@ -385,6 +387,7 @@ function atira_planeta(planeta) {
 					
 					if (pontuacao > 0) {
 						pontuacao--;
+						gc.sendScore(pontuacao);
 					}
 
 					toast('-1 ponto', '#CD5C5C', 500);
@@ -428,6 +431,7 @@ function atira_alien(alien) {
 					aliens_eliminados++;
 					
 					pontuacao++;
+					gc.sendScore(pontuacao);
 					toast('+1 ponto', '#3CB371', 500);
 
 					$('#tempo').text(tempo_restante);
@@ -489,6 +493,7 @@ function verifica_formacao_binaria() {
 			$('#tempo').text(tempo_hard + 1);
 			tempo_restante = tempo_hard;
 			pontuacao += 10;
+			gc.sendScore(pontuacao);
 			$('#pontuacao').text(pontuacao);
 
 			if (objetivos_concluidos > quantidade_para_hard) {
@@ -499,6 +504,7 @@ function verifica_formacao_binaria() {
 			$('#tempo').text(tempo_inicial + 1);
 			tempo_restante = tempo_inicial;
 			pontuacao += 5;
+			gc.sendScore(pontuacao);
 			$('#pontuacao').text(pontuacao);
 			toast('Certa resposta! +5 pontos', 'green', 2000);
 		}
@@ -566,6 +572,8 @@ function gameover() {
 	fim_jogo = true;
 	parar = true;
 	clearTimeout(t);
+
+	gc.sendScore(pontuacao, true);
 }
 
 $('#btn_jogar_novamente').click(() => {
