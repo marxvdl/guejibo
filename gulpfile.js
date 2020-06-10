@@ -122,10 +122,10 @@ function deploy(cb) {
     stdio: 'inherit'
   };
 
-  const today = (new Date()).toISOString().split('T')[0];
-    
+  const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
   execSync( 'git add -A', opt );
-  execSync( `git commit -m"Deploy ${today}"`, opt);
+  execSync( `git commit -m"Deploy ${now}"`, opt);
   execSync( 'git push heroku master', opt );
   
   cb();
