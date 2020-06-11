@@ -1,4 +1,11 @@
+@font-face {
+    src: url(../codeclicker/fonts/FreePixel.ttf);
+    font-family: 'Free-Pixel';    
+    font-weight: normal;
+} 
 .fundoprincipal{
+    font-family: 'Free-Pixel';
+    color: lightgray;
     position:fixed;
     padding:0;
     margin:0;
@@ -34,13 +41,7 @@
     background-image: url("../codeclicker/PixelArts/fundo.png");
     background-size: cover;
 }
-.quiz#quiz{
-    border: 25%;
-    border-color: rgba(0, 0, 0, 0.4);
-    padding: 5%;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: ivory;
-}
+
 .fundo#click{
     grid-column-start: 1;
     grid-column-end: 2;
@@ -121,4 +122,24 @@
 #sacrificioP{
     width: 100px;
     height: auto;
+}
+
+
+.quiz#quiz{
+    font-family: 'Free-Pixel';
+    color: ivory;
+    border: 25%;
+    border-color: rgba(0, 0, 0, 0.4);
+    padding: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: ivory;
+}
+.ui-button{
+    background-color: #4f4f4f;
+    font-family: 'Free-Pixel';
+    color: ivory;
+}
+.ui-dialog-title{
+    font-family: 'Free-Pixel';
+    color: ivory;
 }
