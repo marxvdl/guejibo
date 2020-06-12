@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { webSocket } from "rxjs/webSocket";
 import { Subject } from 'rxjs';
-import { GlobalConstants } from './common/global-constants';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +22,8 @@ export class WebSocketService {
    */
   public connect() {
     if (this.subject) {
-      console.log('Already connected');
+      if(isDevMode())
+        console.log('Already connected');
       return;
     }
 

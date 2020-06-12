@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { AuthService } from 'src/app/auth.service';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { WaitingListService } from 'src/app/waiting-list.service';
+import { environment } from 'src/environments/environment';
 import base64url from 'base64url';
 import Cookies from 'js-cookie';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-join-screen',
@@ -32,9 +32,6 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
   }
 
   join() {
-    let payload = { name: this.name };
-    console.log(payload);
-
     AuthService.token = 'unregistered_' + base64url(this.name);
 
     const wss = this.webSocketService;
@@ -46,7 +43,8 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
       'join',
       msg => {
         if (!msg.success) {
-          console.log("Error trying to join");
+          if(isDevMode())
+            console.log("Error trying to join");
         }
         else {
           this.gameRoomId = msg.gameroom.id;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, isDevMode } from '@angular/core';
 import { Game } from 'src/app/games.service';
 import { GameMetadataService } from 'src/app/game-metadata.service';
 
@@ -19,7 +19,8 @@ export class GamebannerComponent implements OnInit {
   }
 
   public bannerUrl(): string {
-    console.log(this.gameMetadataService.getBannerUrl(this.game));
+    if(isDevMode())
+      console.log(this.gameMetadataService.getBannerUrl(this.game));
     return this.gameMetadataService.getBannerUrl(this.game);    
   }
 

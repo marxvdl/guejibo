@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { GamesService, NewGameRoomAsGuest } from 'src/app/games.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import { WebSocketService } from 'src/app/web-socket.service';
-import { WaitingUser } from '../waiting-user/waiting-user.component';
 import { WaitingListService } from 'src/app/waiting-list.service';
 
 @Component({
@@ -38,7 +37,8 @@ export class NewRoomComponent implements OnInit, OnDestroy {
             outer.newGameRoomAsGuest = gr;
 
             if (!gr.success) {
-              console.log("Server error when creating game room");
+              if(isDevMode())
+                console.log("Server error when creating game room");
               return;
             }
 
@@ -71,7 +71,7 @@ export class NewRoomComponent implements OnInit, OnDestroy {
           action: "start-game",
           gameroom: this.newGameRoomAsGuest.id
       }
-    );    
-    
+    );
   }
+
 }

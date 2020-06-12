@@ -19,5 +19,4 @@ export class GamebannersComponent implements OnInit {
     this.games$ = this.gamesService.getGamesList(); 
   }
 
-
 }
