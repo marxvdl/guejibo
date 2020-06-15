@@ -281,4 +281,254 @@ public class PesParaMetros extends JFrame {
 		
 		
 	}
-}`];
+}`,`package sources;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author wanghley
+ */
+public class Code {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        Scanner in = new Scanner(System.in);
+        float raio;
+        System.out.print("Digite o valor do raio:");
+        raio = in.nextFloat();
+        System.out.printf("--------------------------------\n");
+        float circun =(float) ((float) 2*(Math.PI)*raio);
+        float area = (float) (Math.PI*(Math.pow(raio, 2)));
+        System.out.println("Circunferência = "+circun);
+        System.out.println("Área = "+area);
+        System.out.printf("--------------------------------\n\n");
+    }
+    
+}`,`import java.util.Random;
+
+public class Q3 {
+
+	public static void main(String[] args) {
+		Random r= new Random();
+		int n;
+		int soma = 0;
+		for(int x= 0;x<10;x++) {
+			n=r.nextInt(1000);
+			soma+=n;
+			System.out.println(n);
+		}
+		System.out.println("Soma: "+soma);
+		System.out.println("Media"+(soma/10));
+	}
+
+}
+`,`public class Q5 {
+
+	public static void main(String[] args) {
+		for(int i=1; i<1000;i++) {
+			for(int j=i; j>0;j--) {
+				if(j==1) {
+					System.out.println(i);
+					break;
+				}
+				else if(i%j==0&&i!=j)
+					break;
+			}
+		}
+
+	}
+
+}
+`,`import java.util.Random;
+
+public class Q4 {
+
+	public static void main(String[] args) {
+		Random r= new Random();
+		int n[]=new int[10];
+		n[0]=r.nextInt(1000);
+		System.out.println(n[0]);
+		int maior=n[0];
+		int menor=n[0];
+		for(int x=1;x<10;x++) {
+			System.out.println(n[x]);
+			n[x]=r.nextInt(1000);
+			if(n[x]>n[x-1])
+				maior=n[x];
+			else if(n[x]<n[x-1])
+				menor=n[x];
+		}
+		System.out.println("Maior número"+maior);
+		System.out.println("Menor número"+menor);
+	}
+
+}
+`,`public class Q6 {
+
+	public static void main(String[] args) {
+		long fibonacci[]=new long[50];
+		fibonacci[0]=1;
+		fibonacci[1]=1;
+		System.out.println("1\n1");
+		for(int x=2;x<50;x++) {
+			fibonacci[x]=fibonacci[x-1]+fibonacci[x-2];
+			System.out.println(fibonacci[x]);
+		}
+
+	}
+
+}
+`,`import java.util.*;
+
+public class Q7 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Random r=new Random();
+		Scanner t= new Scanner(System.in);
+		int na=r.nextInt(101);
+		int qtdc=0;
+		while(true) {
+			qtdc++;
+			System.out.println("Digite um número");
+			int nc= t.nextInt();
+			if(nc==na) {
+				System.out.println("Acertou\n Quantidade de tentativa: "+qtdc);
+				break;
+			}
+		}
+		t.close();
+	}
+
+}
+`,`import javax.swing.JOptionPane;
+
+public class Ex4 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String[] cotacao_dolar= new String[7];
+		int media_cotacao=0;
+		for(int x=0;x<7;x++) {
+		cotacao_dolar[x]=JOptionPane.showInputDialog("Digite a cotação do dolar do dolar a "+(x+1)+" dias");
+			int m= Integer.parseInt(cotacao_dolar[x]);
+			media_cotacao=media_cotacao+m;
+			if(x==6)
+				JOptionPane.showMessageDialog(null,"A média da cotação do dolar da última semana é: "+(media_cotacao/7));
+		}
+	}
+
+}
+`,`
+import javax.swing.JOptionPane;
+
+public class Ex5 {
+	public static void main(String[]args) {
+		String numero=JOptionPane.showInputDialog(null,"Digite um número");
+		int n=Integer.parseInt(numero);
+		if(n%2==0)
+			JOptionPane.showMessageDialog(null,"O número "+n+" é par");
+		else
+			JOptionPane.showMessageDialog(null,"O número "+n+" é impar");
+		
+	}
+}
+`,`
+import javax.swing.JOptionPane;
+
+public class Ex6 {
+
+	public static void main(String[] args) {
+			String numero1=JOptionPane.showInputDialog(null,"digite um número");
+			int n1=Integer.parseInt(numero1);
+			String numero2=JOptionPane.showInputDialog(null,"digite outro número");
+			int n2=Integer.parseInt(numero2);
+		if(n1>n2) {
+			JOptionPane.showMessageDialog(null,n2);
+			JOptionPane.showMessageDialog(null,n1);
+		}else {
+			JOptionPane.showMessageDialog(null,n1);
+			JOptionPane.showMessageDialog(null,n2);
+			
+			
+		}
+	}
+
+}
+`,`import javax.swing.JOptionPane;
+
+public class Ex3 {
+
+	public static void main(String[] args) {
+		String celsius=JOptionPane.showInputDialog(null,"Digite a temperatura em Celsius");
+		int c= Integer.parseInt(celsius);
+		int fahrenheit= 9*c/5+32;
+		JOptionPane.showMessageDialog(null,"O valor convertido em Fahrenheit é: "+fahrenheit);
+
+	}
+
+}
+`,`import javax.swing.JOptionPane;
+
+public class Ex7 {
+
+	public static void main(String[] args) {
+		String numero1=JOptionPane.showInputDialog(null,"digite a base");
+		int b=Integer.parseInt(numero1);
+		String numero2=JOptionPane.showInputDialog(null,"digite o expoente");
+		int e=Integer.parseInt(numero2);
+		int potencia=b;
+		for(int x=0;x<e-1;x++) {
+			potencia=potencia*b;
+			
+		}
+		JOptionPane.showMessageDialog(null, "potência="+potencia);
+	}
+}
+`];
+//Escreve algum codigo na tela baseado na pontuacao total
+var pontuacaocodigo=0;
+var qualCodigo=0;
+var ordemcodigos=[];
+
+for(var x=0; x<codigo.length;x++){
+	ordemcodigos[x]=x;
+}
+//gera uma ordem aleatória para os códigos aparecerem no jogo
+function shuffle(o) {
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+ordemcodigos = shuffle(ordemcodigos);
+//escreve o codigo baseado na pontuacao atual
+function escreverCodigo() {
+	if(codigo[ordemcodigos[qualCodigo]].length>pontuacaoAcumulada){
+		$(".java").text(codigo[ordemcodigos[qualCodigo]].slice(0,pontuacaoAcumulada));
+	}
+	else{
+		pontuacaocodigo=0;
+		
+		if(qualCodigo<codigo.length){
+			qualCodigo++;
+		}
+		else{
+			qualCodigo=0;
+			ordemcodigos= shuffle(ordemcodigos);
+		}
+		$(".java").text(codigo[ordemcodigos[qualCodigo]].slice(0,pontuacaocodigo));
+	}
+	hljs.initHighlighting.called = false;
+	hljs.initHighlighting();
+	if(upgradeClickComprado){
+		if(pontuacaoAcumulada>=Math.pow(10,upgradeClick)*1000){
+			upgradeClickComprado=false;
+			$('#upgrade').append('<img src="PixelArts/button_teclado_frame_zero.gif" alt="melhorar clicque" data-toggle="tooltip" title="Aumentar valor do clique em 100%. Custo: '+(Math.pow(10,upgradeClick)*500)+' "data-placement="left"class="imgUpgradeClique" id='+upgradeClick+'>');
+			upgradeClick++;
+		}
+	}
+}

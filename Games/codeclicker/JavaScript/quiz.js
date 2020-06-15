@@ -14,7 +14,7 @@ var respostasQuiz=[
 ];
 var acertou=0;
 //Essa funcao faz aparecer um quiz que aumenta a producao de pontos caso o acertemos
-setInterval(function() {
+setTimeout(function() {
 	var qualPergunta= Math.floor(Math.random() * qualResposta.length);
 	$('#quiz').text(perguntasQuiz[qualPergunta]);
 $( "#quiz" ).dialog({
@@ -90,4 +90,4 @@ $( "#quiz" ).dialog({
 	  ]
 	
   });
-},300000);
+},3);

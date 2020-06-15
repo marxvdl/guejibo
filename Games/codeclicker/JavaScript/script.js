@@ -20,32 +20,7 @@ $('#Pczinho').on('click', function() {
 	quantidadeClicks++;
 	escreverCodigo();
 });
-//Escreve algum codigo na tela baseado na pontuacao total
-function escreverCodigo() {
-	if(codigo[qualCodigo].length>pontuacaoAcumulada){
-		$(".java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
-	}
-	else{
-		pontuacaoAcumulada=0;
-		gc.sendScore(pontuacaoAcumulada);
-		if(qualCodigo===0){
-			qualCodigo=1;
-		}
-		else{
-			qualCodigo=0;
-		}
-		$(".java").text(codigo[qualCodigo].slice(0,pontuacaoAcumulada));
-	}
-	hljs.initHighlighting.called = false;
-	hljs.initHighlighting();
-	if(upgradeClickComprado){
-		if(pontuacaoAcumulada>=Math.pow(10,upgradeClick)*1000){
-			upgradeClickComprado=false;
-			$('#upgrade').append('<img src="PixelArts/button_teclado_frame_zero.gif" alt="melhorar clicque" data-toggle="tooltip" title="Aumentar valor do clique em 100%. Custo: '+(Math.pow(10,upgradeClick)*500)+' "data-placement="left"class="imgUpgradeClique" id='+upgradeClick+'>');
-			upgradeClick++;
-		}
-	}
-}
+
 //Upgrade do click
 $(document).on('click','.imgUpgradeClique', function(){
 	var idClick=$(this).attr('id');
