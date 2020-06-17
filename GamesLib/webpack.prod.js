@@ -9,7 +9,7 @@ module.exports = merge(common, {
     mode: 'production',
     plugins: [
         new webpack.DefinePlugin({
-            WSURL: "'wss://iacweb.herokuapp.com/'"
+            WSURL: "'wss://guejibo.herokuapp.com/'"
         })
     ]
 });
