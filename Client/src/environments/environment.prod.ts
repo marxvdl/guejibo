@@ -3,5 +3,5 @@ export const environment = {
 
   apiUrl: "https://guejibo.herokuapp.com/",
   wsUrl: 'wss://guejibo.herokuapp.com/',
-  gamesPath: 'https://guejibo.herokuapp.com/games/'
+  gamesPath: 'http://www.guejibo.com/games/'
 };
