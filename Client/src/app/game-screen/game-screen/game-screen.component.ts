@@ -13,6 +13,7 @@ export class GameScreenComponent implements OnInit {
 
   public game$: Observable<Game>;
   public description$: Observable<string>;
+  public credits$: Observable<string>;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +29,7 @@ export class GameScreenComponent implements OnInit {
 
         this.game$.subscribe(game => {
           this.description$ = this.gameMetadataService.getDescription(game);
+          this.credits$ = this.gameMetadataService.getCredits(game);
         });
       }
     );
