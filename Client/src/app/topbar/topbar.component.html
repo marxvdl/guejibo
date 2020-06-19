@@ -1,10 +1,20 @@
 <nav>
-    <span>
-        <a [routerLink]="'/'">Guejibo</a>
-    </span>
-    <!-- <ul>
-        <li>Crie sua conta</li>
-        <li>Entre</li>
-    </ul> -->
-    &nbsp;
+    <div id="left">
+        <a *ngIf="showLogo" [routerLink]="'/'">
+            <img
+                src="assets/guejibonav.png"
+                alt="Guejibo"
+            >
+        </a>
+    </div>
+    <div id="right">
+        <!-- <ul>
+            <li>
+                <a [routerLink]="'/register'">Crie sua conta</a>
+            </li>
+            <li>
+                <a [routerLink]="'/login'">Entre</a>
+            </li>
+        </ul> -->
+    </div>
 </nav>

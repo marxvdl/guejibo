@@ -1,21 +1,22 @@
-header {
-    h1 {
-        text-align: center;
-        font-size: 300%;
-        margin: 1rem 0;
-    }
+article p {
+    text-align: justify;
+}
 
-    article p {
-        text-align: justify;
+@media only screen and (max-width: 767px) {
+    img {
+        display: block;
+        margin: 1.5rem auto;
     }
 }
 
 @media only screen and (min-width: 768px) {
-    header {
-        display: flex;
+    img {
+        float: left;
+        margin-top: 0;
+        margin-right: 2rem;
+    }
 
-        h1 {
-            margin: 2rem 3rem;
-        }
+    article {
+        margin: 2rem;
     }
 }
