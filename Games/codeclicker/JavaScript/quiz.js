@@ -9,9 +9,10 @@ var perguntasQuiz=[
 	'Qual o significado da abreviação "HTML"?',
 	'Um empresário resolve premiar três funcionários que se destacaram no ano de 2011. Uma quantia em dinheiro é dividida entre eles em partes inversamente proporcionais ao número de faltas injustificadas de cada um em 2011, ou seja: 3, 5 e 8 faltas. Se o valor do prêmio do funcionário que recebeu a menor quantia foi de R$ 6.000,00, então o valor do prêmio do funcionário que recebeu a maior quantia foi igual a',
 	'Considere que os termos da sequência seguinte foram sucessivamente obtidos segundo determinado padrão:  (3,  7,  15,  31,  63,  127,  255,  ...) O décimo termo dessa sequência é ',
-	'Numa reunião de ex-alunos de um colégio havia cem pessoas. Cada uma dessas pessoas ou era pós-graduada ou era simplesmente graduada. Além disso, há informações sobre os seguintes fatos: pelo menos uma dessas pessoas era pós-graduada; dadas quaisquer duas dessas pessoas, pelo menos uma das duas era simplesmente graduada. Qual o número de pessoas pós-graduadas na referida reunião?'
+	'Numa reunião de ex-alunos de um colégio havia cem pessoas. Cada uma dessas pessoas ou era pós-graduada ou era simplesmente graduada. Além disso, há informações sobre os seguintes fatos: pelo menos uma dessas pessoas era pós-graduada; dadas quaisquer duas dessas pessoas, pelo menos uma das duas era simplesmente graduada. Qual o número de pessoas pós-graduadas na referida reunião?',
+	'Uma loja vende barras de chocolate de diversos sabores. Em uma promoção, era possível comprar três barras de chocolate com desconto, desde que estas fossem dos sabores ao leite, amargo, branco  ou com amêndoas, repetidos ou não. Assim, um cliente que comprar as três barras na promoção poderá escolher os sabores de n modos distintos, sendo n igual a:'
 ];
-var qualResposta=[0,3,2,1,3,0,2,1,3,2,0];
+var qualResposta=[0,3,2,1,3,0,2,1,3,2,0,3];
 var respostasQuiz=[
 	['while','if','switch','else'],
 	['JavaScript','Phyton','C','HTML'],
@@ -23,7 +24,8 @@ var respostasQuiz=[
 	['HyperTexting Markup Language','HyperText Markup Language','HyperText Marking Language','HyperText Markup Lang'],
 	['R$ 12.000,00','R$ 15.000,00','R$ 15.600,00','R$ 16.000,00'],
 	['1929','1945','2047','2319'],
-	[ '1','50','51','99']
+	[ '1','50','51','99'],
+	['10','12','16','20']
 
 
 	
