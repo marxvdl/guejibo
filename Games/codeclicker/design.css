@@ -20,7 +20,7 @@
     grid-template-columns: 20% auto 20%;
     grid-template-rows: 26% 14% 60%;
     background-image: url("../codeclicker/PixelArts/fundao.png");
-    background-size: cover;
+    background-repeat: repeat;
 }
 .fundo{
     margin: 10px;
@@ -39,7 +39,7 @@
     margin: 10px;
     overflow: auto;
     background-image: url("../codeclicker/PixelArts/fundo.png");
-    background-size: cover;
+    background-repeat: repeat;
 }
 
 .fundo#click{
@@ -63,7 +63,6 @@
     overflow: auto;
 }
 .fundo#codigo{
-    
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 1;
