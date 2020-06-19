@@ -2,11 +2,15 @@
     <gs-game-title [game]="game"></gs-game-title>
     <div id="container">
         <gs-screenshot [game]="game"></gs-screenshot>
-        <div id="contents">
-            <p>
-                {{description$ | async}}
-            </p>
-            <gs-menu [game]="game"></gs-menu>
+        <div>
+            <div id="credits">
+                Por
+                <span [innerHTML]="credits$ | async"></span>
+            </div>
+            <div id="contents">
+                <p [innerHTML]="description$ | async"></p>
+                <gs-menu [game]="game"></gs-menu>
+            </div>
         </div>
     </div>
 </ng-container>

@@ -3,12 +3,17 @@ p {
 }
 
 @media only screen and (max-width: 767px) {
-    #contents {
-        margin-top: 30px;
+    #credits {
+        text-align: center;
     }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px) {    
+    #credits {
+        padding-left: 10px;
+        margin-bottom: 0.5rem;
+    }
+
     #container {
         display: flex;
     }
