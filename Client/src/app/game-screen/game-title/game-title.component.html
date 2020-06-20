@@ -1,1 +1,13 @@
-<h1 [style.background-image]="'url('+backgroundUrl()+')'">{{game.name}}</h1>
+<div
+    id="banner"
+    [style.background-image]="'url('+backgroundUrl()+')'"
+>
+    <header [innerHTML]="credits$ | async"></header>
+    <div id="inside">
+        <span></span>
+        <img
+            [src]="logoUrl()"
+            [alt]="game.name"
+        >
+    </div>
+</div>

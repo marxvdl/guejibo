@@ -3,10 +3,6 @@
     <div id="container">
         <gs-screenshot [game]="game"></gs-screenshot>
         <div>
-            <div id="credits">
-                Por
-                <span [innerHTML]="credits$ | async"></span>
-            </div>
             <div id="contents">
                 <p [innerHTML]="description$ | async"></p>
                 <gs-menu [game]="game"></gs-menu>
