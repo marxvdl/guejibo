@@ -10,9 +10,24 @@ var perguntasQuiz=[
 	'Um empresário resolve premiar três funcionários que se destacaram no ano de 2011. Uma quantia em dinheiro é dividida entre eles em partes inversamente proporcionais ao número de faltas injustificadas de cada um em 2011, ou seja: 3, 5 e 8 faltas. Se o valor do prêmio do funcionário que recebeu a menor quantia foi de R$ 6.000,00, então o valor do prêmio do funcionário que recebeu a maior quantia foi igual a',
 	'Considere que os termos da sequência seguinte foram sucessivamente obtidos segundo determinado padrão:  (3,  7,  15,  31,  63,  127,  255,  ...) O décimo termo dessa sequência é ',
 	'Numa reunião de ex-alunos de um colégio havia cem pessoas. Cada uma dessas pessoas ou era pós-graduada ou era simplesmente graduada. Além disso, há informações sobre os seguintes fatos: pelo menos uma dessas pessoas era pós-graduada; dadas quaisquer duas dessas pessoas, pelo menos uma das duas era simplesmente graduada. Qual o número de pessoas pós-graduadas na referida reunião?',
-	'Uma loja vende barras de chocolate de diversos sabores. Em uma promoção, era possível comprar três barras de chocolate com desconto, desde que estas fossem dos sabores ao leite, amargo, branco  ou com amêndoas, repetidos ou não. Assim, um cliente que comprar as três barras na promoção poderá escolher os sabores de n modos distintos, sendo n igual a:'
+	'Uma loja vende barras de chocolate de diversos sabores. Em uma promoção, era possível comprar três barras de chocolate com desconto, desde que estas fossem dos sabores ao leite, amargo, branco  ou com amêndoas, repetidos ou não. Assim, um cliente que comprar as três barras na promoção poderá escolher os sabores de n modos distintos, sendo n igual a:',
+	'(MPOG/2001) Dizer que “André é artista ou Bernardo não é engenheiro” é logicamente equivalente a dizer que:',
+	'(AFC - 2002 / ESAF) Dizer que não é verdade que Pedro é pobre e Alberto é alto, é logicamente equivalente a dizer que é verdade que:',
+	' A negação da afirmação condicional “se estiver chovendo, eu levo o guarda-chuva” é:',
+	'(Fiscal Trabalho/98) Dizer que “Pedro não é pedreiro ou Paulo é paulista” é, do ponto de vista lógico, o mesmo que dizer que:',
+	'(ICMS–SP/1997) Se os tios de músicos sempre são músicos, então',
+	'Se Rodrigo mentiu, então ele é culpado. Logo: ',
+	'A sentença “penso, logo existo” é logicamente equivalente a: ',
+	'Considere verdadeira a seguinte proposição composta: “Se Mariana chegar, então Antônio dormirá.” É correto concluir que',
+	'Uma afirmação equivalente à afirmação “Se bebo, então não dirijo” é',
+	'Se Alceu tira férias, então Brenda fica trabalhando. Se Brenda fica trabalhando, então Clóvis chega mais tarde ao trabalho. Se Clóvis chega mais tarde ao trabalho, então Dalva falta ao trabalho. Sabendo-se que Dalva não faltou ao trabalho, é correto concluir que',
+	'X e Y são números tais que: Se X ≤ 4, então Y > 7. Sendo assim:',
+	'Considere verdadeira a seguinte proposição: “Se x = 3, então x é primo”. Pode-se concluir que',
+	'Se Lauro sair cedo do trabalho, então jantará com Lúcia. Se Lúcia janta com Lauro, então não come na manhã seguinte. Sabendo-se que, essa manhã, Lúcia comeu, conclui-se que',
+	'Considerando que os números naturais x e y sejam tais que “se x é ímpar, então y é divisível por 3”, é correto afirmar que',
+
 ];
-var qualResposta=[0,3,2,1,3,0,2,1,3,2,0,3];
+var qualResposta=[0,3,2,1,3,0,2,1,3,2,0,3,3,0,3,0,0,3,2,3,3,2,0,1,2,3];
 var respostasQuiz=[
 	['while','if','switch','else'],
 	['JavaScript','Phyton','C','HTML'],
@@ -25,10 +40,22 @@ var respostasQuiz=[
 	['R$ 12.000,00','R$ 15.000,00','R$ 15.600,00','R$ 16.000,00'],
 	['1929','1945','2047','2319'],
 	[ '1','50','51','99'],
-	['10','12','16','20']
+	['10','12','16','20'],
+	['André é artista se e somente se Bernardo não é engenheiro.','Se André é artista, então Bernardo não é engenheiro.','Se André não é artista, então Bernardo é engenheiro.','Se Bernardo é engenheiro, então André é artista.'],
+	['Pedro não é pobre ou Alberto não é alto.','Pedro não é pobre e Alberto não é alto.','Pedro é pobre ou Alberto não é alto.','se Pedro não é pobre, então Alberto é alto.']
+	['não está chovendo e eu levo o guarda-chuva','não está chovendo e eu não levo o guarda-chuva','se estiver chovendo, eu não levo o guarda-chuva','está chovendo e eu não levo o guarda-chuva'],
+	['se Pedro é pedreiro, então Paulo é paulista','se Paulo é paulista, então Pedro é pedreiro','se Pedro não é pedreiro, então Paulo é paulista','se Pedro é pedreiro, então Paulo não é paulista'],
+	['os sobrinhos de não músicos nunca são músicos;','os sobrinhos de não músicos sempre são músicos;','os sobrinhos demúsicos sempre são músicos;','os sobrinhos de músicos nunca são músicos;'],
+	['Rodrigo é culpado.','se Rodrigo não mentiu, então ele não é culpado.','Rodrigo mentiu.','se Rodrigo não é culpado, então ele não mentiu.'],
+	['Penso e existo.','Nem penso, nem existo.','Não penso ou existo.','Penso ou não existo.'],
+	['se Mariana não chegar, então Antônio não dormirá.','se Antônio dormir, então Mariana chegou.','se Antônio não dormir, então Mariana chegou.','se Antônio não dormir, então Mariana não chegou.'],
+	['Se não dirijo, então não bebo.','Se não dirijo, então bebo.','Se não bebo, então dirijo.','Se dirijo, então não bebo.'],
+	['Alceu não tira férias e Clóvis chega mais tarde ao trabalho.','Brenda não fica trabalhando e Clóvis chega mais tarde ao trabalho.','Clóvis não chega mais tarde ao trabalho e Alceu não tira férias.','Brenda fica trabalhando e Clóvis chega mais tarde ao trabalho'],
+	['Se Y ≤ 7, então X > 4.','Se Y > 7, então X ≥ 4.','Se X ≥ 4, então Y < 7.','Se Y < 7, então X ≥ 4.'],
+	[' se x não é primo, então x ≠ 3','se x não é primo, então x = 3','se x ≠ 3, então x é primo','se x ≠ 3, então x não é primo'],
+	[' Lúcia jantará esta noite.','Lauro jantou na noite anterior.','Lauro não saiu cedo do trabalho.','Lauro saiu cedo do trabalho.'],
+	['se x é par, então y não é divisível por 3.','se y é divisível por 3, então x é ímpar.','se y = 9, então x é par.','se y = 10, então x é par.']
 
-
-	
 ];
 var qualpergunta=0;
 var ordemperguntas=[];

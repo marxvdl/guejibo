@@ -285,10 +285,6 @@ public class PesParaMetros extends JFrame {
 
 import java.util.Scanner;
 
-/**
- *
- * @author wanghley
- */
 public class Code {
 
     /**
@@ -489,7 +485,386 @@ public class Ex7 {
 		JOptionPane.showMessageDialog(null, "potência="+potencia);
 	}
 }
-`];
+`,`import java.util.Random;
+
+public class Questao04 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Random r= new Random();
+		int i[]=new int[3];
+		for(int x=0;x<3;x++)
+			i[x]=r.nextInt(26)+65;
+		
+		 String str = Character.toString((char)i[0])+Character.toString((char)i[1])+Character.toString((char)i[2]);
+		System.out.println(str+"-"+r.nextInt(10)+r.nextInt(10)+r.nextInt(10)+r.nextInt(10));
+		
+	}
+
+}
+`,`
+import java.util.Scanner;
+
+public class Questao05 {
+
+	public static void main(String[] args) {
+		Scanner t= new Scanner(System.in);
+		String nomes[]=new String[10];
+		for(int x=0;x<10;x++) {
+			System.out.println("Digite um nome");
+			nomes[x]=t.nextLine();
+		}
+		System.out.println("Digite um nome para procurar");
+		String nomeProcurado=t.nextLine();
+		int q=0;
+		for(int x=0;x<10;x++) {
+			if(nomeProcurado.equals(nomes[x]))
+				q++;
+			
+		}
+		System.out.println("Quantidade de vezes que esse nome aparece:"+q);
+		
+	}
+
+}
+`,`
+public class Questao06 {
+
+	public static void main(String[] args) {
+		  String st = "socorram me subi no onibus em marrocos";
+	        String stAux = st.replaceAll("\\s+", "");
+
+	        String stReverse = new StringBuilder(stAux).reverse().toString();
+	        String stReverseAux = new StringBuilder(st).reverse().toString();
+
+	        System.out.println("Original: " + st);
+	        System.out.println("Invertido: " + stReverseAux);
+
+	        if (stAux.equals(stReverse))
+	            System.out.println("É um palíndromo");
+	        else
+	            System.out.println("Não é um palíndromo");
+
+	}
+
+}
+`,`import java.util.Scanner;
+
+public class Tb3Q1 {
+
+	public static void main(String[] args) {
+		Scanner t= new Scanner(System.in);
+		System.out.println("Digite o número de discos");
+		int discos=t.nextInt();
+		System.out.println((Math.pow(2, discos)-1)+"s");
+
+	}
+
+}
+`, `import java.util.ArrayList;
+import java.util.Collections;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+class Disco implements Comparable<Disco>{
+      Integer index;
+      String movimento;
+      Disco(int index,String movimento){
+         this.index=index;
+         this.movimento=movimento;
+      }
+    public int compareTo(Disco o) {
+        return index.compareTo(o.index);
+    }
+}
+public class Tb3Q2 {
+    private int qtDiscos;
+    private String sequenciaImpares[] =   {"A-->C", "C-->B", "B-->A"};//para impares
+    private String sequenciaPares  [] =   {"A-->B", "B-->C", "C-->A"};//para pares
+    private List<Disco> arrayDiscos = new ArrayList<Disco>();
+    public void lerDados() {
+        System.out.println("Digite a quantidade de  discos");
+        Scanner rc = new Scanner(System.in);
+        try{
+         qtDiscos = rc.nextInt();
+        }catch(InputMismatchException e){
+            System.out.println("Amigão! É fácil! Digite o número de discos por favor!");
+            lerDados();
+        }
+    }
+    public void hanoi() {
+            int maxP=(int) Math.pow(2, qtDiscos);
+            int y  = 1;
+            int pos =1;
+            while(y <= qtDiscos ){
+                 int ctPulos = (int) Math.pow(2, y);
+                 pos*=2;
+                 if(y==1){
+                     pos=1;
+                 }
+                 if(qtDiscos%2==0){
+                  populaArrayPares(pos,ctPulos,maxP,y);
+                 }else{
+                  populaArrayImpares(pos,ctPulos,maxP,y);
+                 }
+                 y++;
+           }
+    }
+    private void populaArrayPares(int pos,int intervalos, int maxP,int y){
+           int index = 0;
+           if(y%2==0){
+               for (int i = pos; i <= maxP; i+=intervalos) {
+                   Disco d = new Disco(i, sequenciaPares[index]);
+                   arrayDiscos.add(d);-
+                   index++;-
+                   if(index>2){-
+                      index=0;-
+                   }-
+               }-
+           }else{-
+               for (int i = pos; i < maxP; i+=intervalos) {-
+                   Disco d = new Disco(i, sequenciaImpares[index]);
+                   arrayDiscos.add(d);
+                   index++;
+                   if(index>2){
+                      index=0;
+                   }
+               }
+           }
+        }
+    private void populaArrayImpares(int pos,int intervalos, int maxP,int y){
+       int index = 0;
+       if(y%2==0){
+           for (int i = pos; i < maxP; i+=intervalos) {
+               Disco d = new Disco(i, sequenciaImpares[index]);
+                   arrayDiscos.add(d);
+                   index++;
+                   if(index>2){
+                      index=0;
+                   }
+               }
+       }else{
+          for (int i = pos; i <= maxP; i+=intervalos) {
+               Disco d = new Disco(i, sequenciaPares[index]);
+               arrayDiscos.add(d);
+           index++;
+           if(index>2){
+              index=0;
+           }
+           }
+       }
+        }
+    public static void main(String[] args) {
+        Tb3Q2 h = new Tb3Q2();
+        h.lerDados();
+        h.hanoi();
+        Collections.sort(h.arrayDiscos);
+        for (Disco d : h.arrayDiscos) {
+             System.out.println("execute: "+d.index+"  "+d.movimento);
+        }
+    }
+}`,`import javax.swing.JOptionPane;
+
+public class Q1 {
+
+	public static void main(String[] args) {
+		String linha=JOptionPane.showInputDialog("Digite a quantididade de linhas");
+		String coluna=JOptionPane.showInputDialog("Digite a quantidade de colunas");
+		int l=Integer.parseInt(linha);
+		int c=Integer.parseInt(coluna);
+		int matriz[][]=new int[l][c];
+		boolean identidade=true;
+		boolean nula=true;
+		boolean diagonal=true;
+		boolean simetrica=true;
+		for(int x=0;x<l;x++) {
+			for(int y=0;y<c;y++) {
+				String m=JOptionPane.showInputDialog("Digite o valor do número na linha "+(x+1)+" coluna "+(y+1));
+				matriz[x][y]=Integer.parseInt(m);
+				if(x==y&&matriz[x][y]!=1)
+					identidade=false;
+				if(x!=y&&matriz[x][y]!=0) {
+					identidade=false;
+					diagonal=false;
+				}
+				if(matriz[x][y]!=0) 
+					nula=false;	
+			}
+		}
+		for(int x=0;x<l;x++) {
+			for(int y=0;y<c;y++) {
+				System.out.print(matriz[x][y]+" ");
+				if(l==c&&matriz[x][y]!=matriz[y][x])
+					simetrica=false;
+			}
+			System.out.println("");
+		}
+		if(l==1)
+			JOptionPane.showMessageDialog(null, "Matriz coluna");
+		if(c==1)
+			JOptionPane.showMessageDialog(null,"Matriz linha");
+		if(l==c) {
+			JOptionPane.showMessageDialog(null,"Matriz quadrada");
+			if(l!=1&&c!=1) {
+				if(identidade)
+					JOptionPane.showMessageDialog(null,"Matriz identidade");
+				if(diagonal)
+					JOptionPane.showMessageDialog(null,"Matriz diagonal");
+				if(simetrica)
+					JOptionPane.showMessageDialog(null,"Matriz simétrica");
+			}
+		}
+		if(nula)
+			JOptionPane.showMessageDialog(null,"Matriz nula");
+		
+		
+	}
+
+}
+`,`import java.util.Scanner;
+public class Code {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		String  vet[]=new String[10];
+		boolean Nachei = false;
+		System.out.println("DIGITE OS NOMES ");
+		for(int c = 0;c<10;c++) {
+			vet[c]=in.nextLine();
+		}
+		System.out.print("Digite o nome que deseja procurar: ");
+		String nome = in.nextLine();
+		for(int c =0;c<10;c++) {
+			if(vet[c].equals(nome)) {
+				System.out.println("ACHEI");
+				break;
+			}else {
+				Nachei=true;
+			}
+		}
+		if(Nachei) {
+			System.out.println("NÃO ACHEI");
+		}
+
+	}
+
+}`,`import java.util.Scanner;
+
+public class Code {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner in = new Scanner(System.in);
+		int vet[]=new int[10];
+		for(int c = 0;c<10;c++) {
+			vet[c]=in.nextInt();
+		}
+		for(int c = 0;c<10;c++) {
+			System.out.printf("%d, ",vet[c]);
+		}
+		System.out.println();
+		for(int c = 9;c>=0;c--) {
+			System.out.printf("%d, ",vet[c]);
+		}
+	}
+
+}`,`import java.util.Scanner;
+public class Code {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		int vet[]=new int[10];
+		int fim[]=new int[10];
+		for(int c =0;c<10;c++) {
+			vet[c]=in.nextInt();
+			if(vet[c]%2==0) {
+				fim[c]=vet[c]/2;
+			}else {
+				fim[c]=vet[c]*3;
+			}
+		}
+		System.out.print("Vetor original: ");
+		for(int c = 0;c<10;c++) {
+			System.out.print(vet[c]+" ");
+		}
+		System.out.println();
+		System.out.print("Vetor modificado: ");
+		for(int c = 0;c<10;c++) {
+			System.out.print(fim[c]+" ");
+		}
+	}
+
+}`,`import java.util.Scanner;
+public class solucao {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.print("Digite o tamanho do vetor: ");
+		int n = in.nextInt();
+		int v[]=new int[n];
+		for(int c = 0;c<n;c++) {
+			v[c]=in.nextInt();
+		}
+		for(int c = 0;c<n;c++) {
+			for(int d = c+1;d<n;d++) {
+				if(v[c]>v[d]) {
+					int aux = v[c];
+					v[c]=v[d];
+					v[d]=aux;
+				}
+			}
+		}
+		System.out.println(v[n-1]);
+
+	}
+
+}`,`import java.util.Scanner;
+public class Main {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		int v[]=new int[10];
+		for(int c = 0;c<10;c++) {
+			v[c]=in.nextInt();
+		}
+		for(int c = 0;c<10;c++) {
+			for(int d = c+1;d<10;d++) {
+				if(v[c]>v[d]) {
+					int aux = v[c];
+					v[c]=v[d];
+					v[d]=aux;
+				}
+			}
+		}
+		System.out.println(v[9]);
+
+	}
+
+}`,`import java.util.Scanner;
+public class Main {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner in = new Scanner(System.in);
+		System.out.print("Digite a quantidade de notas: ");
+		int n = in.nextInt(),vet[]=new int[n],soma=0,media;
+		
+		for(int c = 0;c<n;c++) {
+			vet[c]=in.nextInt();
+			soma+=vet[c];
+		}
+		media = soma/n;
+		String maior="",menor="";
+		for(int c = 0;c<n;c++) {
+			if(vet[c]>media) {
+				maior+=vet[c]+" ";
+			}else if(vet[c]<media) {
+				menor+=vet[c]+" ";
+			}
+		}
+		maior = maior.trim();
+		menor = menor.trim();
+		System.out.printf("Acima da média: %s\n",maior);
+		System.out.printf("Abaixo da média: %s\n",menor);
+	}
+
+}`];
 //Escreve algum codigo na tela baseado na pontuacao total
 var pontuacaocodigo=0;
 var qualCodigo=0;
