@@ -1,0 +1,11 @@
+<h1>Sucesso!</h1>
+<p *ngIf="(user$ | async) as user">
+    Nome:
+    <strong>{{user.name}}</strong>
+    <br>
+    E-mail:
+    <strong>{{user.email}}</strong>
+</p>
+<p id="backlink">
+    <a [routerLink]="'/'">Voltar para a página inicial</a>
+</p>

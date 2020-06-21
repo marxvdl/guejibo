@@ -10,15 +10,21 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class GameMetadataService {
-
+export class GameMetadataService {  
   constructor(
     private http: HttpClient
   ) { }
 
   public getDescription(game: Game): Observable<string> {
     return <Observable<string>>this.http.get(
-      environment.gamesPath + game.path + '/meta/desc',
+      environment.gamesPath + game.path + '/meta/desc.html',
+      { responseType: 'text' as 'json' }
+    );
+  }
+
+  public getCredits(game: Game): Observable<string> {
+    return <Observable<string>>this.http.get(
+      environment.gamesPath + game.path + '/meta/credits.html',
       { responseType: 'text' as 'json' }
     );
   }
@@ -33,6 +39,10 @@ export class GameMetadataService {
 
   public getScreenshotUrl(game: Game): string {
     return GamesService.getGameUrl(game) + 'meta/screenshot.jpg'
+  }
+
+  getLogoUrl(game: Game) {
+    return GamesService.getGameUrl(game) + 'meta/logo.png'
   }
 
 }

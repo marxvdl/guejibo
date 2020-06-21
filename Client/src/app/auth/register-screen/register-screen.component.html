@@ -1,0 +1,5 @@
+<auth-register-form
+    (success)="onSuccess()"
+    *ngIf="display==DisplayEnum.Form"
+></auth-register-form>
+<auth-register-success *ngIf="display==DisplayEnum.Success"></auth-register-success>

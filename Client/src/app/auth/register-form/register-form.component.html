@@ -1,0 +1,70 @@
+<h1>Criar conta</h1>
+<form
+    #registerForm="ngForm"
+    (ngSubmit)="submit()"
+>
+    <p>
+        Nome de usuário
+        <span [hidden]="name.valid || name.pristine">● Campo obrigatório!</span>
+    </p>
+    <input
+        type="text"
+        name="name"
+        #name="ngModel"
+        [(ngModel)]="model.name"
+        required
+    >
+
+    <p>
+        E-mail
+        <span [hidden]="email.valid || email.pristine">● E-mail inválido!</span>
+    </p>
+    <input
+        type="email"
+        name="email"
+        #email="ngModel"
+        email
+        [(ngModel)]="model.email"
+        required
+    >
+
+    <p>
+        Senha
+        <span [hidden]="password1.valid || password1.pristine">● Mínimo: 8 caracteres</span>
+    </p>
+    <input
+        type="password"
+        name="password1"
+        #password1="ngModel"
+        minlength=8
+        [(ngModel)]="model.password1"
+        required
+    >
+
+    <p>
+        Confirme a senha
+        <span [hidden]="password2.pristine || model.password1 === model.password2">● Senhas não conferem</span>
+    </p>
+    <input
+        type="password"
+        name="password2"
+        #password2="ngModel"
+        [(ngModel)]="model.password2"
+        required
+    >
+    <div
+        id="error"
+        [hidden]="errorMessage === ''"
+    >
+        Error: {{errorMessage}}
+    </div>
+
+    <div id="buttondiv">
+        <button
+            [disabled]="registerForm.invalid || (model.password1 !== model.password2)"
+            class="bigbutton"
+        >
+            Criar conta
+        </button>
+    </div>
+</form>
