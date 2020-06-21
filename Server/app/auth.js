@@ -76,7 +76,7 @@ module.exports = function (passport) {
               .then(returnFunction);
           }
           else {
-            return done(null, false);
+            return returnFunction(null, false);
           }
         }
       );

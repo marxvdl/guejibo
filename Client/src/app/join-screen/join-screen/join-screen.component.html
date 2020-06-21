@@ -23,7 +23,12 @@
         [(ngModel)]="name"
         name="name"
     >
-    <button (click)="join()">Entrar</button>
+    <button
+        (click)="join()"
+        class="bigbutton"
+    >
+        Entrar
+    </button>
 </form>
 <div *ngIf="joined">
     <h1>Esperando o jogo começar...</h1>
