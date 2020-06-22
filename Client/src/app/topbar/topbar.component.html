@@ -1,5 +1,5 @@
 <nav>
-    <div id="left">
+    <div>
         <a *ngIf="showLogo" [routerLink]="'/'">
             <img
                 src="assets/guejibonav.png"
@@ -7,14 +7,22 @@
             >
         </a>
     </div>
-    <div id="right">
-        <!-- <ul>
+
+    <!-- <div *ngIf="loggedIn">
+        <ul>
+            <li *ngIf="(user$ | async) as user">{{user.name}}</li>
+            <li>Log out</li>
+        </ul>
+    </div>
+
+    <div *ngIf="!loggedIn">
+        <ul>
             <li>
                 <a [routerLink]="'/register'">Crie sua conta</a>
             </li>
             <li>
                 <a [routerLink]="'/login'">Entre</a>
             </li>
-        </ul> -->
-    </div>
+        </ul>
+    </div> -->
 </nav>
