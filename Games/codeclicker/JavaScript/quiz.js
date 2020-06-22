@@ -70,7 +70,7 @@ function shuffle(o) {
 ordemperguntas = shuffle(ordemperguntas);
 
 var acertou=0;
-//Essa funcao faz aparecer um quiz que aumenta a producao de pontos caso o acertemos
+//Essa funcao faz aparecer um quiz que aumenta a producao de pontos caso o acertemos.
 
 setInterval(function() {
 	if(qualpergunta>=perguntasQuiz.length){

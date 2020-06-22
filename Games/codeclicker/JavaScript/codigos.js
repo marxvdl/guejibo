@@ -865,7 +865,7 @@ public class Main {
 	}
 
 }`];
-//Escreve algum codigo na tela baseado na pontuacao total
+//Escreve algum codigo na tela baseado na pontuacao total.
 var pontuacaocodigo=0;
 var qualCodigo=0;
 var ordemcodigos=[];
