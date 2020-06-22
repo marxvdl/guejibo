@@ -4,13 +4,15 @@ import { HomepageComponent } from './homepage/homepage/homepage.component';
 import { GameScreenComponent } from './game-screen/game-screen/game-screen.component';
 import { NewRoomComponent } from './new-room/new-room/new-room.component';
 import { JoinScreenComponent } from './join-screen/join-screen/join-screen.component';
+import { RegisterScreenComponent } from './auth/register-screen/register-screen.component';
 
 
 const routes: Routes = [
-  { path: '',                 component: HomepageComponent   },
-  { path: 'game/:id',         component: GameScreenComponent },
-  { path: 'newroom/:gameid',  component: NewRoomComponent    },
-  { path: 'join',             component: JoinScreenComponent }
+  { path: '',                 component: HomepageComponent       },
+  { path: 'game/:id',         component: GameScreenComponent     },
+  { path: 'newroom/:gameid',  component: NewRoomComponent        },
+  { path: 'join',             component: JoinScreenComponent     },
+  { path: 'register',         component: RegisterScreenComponent },
 ];
 
 @NgModule({

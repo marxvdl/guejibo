@@ -18,6 +18,9 @@ import { NewRoomComponent } from './new-room/new-room/new-room.component';
 import { WaitingListComponent } from './new-room/waiting-list/waiting-list.component';
 import { WaitingUserComponent } from './new-room/waiting-user/waiting-user.component';
 import { JoinScreenComponent } from './join-screen/join-screen/join-screen.component';
+import { RegisterScreenComponent } from './auth/register-screen/register-screen.component';
+import { RegisterSuccessComponent } from './auth/register-success/register-success.component';
+import { RegisterFormComponent } from './auth/register-form/register-form.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { JoinScreenComponent } from './join-screen/join-screen/join-screen.compo
     NewRoomComponent,
     WaitingListComponent,
     WaitingUserComponent,
-    JoinScreenComponent
+    JoinScreenComponent,
+    RegisterScreenComponent,
+    RegisterSuccessComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,
