@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 export interface User {
@@ -20,7 +19,8 @@ export interface Response {
 export class AuthService {
 
   public static token: string = null;
-
+  private topbar;
+  
   constructor(private http: HttpClient) { }
 
   public register(name: string, email: string, password: string): Observable<Response> {
@@ -33,20 +33,12 @@ export class AuthService {
       }
     );
 
-    return response$.pipe(
-      tap(response => {
-        if (response.success === true) {
-          AuthService.token = response['token'];
-        }
-      })
-    );
+    return response$;
   }
 
   public getProfile(): Observable<User> {
     if (AuthService.token === null)
       return null;
-
-      console.log('vamuveee');
 
     return <Observable<User>>this.http.get(
       environment.apiUrl + 'auth/profile',
@@ -56,5 +48,14 @@ export class AuthService {
         })
       }
     );
+  }  
+
+  public initTopbarReference(component):void {
+    this.topbar = component;
   }
+
+  public updateTopbar(){
+    this.topbar.updateLoggedInStatus();
+  }
+
 }

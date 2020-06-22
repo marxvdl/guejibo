@@ -34,19 +34,19 @@ export class RegisterFormComponent implements OnInit {
   }
 
   submit(): void {
-    let response$ = this.authService.register(
+    this.authService.register(
       this.model.name,
       this.model.email,
       this.model.password1
-    );
-
-    response$.subscribe(response => {
-      if (response.success === true) {
-        this.success.emit();
-      }
-      else {
-        this.errorMessage = response['error'];
-      }
-    })
+    )
+      .subscribe(response => {
+        if (response.success === true) {
+          AuthService.token = response['token'];
+          this.success.emit();
+        }
+        else {
+          this.errorMessage = response['error'];
+        }
+      });
   }
 }
