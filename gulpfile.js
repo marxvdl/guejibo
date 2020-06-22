@@ -147,3 +147,4 @@ exports.gameslib = gameslib;
 exports.deploy = deploy;
 exports.clean = clean;
 exports.default = parallel(client, series(server, games, gameslib));
+exports['build-deploy'] = series(exports.default, deploy);
