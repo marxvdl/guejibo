@@ -21,6 +21,7 @@ import { JoinScreenComponent } from './join-screen/join-screen/join-screen.compo
 import { RegisterScreenComponent } from './auth/register-screen/register-screen.component';
 import { RegisterSuccessComponent } from './auth/register-success/register-success.component';
 import { RegisterFormComponent } from './auth/register-form/register-form.component';
+import { LogoutComponent } from './auth/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { RegisterFormComponent } from './auth/register-form/register-form.compon
     JoinScreenComponent,
     RegisterScreenComponent,
     RegisterSuccessComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

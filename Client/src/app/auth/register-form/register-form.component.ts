@@ -41,7 +41,7 @@ export class RegisterFormComponent implements OnInit {
     )
       .subscribe(response => {
         if (response.success === true) {
-          AuthService.token = response['token'];
+          this.authService.logIn(response['token']);
           this.success.emit();
         }
         else {

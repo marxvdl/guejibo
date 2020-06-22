@@ -16,9 +16,7 @@ export class RegisterSuccessComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user$ = this.authService.getProfile();
-    this.user$.subscribe(user => {console.log(user);});
-    this.authService.updateTopbar();
+    this.user$ = this.authService.getLoggedInUser();
   }
 
 }

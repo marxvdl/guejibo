@@ -15,14 +15,18 @@
         [(ngModel)]="code"
         name="code"
     >
-    <p>Nome de usuário:</p>
-    <input
-        id="name"
-        type="text"
-        required
-        [(ngModel)]="name"
-        name="name"
-    >
+
+    <div *ngIf="!isLoggedIn()">
+        <p>Nome de usuário:</p>
+        <input
+            id="name"
+            type="text"
+            required
+            [(ngModel)]="name"
+            name="name"
+        >
+    </div>
+
     <button
         (click)="join()"
         class="bigbutton"
@@ -32,12 +36,5 @@
 </form>
 <div *ngIf="joined">
     <h1>Esperando o jogo começar...</h1>
-    <nr-waiting-list [permanentOnlineUser]="
-    {
-        name: name,
-        online: true,
-        finished: false,
-        score: 0
-    }
-    "></nr-waiting-list>
+    <nr-waiting-list [permanentOnlineUser]="getUser() | async"></nr-waiting-list>
 </div>

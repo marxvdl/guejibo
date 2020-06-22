@@ -21,11 +21,12 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.initTopbarReference(this);
+    this.updateLoggedInStatus();
   }
 
   updateLoggedInStatus(){
-    if(this.loggedIn = AuthService.token !== null){
-      this.user$ = this.authService.getProfile();
+    if(this.loggedIn = this.authService.isLoggedIn()){
+      this.user$ = this.authService.getLoggedInUser();
     }
   }
 

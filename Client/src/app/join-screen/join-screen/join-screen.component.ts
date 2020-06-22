@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { WebSocketService } from 'src/app/web-socket.service';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService, User } from 'src/app/auth.service';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { WaitingListService } from 'src/app/waiting-list.service';
 import { environment } from 'src/environments/environment';
 import base64url from 'base64url';
 import Cookies from 'js-cookie';
+import { Observable, of, pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { WaitingUser } from 'src/app/new-room/waiting-user/waiting-user.component';
 
 @Component({
   selector: 'app-join-screen',
@@ -24,7 +27,8 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
 
   constructor(
     private webSocketService: WebSocketService,
-    private waitingListService: WaitingListService
+    private waitingListService: WaitingListService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +36,8 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
   }
 
   join() {
-    AuthService.token = 'unregistered_' + base64url(this.name);
+    if (!this.isLoggedIn)
+      AuthService.token = 'unregistered_' + base64url(this.name);
 
     const wss = this.webSocketService;
     wss.connect();
@@ -43,7 +48,7 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
       'join',
       msg => {
         if (!msg.success) {
-          if(isDevMode())
+          if (isDevMode())
             console.log("Error trying to join");
         }
         else {
@@ -76,9 +81,11 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
     wss.registerReqCallback(
       'game-started',
       msg => {
-        Cookies.set('jwt', msg.token, { path: '/' });
         Cookies.set('gameroom', msg.gameroom, { path: '/' });
-    
+
+        if (!this.isLoggedIn)
+          Cookies.set('jwt', msg.token, { path: '/' });
+
         window.open(environment.gamesPath + msg.path + '/index.html', '_self');
       }
     );
@@ -98,6 +105,35 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
     this.webSocketService.removeResponseToCallback('join');
     this.webSocketService.removeReqCallback('game-started');
     clearInterval(this.intervalId);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getUser(): Observable<WaitingUser> {
+    if (this.isLoggedIn) {
+      return this.authService.getLoggedInUser().pipe(
+        map(user => {
+          return {
+            name: user.name,
+            online: true,
+            finished: false,
+            score: 0
+          }
+        })
+      );
+    }
+    else {
+      return of(
+        {
+          name: this.name,
+          online: true,
+          finished: false,
+          score: 0
+        }
+      );
+    }
   }
 
 }

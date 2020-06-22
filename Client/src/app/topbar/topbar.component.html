@@ -11,7 +11,7 @@
     <!-- <div *ngIf="loggedIn">
         <ul>
             <li *ngIf="(user$ | async) as user">{{user.name}}</li>
-            <li>Log out</li>
+            <li><a [routerLink]="'/logout'">Sair</a></li>
         </ul>
     </div>
 
