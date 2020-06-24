@@ -21,9 +21,11 @@ export interface Response {
 })
 export class AuthService {
 
-  public static token: string = null;
-  private topbar;
-  private loggedInUser: User = null;
+  private topbar = null;
+
+  private loggedIn: boolean = false;
+  private token: string = null;  
+  private currentUser: User = null;
 
   constructor(private http: HttpClient) { }
 
@@ -31,7 +33,7 @@ export class AuthService {
    * Register a new user in the system.
    */
   public register(name: string, email: string, password: string): Observable<Response> {
-    let response$ = <Observable<Response>>this.http.post(
+    return <Observable<Response>>this.http.post(
       environment.apiUrl + 'auth/register',
       {
         name: name,
@@ -39,44 +41,16 @@ export class AuthService {
         password: password
       }
     );
-
-    return response$;
   }
 
   /**
-   * Calls the back end API that returns data about the currently logged in user.
+   * Returns the http headers needed to connect to the server with the
+   * JWT authentication.
    */
-  private getLoggedInUserFromBackend(): Observable<User> {
-    if (AuthService.token === null)
-      return null;
-
-    let user$ = <Observable<User>>this.http.get(
-      environment.apiUrl + 'auth/profile',
-      {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + AuthService.token
-        })
-      }
-    );
-
-    user$.pipe(
-      tap(user => { this.loggedInUser = user })
-    );
-
-    return user$;
-  }
-
-  /**
-   * Gets data about the currently logged in user.
-   * Tries to fetch locally stored info first, only calls the API if necessary.
-   */
-  public getLoggedInUser(): Observable<User> {
-    if (this.loggedInUser !== null) {
-      return of(this.loggedInUser);
-    }
-    else {
-      return this.getLoggedInUserFromBackend();
-    }
+  public getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: 'Bearer ' + this.token
+    });
   }
 
   /**
@@ -95,48 +69,111 @@ export class AuthService {
   }
 
   /**
-   * Returns wheter the user is currently logged in in the system.
+   * Reads the stored cookie to recover who is logged in, if necessary.
    */
-  public isLoggedIn(): boolean {
-    if (AuthService.token === null) {
-      const cookieJwt = Cookies.get('jwt');
-      if (cookieJwt === undefined) {
-        return false;
-      }
-      else {
-        AuthService.token = cookieJwt;
-        return true;
-      }
-    }
-    else {
-      return true;
-    }
+  private recoverUserDataFromCookie() {
+    if(this.loggedIn)
+      return;
+
+    const jwt = Cookies.get('jwt');
+    if(jwt === undefined)
+      return;
+
+    this.loggedIn = true;
+    this.token = jwt;
+    this.decodeAuthToken();
   }
 
   /**
-   * Log in into the system.
+   * Returns whether the user is currently logged in in the system.
+   */
+  public isLoggedIn(): boolean {
+    this.recoverUserDataFromCookie();
+    return this.loggedIn;
+  }
+
+  /**
+   * Returns the current JWT token.
+   */
+  public getToken(): string {
+    this.recoverUserDataFromCookie();
+    return this.token;
+  }
+
+  /**
+   * Gets data about the currently logged in user.
+   */
+  public getLoggedInUser(): User {
+    this.recoverUserDataFromCookie();
+    
+    if(!this.isLoggedIn())
+      return null;
+      
+    return this.currentUser;
+  }
+
+  /**
+   * Updates the value of loggedInUser according to the current token.
+   */
+  private decodeAuthToken(): void {
+    const decodedJwt = jwtDecode(this.token);
+    this.currentUser = {
+      id: decodedJwt.id,
+      name: decodedJwt.name,
+      email: decodedJwt.email
+    };
+  }
+
+  /**
+   * Uses a JWT token to set up the current user.
    * @param token The JWT token.
    */
-  public logIn(token) {
-    const user = jwtDecode(token);
-    this.loggedInUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    };
-
-    AuthService.token = token;
-    Cookies.set('jwt', token, { path: '/' });    
+  public setupUserWithToken(token: string) {
+    this.loggedIn = true;
+    this.token = token;
+    Cookies.set('jwt', token, { path: '/' });
+    this.decodeAuthToken();
 
     this.updateTopbar();
   }
 
   /**
+   * Logs into the system with email and password.
+   * @param email 
+   * @param password 
+   */
+  public login(email: string, password: string): Observable<Response> {
+    let response$ = <Observable<Response>>this.http.post(
+      environment.apiUrl + 'auth/login',
+      {
+        email: email,
+        password: password
+      }
+    );
+
+    response$.pipe(
+      tap(response => {
+        if(response.success === true){
+          this.loggedIn = true;
+          this.decodeAuthToken();
+          this.token = response['token'];          
+          Cookies.set('jwt', response['token'], { path: '/' });
+
+          this.updateTopbar();
+        }
+      })
+    );
+
+    return response$;    
+  }
+
+  /**
    * Logs out of the system.
    */
-  public logOut() {
-    this.loggedInUser = null;
-    AuthService.token = null;
+  public logout() {
+    this.loggedIn = false;
+    this.currentUser = null;
+    this.token = null;
     Cookies.remove('jwt');
 
     this.updateTopbar();

@@ -1,8 +1,8 @@
-<ng-container *ngIf="newGameRoomAsGuest">
-    <gs-game-title [game]="newGameRoomAsGuest.game"></gs-game-title>
+<ng-container *ngIf="gameRoom">
+    <gs-game-title [game]="gameRoom.game"></gs-game-title>
     <div id="gamecode">
         <p id="p1">Código da sala:</p>
-        <div>{{newGameRoomAsGuest.code}}</div>
+        <div>{{gameRoom.code}}</div>
         <p id="p2">
             Para participar, os jogadores devem visitar
             <br>

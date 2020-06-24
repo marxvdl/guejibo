@@ -4,11 +4,8 @@ import { AuthService, User } from 'src/app/auth.service';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { WaitingListService } from 'src/app/waiting-list.service';
 import { environment } from 'src/environments/environment';
-import base64url from 'base64url';
-import Cookies from 'js-cookie';
-import { Observable, of, pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { WaitingUser } from 'src/app/new-room/waiting-user/waiting-user.component';
+import Cookies from 'js-cookie';
 
 @Component({
   selector: 'app-join-screen',
@@ -36,11 +33,11 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
   }
 
   join() {
-    if (!this.isLoggedIn)
-      AuthService.token = 'unregistered_' + base64url(this.name);
-
     const wss = this.webSocketService;
-    wss.connect();
+    if(this.authService.isLoggedIn())
+      wss.connect();
+    else
+      wss.connect(this.name);
 
     // When successfully joined, change interface to waiting list and
     // start sending "im-ready" messsages
@@ -83,7 +80,7 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
       msg => {
         Cookies.set('gameroom', msg.gameroom, { path: '/' });
 
-        if (!this.isLoggedIn)
+        if (!this.isLoggedIn())
           Cookies.set('jwt', msg.token, { path: '/' });
 
         window.open(environment.gamesPath + msg.path + '/index.html', '_self');
@@ -111,28 +108,22 @@ export class JoinScreenComponent implements OnInit, OnDestroy {
     return this.authService.isLoggedIn();
   }
 
-  getUser(): Observable<WaitingUser> {
-    if (this.isLoggedIn) {
-      return this.authService.getLoggedInUser().pipe(
-        map(user => {
-          return {
-            name: user.name,
-            online: true,
-            finished: false,
-            score: 0
-          }
-        })
-      );
+  getUser(): WaitingUser {
+    if (this.isLoggedIn()) {
+      return {
+        name: this.authService.getLoggedInUser().name,
+        online: true,
+        finished: false,
+        score: 0
+      };
     }
     else {
-      return of(
-        {
-          name: this.name,
-          online: true,
-          finished: false,
-          score: 0
-        }
-      );
+      return {
+        name: this.name,
+        online: true,
+        finished: false,
+        score: 0
+      };
     }
   }
 

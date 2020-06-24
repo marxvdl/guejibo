@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 
 export interface Game {
   id: number,
@@ -9,12 +10,12 @@ export interface Game {
   path: string
 }
 
-export interface NewGameRoomAsGuest {
+export interface GameRoom {
   success: boolean
   id: number,
   game: Game,
   code: string,
-  token: string
+  token?: string
 }
 /**
  * Handles communication with the backend API that deals with games and game rooms.
@@ -23,7 +24,10 @@ export interface NewGameRoomAsGuest {
   providedIn: 'root'
 })
 export class GamesService {
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
   public getGamesList(): Observable<Game[]> {
     return <Observable<Game[]>>this.http.get(environment.apiUrl + 'api/games');
@@ -33,11 +37,22 @@ export class GamesService {
     return <Observable<Game>>this.http.get(environment.apiUrl + 'api/game/' + id);
   }
 
-  public getNewGameRoomAsGuest(gameId: number): Observable<NewGameRoomAsGuest> {
-    return <Observable<NewGameRoomAsGuest>>this.http.post(
-      environment.apiUrl + 'api/guest/gameroom',
-      { gameid: gameId }
+  public getNewGameRoom(gameId: number): Observable<GameRoom> {
+
+    return <Observable<GameRoom>>(
+      this.authService.isLoggedIn() ?
+        this.http.post(
+          environment.apiUrl + 'api/gameroom',
+          { gameid: gameId },
+          { headers: this.authService.getAuthHeaders() }
+        )
+        :
+        this.http.post(
+          environment.apiUrl + 'api/guest/gameroom',
+          { gameid: gameId }
+        )
     );
+
   }
 
   public static getGameUrl(game: Game): string {

@@ -8,9 +8,9 @@
         </a>
     </div>
 
-    <!-- <div *ngIf="loggedIn">
+    <div *ngIf="loggedIn">
         <ul>
-            <li *ngIf="(user$ | async) as user">{{user.name}}</li>
+            <li>{{user.name}}</li>
             <li><a [routerLink]="'/logout'">Sair</a></li>
         </ul>
     </div>
@@ -24,5 +24,5 @@
                 <a [routerLink]="'/login'">Entre</a>
             </li>
         </ul>
-    </div> -->
+    </div>
 </nav>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from 'src/app/auth.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'auth-register-success',
@@ -9,14 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class RegisterSuccessComponent implements OnInit {
 
-  public user$: Observable<User>;
+  public user: User;
 
   constructor(
     private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.user$ = this.authService.getLoggedInUser();
+    this.user = this.authService.getLoggedInUser();
   }
 
 }

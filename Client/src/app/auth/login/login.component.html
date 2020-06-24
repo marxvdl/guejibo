@@ -1,0 +1,46 @@
+<h1>Entrar</h1>
+<form
+    #registerForm="ngForm"
+    (ngSubmit)="submit()"
+>
+    <p>
+        E-mail
+        <span [hidden]="email.valid || email.pristine">● E-mail inválido!</span>
+    </p>
+    <input
+        type="email"
+        name="email"
+        #email="ngModel"
+        email
+        [(ngModel)]="model.email"
+        required
+    >
+
+    <p>
+        Senha
+        <span [hidden]="password.valid || password.pristine">● Digite sua senha</span>
+    </p>
+    <input
+        type="password"
+        name="password"
+        #password="ngModel"
+        [(ngModel)]="model.password"
+        required
+    >
+
+    <div
+        id="error"
+        [hidden]="errorMessage === ''"
+    >
+        Error: {{errorMessage}}
+    </div>
+
+    <div id="buttondiv">
+        <button
+            [disabled]="registerForm.invalid "
+            class="bigbutton"
+        >
+            Entrar
+        </button>
+    </div>
+</form>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
-import { GamesService, NewGameRoomAsGuest } from 'src/app/games.service';
+import { GamesService, GameRoom } from 'src/app/games.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
@@ -13,14 +13,15 @@ import { WaitingListService } from 'src/app/waiting-list.service';
 })
 export class NewRoomComponent implements OnInit, OnDestroy {
 
-  private newGameRoomAsGuest$: Observable<NewGameRoomAsGuest>;
-  public newGameRoomAsGuest: NewGameRoomAsGuest;
+  private gameRoom$: Observable<GameRoom>;
+  public gameRoom: GameRoom;
 
   constructor(
     private route: ActivatedRoute,
     private gameService: GamesService,
     private webSocketService: WebSocketService,
-    private waitingListService: WaitingListService
+    private waitingListService: WaitingListService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -31,10 +32,10 @@ export class NewRoomComponent implements OnInit, OnDestroy {
       paramMap => {
         const gameid = Number(paramMap.get('gameid'));
         const outer = this;
-        this.newGameRoomAsGuest$ = this.gameService.getNewGameRoomAsGuest(gameid);
-        this.newGameRoomAsGuest$.subscribe({
-          next(gr: NewGameRoomAsGuest) {
-            outer.newGameRoomAsGuest = gr;
+        this.gameRoom$ = this.gameService.getNewGameRoom(gameid);
+        this.gameRoom$.subscribe({
+          next(gr: GameRoom) {
+            outer.gameRoom = gr;
 
             if (!gr.success) {
               if(isDevMode())
@@ -42,7 +43,9 @@ export class NewRoomComponent implements OnInit, OnDestroy {
               return;
             }
 
-            AuthService.token = gr.token;
+            if('token' in gr)
+              outer.authService.setupUserWithToken(gr.token);
+              
             outer.webSocketService.connect();
             outer.webSocketService.registerReqCallback(
               'player-is-ready',
@@ -69,7 +72,7 @@ export class NewRoomComponent implements OnInit, OnDestroy {
     this.webSocketService.sendMessage(
       {
           action: "start-game",
-          gameroom: this.newGameRoomAsGuest.id
+          gameroom: this.gameRoom.id
       }
     );
   }

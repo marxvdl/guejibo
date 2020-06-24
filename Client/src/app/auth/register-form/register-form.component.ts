@@ -21,9 +21,7 @@ export class RegisterFormComponent implements OnInit {
     password1: '',
     password2: ''
   };
-
   public errorMessage: string = "";
-
   @Output() success = new EventEmitter();
 
   constructor(
@@ -41,7 +39,7 @@ export class RegisterFormComponent implements OnInit {
     )
       .subscribe(response => {
         if (response.success === true) {
-          this.authService.logIn(response['token']);
+          this.authService.setupUserWithToken(response['token']);
           this.success.emit();
         }
         else {

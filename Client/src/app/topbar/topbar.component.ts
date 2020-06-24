@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService, User } from '../auth.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-topbar',
@@ -11,7 +10,7 @@ export class TopbarComponent implements OnInit {
 
   @Input() showLogo: boolean = true;
   loggedIn: boolean = null;
-  user$: Observable<User>;
+  user: User;
 
   testMessage:string = 'yalala';
 
@@ -26,7 +25,7 @@ export class TopbarComponent implements OnInit {
 
   updateLoggedInStatus(){
     if(this.loggedIn = this.authService.isLoggedIn()){
-      this.user$ = this.authService.getLoggedInUser();
+      this.user = this.authService.getLoggedInUser();
     }
   }
 

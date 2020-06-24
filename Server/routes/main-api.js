@@ -50,11 +50,18 @@ module.exports = function (app, passport) {
         });
 
         gr.save()
-            .then(result => {
-                res.send({
-                    success: true,
-                    id: result.id,
-                    code: result.code
+            .then(gameRoomResult => {
+                Game.findOne({
+                    where: {
+                        id: req.body.gameid
+                    }
+                }).then(gameResult => {
+                    res.send({
+                        success: true,
+                        id: gameRoomResult.id,
+                        game: Game.exportObject(gameResult),
+                        code: gameRoomResult.code
+                    });
                 });
             })
             .catch(error => {
@@ -75,35 +82,35 @@ module.exports = function (app, passport) {
                 temporary: true
             }
         )
-        .then(guestUser => {
-            GameRoom.create({
-                gameId: req.body.gameid,
-                ownerId: guestUser.id,
-                timeStarted: null,
-                timeEnded: null,
-                code: gamelogic.createGameRoomCode()
-            })
-            .then(gameRoomResult => {
-                Game.findOne({
-                    where: {
-                        id: req.body.gameid
-                    }
-                }).then(gameResult => {
-                    res.send({
-                        success: true,
-                        id: gameRoomResult.id,
-                        game: Game.exportObject(gameResult),
-                        code: gameRoomResult.code,
-                        token: authlogic.createJWT(guestUser)
+            .then(guestUser => {
+                GameRoom.create({
+                    gameId: req.body.gameid,
+                    ownerId: guestUser.id,
+                    timeStarted: null,
+                    timeEnded: null,
+                    code: gamelogic.createGameRoomCode()
+                })
+                    .then(gameRoomResult => {
+                        Game.findOne({
+                            where: {
+                                id: req.body.gameid
+                            }
+                        }).then(gameResult => {
+                            res.send({
+                                success: true,
+                                id: gameRoomResult.id,
+                                game: Game.exportObject(gameResult),
+                                code: gameRoomResult.code,
+                                token: authlogic.createJWT(guestUser)
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        res.send({
+                            success: false
+                        });
                     });
-                });
             })
-            .catch(error => {
-                res.send({
-                    success: false
-                });
-            });
-        })
 
     });
 
@@ -163,7 +170,7 @@ module.exports = function (app, passport) {
     /*
      * All other routes are redirected to the Angular client.
      */
-    app.use(express.static('client'));    
+    app.use(express.static('client'));
     app.get('/*', (req, res, next) => {
         if (req.url.startsWith('/games')) {
             res.sendFile(

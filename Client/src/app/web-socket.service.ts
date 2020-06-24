@@ -3,6 +3,7 @@ import { webSocket } from "rxjs/webSocket";
 import { Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
+import base64url from 'base64url';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class WebSocketService {
   private reqCallbacks: object;
   private responseToCallbacks: object;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService
+  ) {
     this.reqCallbacks = {};
     this.responseToCallbacks = {};
   }
@@ -20,23 +23,29 @@ export class WebSocketService {
   /**
    * Connects to the web socket using the token read from AuthService.token.
    */
-  public connect() {
+  public connect(guestName?: string) {
     if (this.subject) {
-      if(isDevMode())
+      if (isDevMode())
         console.log('Already connected');
       return;
     }
 
-    this.subject = webSocket(environment.wsUrl + AuthService.token);
+    const wsParam =
+      (guestName === undefined) ?
+        this.authService.getToken()
+        :
+        'unregistered_' + base64url(guestName);
+
+    this.subject = webSocket(environment.wsUrl + wsParam);
     this.subject.subscribe(
       msg => {
-        if('req' in msg){
-          if(msg.req in this.reqCallbacks){
+        if ('req' in msg) {
+          if (msg.req in this.reqCallbacks) {
             this.reqCallbacks[msg.req](msg);
           }
         }
-        else if('responseTo' in msg){
-          if(msg.responseTo in this.responseToCallbacks){
+        else if ('responseTo' in msg) {
+          if (msg.responseTo in this.responseToCallbacks) {
             this.responseToCallbacks[msg.responseTo](msg);
           }
         }
@@ -60,7 +69,7 @@ export class WebSocketService {
    * @param req Value of the "req" field in the incoming object
    * @param callback Function to be called
    */
-  
+
   public registerResponseToCallback(responseTo: string, callback: (obj: any) => void): void {
     this.responseToCallbacks[responseTo] = callback;
   }
@@ -73,10 +82,10 @@ export class WebSocketService {
     delete this.reqCallbacks[req];
   }
 
-    /**
-   * Removes a callback that was set up with registerResponseToCallback.
-   * @param req 
-   */
+  /**
+ * Removes a callback that was set up with registerResponseToCallback.
+ * @param req 
+ */
   public removeResponseToCallback(req: string): void {
     delete this.responseToCallbacks[req];
   }
@@ -85,7 +94,7 @@ export class WebSocketService {
    * Sends a message to the web socket server.
    * @param msg 
    */
-  public sendMessage(msg) : void {
+  public sendMessage(msg): void {
     this.subject.next(msg);
   }
 
