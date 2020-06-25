@@ -1,48 +1,14 @@
+@use '_colors';
 @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap");
 
 body {
     font-family: Jost;
+    background-color: colors.$page-back;
+    color: colors.$page-text;
 }
 
 span.line {
     display: inline-block;
-}
-
-.bigbutton {
-    margin-top: 2rem;
-    font-size: 110%;
-    font-weight: bold;
-    padding: 10px 30px;
-    color: white;
-    background-color: #206caa;
-    border: 2px solid #003e70;
-    border-radius: 10px;
-}
-
-.bigbutton:hover {
-    background-color: #5e8aad;
-    box-shadow: 0px 0px 9px 3px #164b77;
-    cursor: pointer;
-}
-
-.bigbutton:active {
-    background-color: #96afc4;
-    box-shadow: none;
-}
-
-.bigbutton:disabled {
-    color: rgb(105, 105, 105);
-    background-color: #e0e0e0;
-    border: 2px solid rgb(146, 146, 146);
-}
-
-.bigbutton:disabled:hover {
-    cursor: default;
-    box-shadow: none;
-}
-
-.bigbutton::-moz-focus-inner {
-    border: 0;
 }
 
 @media only screen and (min-width: 768px) {

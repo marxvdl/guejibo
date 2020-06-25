@@ -1,6 +1,8 @@
+@use '_colors';
+
 nav {
-    background-color: #005da8;
-    color: white;
+    background-color: colors.$topbar-back;
+    color: colors.$topbar-text;
     font-size: 90%;
     font-weight: bold; 
     display: flex;
@@ -9,12 +11,12 @@ nav {
 }
 
 a {
-    color: white;
+    color: colors.$topbar-text;
     text-decoration: none;
 }
 
 a:hover {
-    text-shadow: 0px 0px 4px #272b31; 
+    text-shadow: 0px 0px 4px colors.$topbar-linkshadow;
 }
 
 div {

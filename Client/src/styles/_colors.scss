@@ -1,0 +1,103 @@
+/*****************************************************/
+/* Light Theme                                       */
+/*****************************************************/
+
+// $page-back: white;
+// $page-text: black;
+
+// $banner-border: gray;
+// $banner-linkshadow: rgba(110, 110, 110, 0.75);
+
+// $topbar-back: #005da8;
+// $topbar-text: white;
+// $topbar-linkshadow: #272b31;
+
+// $gamemenu-link: black;
+// $gamemenu-hover-text:  rgb(28, 50, 146);
+// $gamemenu-hover-back: white;
+
+// $form-back: rgb(240, 243, 245);
+// $form-title: $page-text;
+// $form-error: red;
+// $form-label: $page-text;
+
+// $form-fieldback-invalid: rgb(168, 120, 120);
+// $form-fieldback-valid: white;
+// $form-field-border: rgb(145, 145, 145);
+// $form-field-shadow: rgb(145, 145, 145);
+
+// $form-bigbutton-resting-border: #003e70;
+// $form-bigbutton-resting-back: #206caa;
+// $form-bigbutton-resting-text: white;
+
+// $form-bigbutton-hover-back: #5e8aad;
+// $form-bigbutton-hover-shadow: #164b77;
+
+// $form-bigbutton-disable-back:  #e0e0e0;
+// $form-bigbutton-disable-text: rgb(105, 105, 105);
+// $form-bigbutton-disable-border: rgb(146, 146, 146);
+
+// $gameroom-code-back: rgb(106, 231, 123);
+// $gameroom-code-text: $page-text;
+
+// $gameroom-link: black;
+
+// $gameroom-wlist-border: rgb(45, 45, 192);
+// $gameroom-wlist-back: none;
+// $gameroom-wlist-text: $page-text;
+
+// $gameroom-wuser-online: green;
+// $gameroom-wuser-offline: red;
+// $gameroom-wuser-done: blue;
+
+/*****************************************************/
+/* Dark Theme                                        */
+/*****************************************************/
+
+$page-back: rgb(34, 34, 34);
+$page-text: rgb(228, 228, 228);
+
+$banner-border: rgb(175, 175, 175);
+$banner-linkshadow: rgba(189, 189, 189, 0.75);
+
+$topbar-back: #283e50;
+$topbar-text: white;
+$topbar-linkshadow: #99a7bd;
+
+$gamemenu-link: #e6f3ff;
+$gamemenu-hover-text: $page-text;
+$gamemenu-hover-back: #004175;
+
+$form-back: #bbc8d3;
+$form-title: black;
+$form-error: red;
+$form-label: black;
+
+$form-fieldback-invalid: rgb(168, 120, 120);
+$form-fieldback-valid: white;
+$form-field-border: rgb(145, 145, 145);
+$form-field-shadow: #283e50;
+
+$form-bigbutton-resting-border: #003e70;
+$form-bigbutton-resting-back: #206caa;
+$form-bigbutton-resting-text: white;
+
+$form-bigbutton-hover-back: #5e8aad;
+$form-bigbutton-hover-shadow: #164b77;
+
+$form-bigbutton-disable-back:  #e0e0e0;
+$form-bigbutton-disable-text: rgb(105, 105, 105);
+$form-bigbutton-disable-border: rgb(146, 146, 146);
+
+$gameroom-code-back: #b2d0e9;
+$gameroom-code-text: rgb(0, 25, 136);
+
+$gameroom-link: white;
+
+$gameroom-wlist-border: rgb(79, 82, 90);
+$gameroom-wlist-back: rgb(38, 39, 43);
+$gameroom-wlist-text: $page-text;
+
+$gameroom-wuser-online: #00bf00;
+$gameroom-wuser-offline: red;
+$gameroom-wuser-done: #76bfff;

@@ -1,3 +1,5 @@
+@use '_colors';
+
 div {
     text-align: left;
     width: 200px;
@@ -22,25 +24,25 @@ div {
 }
 
 .score::before{
-    color: green;
+    color: colors.$gameroom-wuser-online;
 }
 
 .online {
-    color: green;
+    color: colors.$gameroom-wuser-online;
     font-weight: bold;
 }
 
 .offline {
-    color: red;
+    color: colors.$gameroom-wuser-offline;
 }
 
 .done {
-    color: blue;
+    color: colors.$gameroom-wuser-done;
     font-weight: bold;
 }
 
 .done::before {
-    color: white;
+    color: colors.$gameroom-wlist-back;
 }
 
 @media only screen and (max-width: 767px) {

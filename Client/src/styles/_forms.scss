@@ -1,6 +1,8 @@
+@use '_colors';
+
 @mixin host {
     display: block;
-    background-color: rgb(240, 243, 245);
+    background-color: colors.$form-back;
     max-width: 400px;
     padding: 20px 30px;
     margin: 1rem auto;
@@ -9,44 +11,83 @@
 @mixin contents {
     h1 {
         margin: 0;
+        color: colors.$form-title;
     }
     
     p {
         margin-bottom: 5px;
+        color: colors.$form-label;
     
         span {
-            color: red;
+            color: colors.$form-error;
         }
     }
     
     .ng-invalid:not(form) {
-        background-color: rgb(168, 120, 120);
+        background-color: colors.$form-fieldback-invalid;
     }
     
     .ng-pristine:not(form) {
-        background-color: white;
+        background-color: colors.$form-fieldback-valid;
     }
     
     input {
         width: 100%;
         height: 30px;
-        border: 1px solid rgb(145, 145, 145);
+        border: 1px solid colors.$form-field-border;
         border-radius: 2px;
         font-size: 110%;
         padding-left: 5px;
     }
     
     input:focus {
-        box-shadow: 0px 0px 4px 1px rgb(79, 79, 255);
+        box-shadow: 0px 0px 4px 1px colors.$form-field-shadow;
     }
     
     #error {
         margin-top: 2rem;
         margin-bottom: 0;
-        color: red;
+        color: colors.$form-error;
     }
     
     #buttondiv {
         text-align: center;
     }
+}
+
+.bigbutton {
+    margin-top: 2rem;
+    font-size: 110%;
+    font-weight: bold;
+    padding: 10px 30px;
+    color: colors.$form-bigbutton-resting-text;
+    background-color: colors.$form-bigbutton-resting-back;
+    border: 2px solid colors.$form-bigbutton-resting-border;
+    border-radius: 10px;
+}
+
+.bigbutton:hover {
+    background-color: colors.$form-bigbutton-hover-back;
+    box-shadow: 0px 0px 9px 3px colors.$form-bigbutton-hover-shadow;
+    cursor: pointer;
+}
+
+.bigbutton:active {
+    background-color: #96afc4;
+    box-shadow: none;
+}
+
+.bigbutton:disabled {
+    color: colors.$form-bigbutton-disable-text;
+    background-color: colors.$form-bigbutton-disable-back;
+    border: 2px solid colors.$form-bigbutton-disable-border;
+}
+
+.bigbutton:disabled:hover {
+    cursor: default;
+    box-shadow: none;
+}
+
+.bigbutton::-moz-focus-inner {
+    border: 0;
 }

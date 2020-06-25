@@ -1,10 +1,14 @@
+@use '_colors';
+
 :host {
     text-align: center;
     display: block;
 }
 
 #box {
-    border: 1px solid rgb(45, 45, 192);
+    border: 1px solid colors.$gameroom-wlist-border;
+    background-color: colors.$gameroom-wlist-back;
+    color: colors.$gameroom-wlist-text;
     padding: 10px;
     width: 70%;
     display: inline-block;

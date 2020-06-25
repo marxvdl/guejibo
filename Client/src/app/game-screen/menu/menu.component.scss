@@ -1,3 +1,5 @@
+@use '_colors';
+
 :host {
     flex-basis: 100%;
 }
@@ -13,12 +15,16 @@ li {
 }
 
 a {
-    color: black;
+    display: inline-block;    
+    padding-left: 1rem;
+    color: colors.$gamemenu-link;
     text-decoration: none;
+    width: 100%;    
 }
 
 a:hover {
-    color: rgb(28, 50, 146);
+    color: colors.$gamemenu-hover-text;
+    background-color: colors.$gamemenu-hover-back;
 }
 
 @media only screen and (max-width: 767px) {
