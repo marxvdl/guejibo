@@ -16,7 +16,6 @@ li {
 
 a {
     display: inline-block;    
-    padding-left: 1rem;
     color: colors.$gamemenu-link;
     text-decoration: none;
     width: 100%;    
@@ -30,5 +29,11 @@ a:hover {
 @media only screen and (max-width: 767px) {
     ul {
         text-align: center;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    a {
+        padding-left: 1rem;
     }
 }
