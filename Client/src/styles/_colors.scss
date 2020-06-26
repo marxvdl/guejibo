@@ -6,6 +6,7 @@
 // $page-text: black;
 
 // $banner-border: gray;
+// $banner-restingshadow: none;
 // $banner-linkshadow: rgba(110, 110, 110, 0.75);
 
 // $topbar-back: #005da8;
@@ -54,13 +55,14 @@
 /* Dark Theme                                        */
 /*****************************************************/
 
-$page-back: rgb(34, 34, 34);
-$page-text: rgb(228, 228, 228);
+$page-back: #283e50;
+$page-text: #e4e4e4;
 
-$banner-border: rgb(175, 175, 175);
-$banner-linkshadow: rgba(189, 189, 189, 0.75);
+$banner-border: rgb(0, 0, 0);
+$banner-restingshadow: rgba(0, 0, 0, 0.555);
+$banner-hovershadow: rgb(189, 189, 189);
 
-$topbar-back: #283e50;
+$topbar-back: #222222;
 $topbar-text: white;
 $topbar-linkshadow: #99a7bd;
 
@@ -85,7 +87,7 @@ $form-bigbutton-resting-text: white;
 $form-bigbutton-hover-back: #5e8aad;
 $form-bigbutton-hover-shadow: #164b77;
 
-$form-bigbutton-disable-back:  #e0e0e0;
+$form-bigbutton-disable-back: #e0e0e0;
 $form-bigbutton-disable-text: rgb(105, 105, 105);
 $form-bigbutton-disable-border: rgb(146, 146, 146);
 
