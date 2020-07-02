@@ -49,13 +49,13 @@ function comprar(){
 		switch(qualItem){
 			case 0:
 				var imgIa = $('<img class="itemImg">');
-				imgIa.attr('src','PixelArts/BAS_IA.gif');
+				imgIa.attr('src','PixelArts/ia.gif');
 				imgIa.appendTo('#arquivos');
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
-						$('#upgrade').append('<img src="PixelArts/BAS_IA.gif" alt="melhorar Ia" data-toggle="tooltip" title="Aumentar Produção das Ias e clique em 100%. Custo: '+100*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeIa" id='+quantidadeUpgrade[qualItem]+'>');
+						$('#upgrade').append('<img src="PixelArts/ia.gif" alt="melhorar Ia" data-toggle="tooltip" title="Aumentar Produção das Ias e clique em 100%. Custo: '+100*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeIa" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
 				$('#quantidadeIas').text('Quantidade de Ias: '+quantidade[qualItem]);
@@ -63,26 +63,26 @@ function comprar(){
 				break;
 			case 1:
 				var imgProgramador = $('<img class="itemImg">');
-				imgProgramador.attr('src','PixelArts/BAS_Programador.gif');
+				imgProgramador.attr('src','PixelArts/programador.gif');
 				imgProgramador.appendTo('#arquivos');
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
-						$('#upgrade').append('<img src="PixelArts/BAS_Programador.gif" alt="melhorar programador" data-toggle="tooltip" title="Aumentar Produção dos programadores em 100%. Custo: '+1000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeProgramador" id='+quantidadeUpgrade[qualItem]+'>');}
+						$('#upgrade').append('<img src="PixelArts/programador.gif" alt="melhorar programador" data-toggle="tooltip" title="Aumentar Produção dos programadores em 100%. Custo: '+1000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeProgramador" id='+quantidadeUpgrade[qualItem]+'>');}
 				}
 				$('#quantidadeProgramadores').text('Quantidade de Programadores: '+quantidade[qualItem]);
 				$('#custoProgramadores').text('Custo Programador: '+preco[qualItem]);
 				break;
 			case 2:
 				var imgKarem = $('<img class="itemImg">');
-				imgKarem.attr('src','PixelArts/BAS_Karen.gif');
+				imgKarem.attr('src','PixelArts/karen.gif');
 				imgKarem.appendTo('#arquivos');
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
-						$('#upgrade').append('<img src="PixelArts/BAS_Karen.gif" alt="melhorar Robotrom" data-toggle="tooltip" title="Aumentar Produção dos Robotrons em 100%. Custo: '+11000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeKarem" id='+quantidadeUpgrade[qualItem]+'>');
+						$('#upgrade').append('<img src="PixelArts/karen.gif" alt="melhorar Robotrom" data-toggle="tooltip" title="Aumentar Produção dos Robotrons em 100%. Custo: '+11000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeKarem" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
 				$('#quantidadeKarens').text('Quantidade de Robotrons: '+quantidade[qualItem]);
@@ -90,13 +90,13 @@ function comprar(){
 				break;
 			case 3:
 				var imgStartUp = $('<img class="itemImg">');
-				imgStartUp.attr('src','PixelArts/Startup.gif');
+				imgStartUp.attr('src','PixelArts/startup.gif');
 				imgStartUp.appendTo('#arquivos');
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
-						$('#upgrade').append('<img src="PixelArts/Startup.gif" alt="melhorar StartUp" data-toggle="tooltip" title="Aumentar Produção das StartUps em 100%. Custo: '+120000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeStartUp" id='+quantidadeUpgrade[qualItem]+'>');
+						$('#upgrade').append('<img src="PixelArts/startup.gif" alt="melhorar StartUp" data-toggle="tooltip" title="Aumentar Produção das StartUps em 100%. Custo: '+120000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeStartUp" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
 				$('#quantidadeStartUps').text('Quantidade de StartUps: '+quantidade[qualItem]);
@@ -104,13 +104,13 @@ function comprar(){
 				break;
 			case 4:
 				var imgAlien = $('<img class="itemImg">');
-				imgAlien.attr('src','PixelArts/BAS_Alien.gif');
+				imgAlien.attr('src','PixelArts/alien.gif');
 				imgAlien.appendTo('#arquivos');
 				if(sacrificio){
 					if(quantidade[1]>=20){
 						if(quantidade[4]>=3){
 							sacrificio=false;
-							$('#upgrade').append('<img src="PixelArts/BAS_Alien.gif" alt="sacrificar programadores pelo bem maior" data-toggle="tooltip" title="Sacrificar 5 programadores para aumentar a produção dos Alienígenas em 200%. Custo: 2000000 "data-placement="left" id="sacrificioP">');
+							$('#upgrade').append('<img src="PixelArts/alien.gif" alt="sacrificar programadores pelo bem maior" data-toggle="tooltip" title="Sacrificar 5 programadores para aumentar a produção dos Alienígenas em 200%. Custo: 2000000 "data-placement="left" id="sacrificioP">');
 					
 						}
 					}
@@ -120,7 +120,7 @@ function comprar(){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
 						
-						$('#upgrade').append('<img src="PixelArts/BAS_Alien.gif" alt="melhorar Alienígena" data-toggle="tooltip" title="Aumentar Produção dos Alienígenas em 100%. Custo: '+1300000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeAlien" id='+quantidadeUpgrade[qualItem]+'>');
+						$('#upgrade').append('<img src="PixelArts/alien.gif" alt="melhorar Alienígena" data-toggle="tooltip" title="Aumentar Produção dos Alienígenas em 100%. Custo: '+1300000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeAlien" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
 				$('#quantidadeAliens').text('Quantidade de Alienígenas: '+quantidade[qualItem]);
@@ -128,13 +128,13 @@ function comprar(){
 				break;
 			case 5:
 				var imgWanghley = $('<img class="itemImg">');
-				imgWanghley.attr('src','PixelArts/BAS_deus da programação.png');
+				imgWanghley.attr('src','PixelArts/deusdaprogramacao.png');
 				imgWanghley.appendTo('#arquivos');
 				if(quantidade[qualItem]>=(5*(quantidadeUpgrade[qualItem]))){
 					if(upgradeComprado[qualItem]){
 						upgradeComprado[qualItem]=false;
 						quantidadeUpgrade[qualItem]++;
-						$('#upgrade').append('<img src="PixelArts/BAS_deus da programação.png" alt="melhorar Deus da Programação" data-toggle="tooltip" title="Aumentar Produção dos Deuses da Programação em 100%. Custo: '+14000000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeWanghley" id='+quantidadeUpgrade[qualItem]+'>');
+						$('#upgrade').append('<img src="PixelArts/deusdaprogramacao.png" alt="melhorar Deus da Programação" data-toggle="tooltip" title="Aumentar Produção dos Deuses da Programação em 100%. Custo: '+14000000*Math.pow(5,(quantidadeUpgrade[qualItem]-1))+' "data-placement="left"class="imgUpgradeWanghley" id='+quantidadeUpgrade[qualItem]+'>');
 					}
 				}
 				$('#quantidadeWanghley').text('Quantidade de Deuses da Programação: '+quantidade[qualItem]);
