@@ -1,4 +1,4 @@
-let gc = new gameslib.GameConnection();
+//let gc = new gameslib.GameConnection();
 
 let passo_nave = 1;
 let limite_movimento = 7;
@@ -32,12 +32,25 @@ let melhor_tempo = 999;
 let planetas_destruidos = 0;
 let acuracia_tiro = 0;
 
-let tempo_inicial = 59;
-let tempo_hard = 29;
-let tempo_restante = tempo_inicial;
+let tempo_restante = 5 * 60;
 let t;
 
-$('#tempo').text(tempo_inicial + 1);
+function escreve_tempo(tempo) {
+	let min = tempo / 60;
+	if (min >= 1) {
+		min = Math.floor(min);
+	}
+
+	let seg = tempo - (min * 60);
+
+	if (seg < 10) {
+		seg = '0' + seg;
+	}
+
+	return `${min}:${seg}`;
+}
+
+$('#tempo').text(escreve_tempo(tempo_restante));
 
 let acoes_nave = {
 	'moveu_esquerda':false,
@@ -434,7 +447,7 @@ function atira_alien(alien) {
 					gc.sendScore(pontuacao);
 					toast('+1 ponto', '#3CB371', 500);
 
-					$('#tempo').text(tempo_restante);
+					$('#tempo').text(escreve_tempo(tempo_restante));
 					$('#pontuacao').text(pontuacao);
 				}, 500);	
 
@@ -464,53 +477,34 @@ function verifica_formacao_binaria() {
 
 	if (formacao_binaria == $('#numero_objetivo').text()) {
 
-		if (modo_hard) {
+		// if (modo_hard) {
 
-			if (30 - tempo_restante < melhor_tempo) {
-				melhor_tempo = 60 - tempo_restante;
-			}
+		// 	if (30 - tempo_restante < melhor_tempo) {
+		// 		melhor_tempo = 60 - tempo_restante;
+		// 	}
 
-		} else {
+		// } else {
 
-			if (60 - tempo_restante < melhor_tempo) {
-				melhor_tempo = 60 - tempo_restante;
-			}
+		// 	if (60 - tempo_restante < melhor_tempo) {
+		// 		melhor_tempo = 60 - tempo_restante;
+		// 	}
 
-		}
+		// }
 
 		numeros_formados++;
 
 		objetivos_concluidos++;
 		$('#numero_objetivo').text(aleatorio(0, 255));
 
-		if (objetivos_concluidos >= quantidade_para_hard) {
-			
-			if (!modo_hard && objetivos_concluidos == quantidade_para_hard) {
-				toast('Você alcançou o modo hard! O tempo agora está mais curto!', 'purple', 3000);
-				modo_hard = true;
-			}
+		// $('#tempo').text(tempo_inicial + 1);
+		// tempo_restante = tempo_inicial;
+		pontuacao += 5;
+		gc.sendScore(pontuacao);
+		$('#pontuacao').text(pontuacao);
+		toast('Certa resposta! +5 pontos', 'green', 2000);
 
-			$('#tempo').text(tempo_hard + 1);
-			tempo_restante = tempo_hard;
-			pontuacao += 10;
-			gc.sendScore(pontuacao);
-			$('#pontuacao').text(pontuacao);
-
-			if (objetivos_concluidos > quantidade_para_hard) {
-				toast('Certa resposta! +10 pontos', 'purple', 2000);
-			}
-
-		} else {
-			$('#tempo').text(tempo_inicial + 1);
-			tempo_restante = tempo_inicial;
-			pontuacao += 5;
-			gc.sendScore(pontuacao);
-			$('#pontuacao').text(pontuacao);
-			toast('Certa resposta! +5 pontos', 'green', 2000);
-		}
-
-	 	clearTimeout(t);
-		temporizador();
+	 // 	clearTimeout(t);
+		// temporizador();
 
 		return true;
 	}
@@ -585,7 +579,7 @@ function temporizador() {
   t = setTimeout(function() {
     
   	if (tempo_restante > 0) {
-  		$('#tempo').text(tempo_restante--);
+  		$('#tempo').text(escreve_tempo(tempo_restante--));
   	} else {
   		gameover();
   	}

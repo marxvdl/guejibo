@@ -2,7 +2,8 @@
     src: url(../fonts/FreePixel.ttf);
     font-family: 'Free-Pixel';    
     font-weight: normal;
-} 
+}
+
 body {
 	background: #000;
 	overflow: hidden;
@@ -155,6 +156,7 @@ button:hover {
 	padding: 10px;
 	border-radius: 10px;
 	border: 2px solid darkblue;
+	text-shadow: 1px 1px 5px #212121;
 }
 
 #iniciar_jogo h2 , #pause h2 {
@@ -252,6 +254,7 @@ label {
 	padding: 10px;
 	border-radius: 10px;
 	border: 2px solid darkblue;
+	text-shadow: 1px 1px 5px #212121;
 }
 
 #game_over h2 {
@@ -318,7 +321,7 @@ label {
 	color: #fff;
 	position: relative;
 	line-height: 45px;
-	background-size: contain;
+	background-size: auto;
 	background-position: center;
 }
 
@@ -353,28 +356,4 @@ label {
 .alien {
 	width: 64px;
 	height: 34px;
-}
-
-/* MEDIA QUERIES */
-
-
-@media (max-width: 1200px) {
-
-	.obstaculo {
-		width: 45px;
-		height: 45px;
-	}
-
-	#nave {
-		width: 29px;
-		height: 50px;		
-	}
-
-	#alternativas div {
-		width: 37px;
-		height: 37px;
-		font-size: 20px;
-		line-height: 30px;
-	}
-
 }
