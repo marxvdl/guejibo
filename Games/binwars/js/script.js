@@ -1,4 +1,4 @@
-//let gc = new gameslib.GameConnection();
+let gc = new gameslib.GameConnection();
 
 let passo_nave = 1;
 let limite_movimento = 7;
