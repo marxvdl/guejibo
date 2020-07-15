@@ -8,10 +8,17 @@ body {
 	background: #000;
 	overflow: hidden;
 	font-family: 'Free-Pixel'; 
-	background-image: url('../img/fundo.gif');
+	background-image: url('../img/fundo.png');
 	background-position: top;
 	background-repeat: repeat;
+	animation: animation 100s linear infinite;
 }
+
+@keyframes animation {
+	100%{
+	 background-position:0px +3000px;
+   }
+ }
 
 button {
 	display: block;
