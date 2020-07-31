@@ -1,4 +1,4 @@
-let gc = new gameslib.GameConnection();
+// let gc = new gameslib.GameConnection();
 
 let passo_nave = 1;
 let limite_movimento = 7;
@@ -32,7 +32,7 @@ let melhor_tempo = 999;
 let planetas_destruidos = 0;
 let acuracia_tiro = 0;
 
-let tempo_restante = 1 * 60;
+let tempo_restante = 5 * 60;
 let t;
 
 function escreve_tempo(tempo) {

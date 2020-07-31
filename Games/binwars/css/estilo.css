@@ -163,7 +163,6 @@ button:hover {
 	padding: 10px;
 	border-radius: 10px;
 	border: 2px solid darkblue;
-	text-shadow: 1px 1px 5px #212121;
 }
 
 #iniciar_jogo h2 , #pause h2 {
@@ -260,8 +259,7 @@ label {
 	margin: 10% auto;
 	padding: 10px;
 	border-radius: 10px;
-	border: 2px solid darkblue;
-	text-shadow: 1px 1px 5px #212121;
+	border: 2px solid darkblue;''
 }
 
 #game_over h2 {
