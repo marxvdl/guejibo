@@ -32,13 +32,15 @@ let melhor_tempo = 999;
 let planetas_destruidos = 0;
 let acuracia_tiro = 0;
 
-let tempo_restante = 5 * 60;
+let tempo_restante = 1 * 60;
 let t;
 
 function escreve_tempo(tempo) {
 	let min = tempo / 60;
 	if (min >= 1) {
 		min = Math.floor(min);
+	} else {
+		min = 0;
 	}
 
 	let seg = tempo - (min * 60);
@@ -392,7 +394,7 @@ function atira_planeta(planeta) {
 				planetas_destruidos++;
 
 				setTimeout(() => {
-					$(alien).fadeOut('600');
+					$(planeta).fadeOut('600');
 				}, 25);
 
 				setTimeout(() => {
