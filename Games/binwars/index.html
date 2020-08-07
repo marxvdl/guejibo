@@ -2,97 +2,72 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Nave</title>
+	<title>Binary Wars</title>
+	<meta name="author" content="Pedro Stewart Silva Borges">
 	<link rel="stylesheet" type="text/css" href="css/estilo.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="icon" type="image/png" href="img/nave.png"/>
-	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 </head>
-
+<style type="text/css">
+</style>
 <body>
-
-<div class="alinhados">
-	
-<div id="espaco_obstaculos_a"></div>
-<div id="espaco_obstaculos_b"></div>
-
+<h1>Binary Wars</h1>
+<!-- TOAST -->
+<div id="toast"></div>
+<!-- *** -->
+<!-- MODAL DE INÍCIO -->
+<div id="bg_inicio" class="bg">
+	<div id="inicio" class="modal">
+		<h2>Binary Wars: Início</h2>
+		<p>Utilize as setas para esquerda e direita ou as letras A e D para mover a nave. Aperte a barra de espaço para atirar.</p>
+		<p>Ao destruir alienígenas, você ganha pontos. Se destruir qualquer outra coisa, perde ponto.</p>
+		<p>O jogo inicia com um número aleatório, em binário. A sua missão é mudar os valores de um e zero para formar o número objetivo. Ao atirar em um bloco de valor um, ele se torna zero e vice-versa. Dessa forma, você consegue montar a combinação necessária.</p>
+		<p>O jogo acaba quando o tempo chegar a 00:00</p>
+		<p>Defina seu tempo de jogo em minutos:</p>
+		<input type="number" id="tempo_desejado" value="5">
+		<button id="btn_jogar">Jogar!</button>
+	</div>
+</div>
+<!-- *** -->
+<!-- MODAL DE GAME OVER -->
+<div id="bg_fim" class="bg">
+	<div id="fim" class="modal">
+		<h2>Binary Wars: Game Over</h2>
+		<p>Seu tempo acabou.</p>
+		<p>Pontuação obtida: <span id="pontuacao_obtida">666</span></p>
+		<button id="btn_jogar_novamente">Jogar novamente!</button>
+	</div>
+</div>
+<!-- *** -->
+<!-- JOGO -->
 <div id="espaco">
-	<div id="alternativas"></div>
-
+	<div id="alternativas">
+		<div class="alt"><span class="valor">1</span><span class="ajuda">128</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">64</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">32</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">16</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">8</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">4</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">2</span></div>
+		<div class="alt"><span class="valor">1</span><span class="ajuda">1</span></div>
+	</div>
+	<div id="informacoes">
+		<p><span class="negrito">Número atual: </span><span id="numero_atual">255</span> <span class="material-icons">preview</span></p>
+		<p><span class="negrito">Número objetivo: </span><span id="numero_objetivo">255</span> <span class="material-icons">flag</span></p>
+		<p><span class="negrito">Pontuação: </span> <span class="verde"><span id="pontuacao">10</span> <span class="material-icons">stars</span></span></p>
+		<p><span class="negrito">Tempo: </span> <span class="vermelho"><span id="tempo">05:00</span> <span class="material-icons">query_builder</span></span></p>
+	</div>
+	<div id="obstaculos">
+	</div>
+	
+	<div id="laser"></div>
 	<div id="nave">
-		<div id="laser"></div>
 	</div>
 </div>
-
-<div id="painel">
-	<h3>Número atual:</h3>
-	<h4 id="numero_atual">178</h4>
-	<h3>Objetivo:</h3>
-	<h4 id="numero_objetivo">132</h4>
-
-	<h3>Tempo:</h3>
-	<h4 id="tempo">45</h4>
-
-	<h3>Pontuação:</h3>
-	<h4 id="pontuacao">0</h4>
-</div>
-
-<div id="bg_game_over">
-	<div id="game_over">
-		<h2>Game over</h2>
-		<p id="mensagem_game_over">Você não conseguiu formar o número a tempo.</p>
-
-		<p id="pontuacao_obtida"></p>
-		<p id="aliens_eliminados"></p>
-		<p id="numeros_formados"></p>
-		<p id="melhor_tempo"></p>
-		<p id="tiros_dados"></p>
-		<p id="acuracia_tiro"></p>
-		<p id="planetas_destruidos"></p>
-		<p id="tiros_alternativas"></p>
-		
-		<button id="btn_jogar_novamente">Jogar novamente</button>
-	</div>
-</div>
-
-<div id="bg_iniciar_jogo">
-	<div id="iniciar_jogo">
-		<h2>Nave</h2>
-
-		<ul>
-			<li>Utilize as setas para esquerda e direita ou as letras A e D para mover a nave. Aperte a barra de espaço para atirar e P para pausar, caso precise.</li>
-
-			<li>Destruir os planetas fará com que você perca pontos.</li>
-
-			<li>Ao destruir alienígenas, você ganha pontos.</li>
-
-			<li>O jogo inicia com um número aleatório, em binário. A sua missão é mudar os valores de 1 e 0 para formar o número objetivo. Ao atirar em um bloco 1, ele se torna 0 e vice-versa.</li>
-
-			<li>Se o tempo chegar a zero, o jogo acaba.</li>
-
-			<li>Ao conseguir formar 10 números, você entra no modo hard, onde o tempo é menor.</li>
-		</ul>
-
-		<button id="btn_jogar">Jogar</button>
-	</div>
-</div>
-
-<div id="bg_pause">
-	<div id="pause">
-		<h2>Nave</h2>
-
-		<p>Jogo pausado. Aperte P novamente para continuar de onde parou.</p>
-	</div>
-</div>
-
-</div>
-
-<div class="toast">
-	<p class="texto_toast"></p>
-</div>
-
+<!-- *** -->
 <script src="../../GamesLib/dist/gameslib.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
-
 </body>
 </html>

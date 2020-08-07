@@ -1,364 +1,217 @@
-@font-face {
-    src: url(../fonts/FreePixel.ttf);
-    font-family: 'Free-Pixel';    
-    font-weight: normal;
-}
-
-body {
-	background: #000;
-	overflow: hidden;
-	font-family: 'Free-Pixel'; 
-	background-image: url('../img/fundo.png');
-	background-position: top;
-	background-repeat: repeat;
-	animation: animation 100s linear infinite;
-}
-
-@keyframes animation {
-	100%{
-	 background-position:0px +3000px;
-   }
- }
-
-button {
-	display: block;
-	border: none;
-	cursor: pointer;
-}
-
-button:focus {
-	outline: none;
-}
-
-button:hover {
-	opacity: .8;
-}
-
-#espaco {
-	width: 100%;
-	height: 100%;
+* {
 	margin: 0;
 	padding: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
 	overflow: hidden;
+	font-family: Candara;
 }
 
-#espaco_obstaculos_a, #espaco_obstaculos_b {
-	position: absolute;
-/*	display: none;*/
-}
-
-#espaco_obstaculos_a {
-	left: -80%;
-	top: 45%;
-	width: 100%;
-	height: 45%;
-/*	background: rgba(50, 50, 50, .3);*/
-}
-
-#espaco_obstaculos_b {
-	left: 80%;
-	width: 100%;
-	height: 45%;
-/*	background: rgba(50, 50, 50, .3);*/
-}
-
-#painel {
-	background: rgba(255, 255, 255, .9);
-	color: #212121;
-/*	padding: 10px;*/
-	height: 100%;
-	width: 10%;
-	border-radius: 2px;
-	text-align: center;
-	position: absolute;
-	right: 0;
-	top: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	margin-right: 0px;
-	margin-top: 0px;
-}
-
-#painel h3 {
-	font-size: 13px;
-	margin-bottom: 0px;
-}
-
-#painel h4 {
-	margin-top: 0px;
-	font-size: 30px;
-}
-
-.alinhados {
-	display: flex;
-	justify-content: space-around;
+h1{
+	display: none;
 }
 
 /* TOAST */
-
-.toast {
+#toast {
 	position: fixed;
-	bottom: 25px;
+	top: 2%;
 	left: 25%;
 	width: 50%;
-	z-index: 1000;
-	color: #fff;
+	z-index: 15;
 	padding: 10px;
 	padding-right: 20px;
 	border-radius: 5px;
 	display: none;
 	height: auto;
-}
-
-.toast p {
-	font-size: 20px;
+	color: #fff;
+	background: green;
 	text-align: center;
-	line-height: 0;
-	margin: 10px 0px;
+}
+/* */
+
+#espaco {
+	background-image: url('../img/fundo.png');
+	background-position: top;
+	background-repeat: repeat;
+	animation: animation 100s linear infinite;
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+	grid-template-rows: 1fr 4fr 4fr;
+	grid-template-areas:
+	"alternativas alternativas"
+	"obstaculos obstaculos"
+	"obstaculos obstaculos";
+	cursor: pointer;
 }
 
-.chegou_fim {
+@keyframes animation{
+	100%{
+		background-position:0px +3000px;
+   }
+ }
+
+#alternativas {
+	grid-area: alternativas;
+	display: flex;
+	grid-gap: 5px;
+}
+
+.alt {
+	background-image: url("../img/um.gif");
+	background-size: 100%;
+	background-repeat: no-repeat;
+    width: 12.5%;
+    height: 100%;
+    padding-bottom: 12.5%;
+    position: relative;
+}
+
+.valor {
 	display: none;
+}
+
+.ajuda {
+	background: rgba(0, 0, 0, .9);
+	color: #fff;
+	position: absolute;
+	top: 10%;
+	border-radius: 10px;
+	padding: 5px;
+	left: 40%;
+	border: .75px solid #fff;
+}
+
+#informacoes {
+	width: 15%;
+	padding-bottom: 10%;
+	font-size: 1em;
+	background: lightblue;
+	color: #000;
+	opacity: .7;
+	z-index: 10;
+	position: absolute;
+	top: 30%;
+	left: 80%;
+	padding: 5px;
+	border-radius: 10px;
+	text-shadow: 1px 1px 7px #606060;
+	text-align: center;
+	border: 2px solid #fff;
+	box-shadow: 1px 1px 10px #fff;
+}
+
+.negrito {
+	font-weight: bolder;
+}
+
+#tempo {
+	color: brown;
+}
+
+.verde {
+	color: darkgreen;
+}
+
+.vermelho {
+	color: brown;
+}
+
+#nave {
+    width: 5%;
+    height: 0;
+    padding-bottom: 5%;
+	position: absolute;
+	top: 87%;
+	left: 45%;
+	cursor: pointer;
+	background-image: url('../img/nave.png');
+	background-size: 100%;
 }
 
 #laser {
 	background-image: linear-gradient(green, orange, yellow, red);
 	box-shadow: 1px 1px 10px #fff;
-	width: 5px;
-	height: 25px;
-	position: absolute;
-	left: 50%;
-	top: -35px;
+	width: 0.5%;
+	height: 5%;
 	border-radius: 10px;
+	position: absolute;
 	display: none;
-	z-index: 150;
 }
 
-/* --- */
+.obs {
+	position: absolute;
+    width: 6%;
+    height: 0;
+    padding-bottom: 6%;
+	border-radius: 50%;
+	position: absolute;
+	/*background-color: #606060;*/
+}
 
+.amigo, .inimigo {
+	background-position: center !important;
+	background-size: cover !important;
+}
 
-/* INICIAR JOGO */
+.inimigo{
+	width: 6%;
+	height: 0;
+	padding-bottom: 3%;
+}
 
-#bg_iniciar_jogo {
-	background: rgba(0, 0, 0, .6);
-	width: 100%;
-	height: 100%;
+#obstaculos {
+	position: relative;
+	grid-area: obstaculos;
+}
+
+/*MODAIS*/
+h2{
+	background: lightgreen;
+	padding: 5px;
+}
+
+button{
+	display: block;
+	margin: 10px auto;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+	border-radius: 10px;
+	font-weight: bolder;
+}
+
+button:hover{
+	opacity: .8;
+}
+
+#btn_jogar, #btn_jogar_novamente{
+	background: green;
+	color: #fff;
+}
+
+.bg{
+	background: rgba(0, 0, 0, .5);
 	position: fixed;
 	top: 0;
 	left: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	width: 100%;
+	height: 100%;
 	z-index: 1000;
 }
 
-#iniciar_jogo {
-	background-color: #fff;
-	width: 90%;
-	margin: 20% auto;
-	padding: 10px;
-	border-radius: 10px;
-	border: 2px solid darkblue;
-}
-
-#iniciar_jogo h2 , #pause h2 {
-	text-align: center;
-	background-image: linear-gradient(darkblue, blue);
-	color: #fff;
-	border-radius: 10px;
-}
-
-#iniciar_jogo li {
-	margin-bottom: 10px;
-}
-
-#btn_jogar {
-	background-color: darkblue;
-	padding: 10px;
-	border-radius: 5px;
-	color: #fff;
-	margin: 0 auto;
-}
-
-#input_apelido {
-	border: none;
-	border-bottom: 1px solid #606060;
-	padding: 5px;
-}
-
-input:focus {
-	outline: none;
-}
-
-label {
-	cursor: pointer;
-	margin-right: 5px;
-	margin-left: 3%;
-}
-
-/* --- */
-
-/* PAUSE */
-
-#bg_pause {
-	background: rgba(0, 0, 0, .6);
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: none;
-	z-index: 500;
-}
-
-#pause {
-	background-color: #fff;
-	width: 90%;
-	margin: 7px auto;
-	padding: 10px;
-	border-radius: 10px;
-	border: 2px solid darkblue;
-}
-
-#pause p {
-	text-align: center;
-}
-
-/* --- */
-
-/* GAME OVER */
-
-#mensagem_game_over {
-	padding: 5px 0px;
-	border-top: 1px solid #606060;
-	border-bottom: 1px solid #606060;
-	font-weight: bolder;
-	font-size: 18px;
-}
-
-#bg_game_over {
-	background: rgba(0, 0, 0, .4);
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+#bg_fim{
 	display: none;
 }
 
-#game_over {
-	background-color: #fff;
-	width: 80%;
+.modal {
+	background: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	opacity: 1;
+	width: 50%;
 	margin: 10% auto;
-	padding: 10px;
-	border-radius: 10px;
-	border: 2px solid darkblue;''
-}
-
-#game_over h2 {
 	text-align: center;
-	background-image: linear-gradient(darkblue, blue);
-	color: #fff;
-	border-radius: 10px;
+	border: 5px solid lightblue;
 }
 
-#game_over p {
-	margin-top: 15px;
-}
-
-#btn_jogar_novamente {
-	background-color: darkblue;
-	padding: 10px;
-	border-radius: 5px;
-	color: #fff;
-	margin: 0 auto;
-}
-
-/* --- */
-
-
-/* ALTERNATIVAS */
-
-#alternativas {
-	position: absolute;
-	top: 7%;
-	/*left: 5%;*/
-	width: 90%;
-	background: rgba(0, 0, 0, 0.5);
-	padding-top: 5px;
-	padding-bottom: 5px;
-	z-index: 100;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-}
-
-#alternativas .ajuda {
-	font-size: 15px;
-	position: absolute;
-	top: -35px;
-	left: 20%;
-	line-height: 10px;
-	text-align: center;
-	background: orange;
-	color: #212121;
-	padding: 5px;
-/*	width: 20px;
-	height: 20px;*/
-	line-height: 15px;
-	border-radius: 50%;
-}
-
-
-#alternativas .alt {
-	width: 128px;
-	height: 64px;
-	/*border-radius: 50%;*/
-	text-align: center;
-	font-size: 2em;
-	color: #fff;
-	position: relative;
-	line-height: 45px;
-	background-size: auto;
-	background-position: center;
-}
-
-.valor_binario {
-	display: hidden;
-}
-
-#nave {
-	width: 70px;
-	height: 70px;
-	position: absolute;
-	top: 85%;
-	left: 50%;
-	background-image: url('../img/nave.png');
-	background-position: center;
-	background-size: cover;
-	transition: transform 0.3s;
-}
-
-.obstaculo {
-	background-position: center;
-	background-size: cover;
-	position: absolute;
-}
-
-.planeta {
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
-}
-
-.alien {
-	width: 64px;
-	height: 34px;
+.modal p{
+	margin: 10px 0px;
 }
