@@ -1,4 +1,4 @@
-//let gc = new gameslib.GameConnection();
+let gc = new gameslib.GameConnection();
 
 // TODA VEZ QUE A JANELA FOR REDIMENSIONADA, O ESPAÇO ADQUIRE 100% DO SEU HEIGHT E DO SEU WIDTH
 $('#espaco').css('width', `${window.innerWidth}px`);
