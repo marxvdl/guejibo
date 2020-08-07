@@ -20,7 +20,6 @@ $(window).bind('scroll', bloqueia_scroll);
 // VARIÁVEIS DE CONFIGURAÇÃO
 let salto_nave=2;
 let salto_laser=20;
-let limite_movimento=10;
 let tempo_atualizacao=1;
 // ***
 
@@ -102,6 +101,29 @@ function aleatorio(min, max) {
 }
 
 function gera_obstaculos(qtde){
+	function define_tipos(t, obj){
+		switch(t){
+			case 1:
+			case 2:
+			case 3:
+				$(obj).addClass('amigo').css('background-image', 'url("img/planeta_generico.gif")');
+				break;
+			case 4:
+			case 5:
+				$(obj).addClass('amigo').css('background-image', 'url("img/planeta_roxo.gif")');
+				break;
+			case 6:
+				$(obj).addClass('amigo').css('background-image', 'url("img/sol.gif")');
+				break;
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+				$(obj).addClass('inimigo').css('background-image', 'url("img/alien.gif")');
+				break;
+		}
+		return obj;
+	}
 	let width_obs = $('#obstaculos').width();
 	let height_obs = $('#obstaculos').height();
 	if($('#obstaculos').children().length==0){
@@ -111,27 +133,7 @@ function gera_obstaculos(qtde){
 			let y=aleatorio(90, height_obs-100);
 			let _obstaculo = $('<div class="obs obs_a"></div>').css('bottom', `${y}px`).css('left', `${x}px`);
 			let tipo=aleatorio(1, 10);
-			switch(tipo){
-				case 1:
-				case 2:
-				case 3:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/planeta_generico.gif")');
-					break;
-				case 4:
-				case 5:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/planeta_roxo.gif")');
-					break;
-				case 6:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/sol.gif")');
-					break;
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-					$(_obstaculo).addClass('inimigo').css('background-image', 'url("img/alien.gif")');
-					break;
-			}
-
+			_obstaculo=define_tipos(tipo, _obstaculo);
 			$('#obstaculos').append(_obstaculo);
 		}
 		// TIPO B: VEM DA ESQUERDA
@@ -139,29 +141,9 @@ function gera_obstaculos(qtde){
 			let x=aleatorio(0, width_obs);
 			let y=aleatorio(90, height_obs-100);
 			let _obstaculo = $('<div class="obs obs_b"></div>').css('bottom', `${y}px`).css('left', `${x}px`);
-
 			let tipo=aleatorio(1, 10);
-			switch(tipo){
-				case 1:
-				case 2:
-				case 3:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/planeta_generico.gif")');
-					break;
-				case 4:
-				case 5:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/planeta_roxo.gif")');
-					break;
-				case 6:
-					$(_obstaculo).addClass('amigo').css('background-image', 'url("img/sol.gif")');
-					break;
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-					$(_obstaculo).addClass('inimigo').css('background-image', 'url("img/alien.gif")');
-					break;
-			}
-
+			_obstaculo=define_tipos(tipo, _obstaculo);
+			$('#obstaculos').append(_obstaculo);
 			$('#obstaculos').append(_obstaculo);
 		}
 
@@ -169,8 +151,16 @@ function gera_obstaculos(qtde){
 }
 
 function move_obstaculos(){
-	$('.obs_a').css('left', '-=.15px');
-	$('.obs_b').css('left', '+=.15px');
+	if($('#obstaculos').children().length>3){
+		$('.obs_a').css('left', '-=.5px');
+		$('.obs_b').css('left', '+=.5px');		
+	}else if ($('#obstaculos').children().length>=2){
+		$('.obs_a').css('left', '-=1px');
+		$('.obs_b').css('left', '+=1px');
+	}else{
+		$('.obs_a').css('left', '-=2px');
+		$('.obs_b').css('left', '+=2px');
+	}
 }
 
 function limite_espaco_obstaculos(){
