@@ -34,8 +34,9 @@ h1{
 	animation: animation 100s linear infinite;
 	display: grid;
 	grid-template-columns: 4fr 1fr;
-	grid-template-rows: 1fr 4fr 4fr;
+	grid-template-rows: 0.5fr 1fr 4fr 4fr;
 	grid-template-areas:
+	"ajuda ajuda"
 	"alternativas alternativas"
 	"obstaculos obstaculos"
 	"obstaculos obstaculos";
@@ -48,18 +49,35 @@ h1{
    }
  }
 
+#ajuda {
+	grid-area: ajuda;
+	background: lightyellow;
+	color: #212121;
+	font-weight: bolder;
+	display: flex;
+}
+
+#ajuda div {
+	width: 12.5%;
+	height: 100%;
+	text-align: center;
+	line-height: 30px;
+	border-right: 1px solid black;
+}
+
 #alternativas {
 	grid-area: alternativas;
 	display: flex;
-	grid-gap: 5px;
+	height: 125%;
 }
 
 .alt {
+	margin: 0;
 	background-image: url("../img/um.gif");
 	background-size: 100%;
+	background-position: top center;
 	background-repeat: no-repeat;
     width: 12.5%;
-    height: 100%;
     padding-bottom: 12.5%;
     position: relative;
 }
@@ -83,9 +101,9 @@ h1{
 	width: 15%;
 	padding-bottom: 10%;
 	font-size: 1em;
-	background: lightblue;
+	background: lightyellow;
 	color: #000;
-	opacity: .7;
+	opacity: .9;
 	z-index: 10;
 	position: absolute;
 	top: 30%;
@@ -95,7 +113,7 @@ h1{
 	text-shadow: 1px 1px 7px #606060;
 	text-align: center;
 	border: 2px solid #fff;
-	box-shadow: 1px 1px 10px #fff;
+	box-shadow: 1px 1px 30px yellow;
 }
 
 .negrito {
@@ -207,7 +225,9 @@ button:hover{
 	border-radius: 10px;
 	opacity: 1;
 	width: 50%;
-	margin: 10% auto;
+	max-height: 75%;
+	overflow: scroll;
+	margin: 7% auto;
 	text-align: center;
 	border: 5px solid lightblue;
 }
