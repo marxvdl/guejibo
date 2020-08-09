@@ -37,6 +37,8 @@ let tempo=2*60;
 
 // CHAMADAS DE FUNÇÕES
 $('#btn_jogar').click(function(){
+	numero_atual_aleatorio();
+	$('#numero_objetivo').text(aleatorio(0, 256));
 	$('#bg_inicio').hide();
 	tempo=Math.floor(parseFloat($('#tempo_desejado').val()))*60;
 	$('#tempo').text(escreve_tempo(tempo));
@@ -44,8 +46,27 @@ $('#btn_jogar').click(function(){
 	atualiza();
 	temporizador();
 });
-$('#numero_objetivo').text(aleatorio(0, 256));
 // ***
+
+function numero_atual_aleatorio(){
+	let n=aleatorio(0, 255);
+	let string=n.toString(2);
+	let dif=8-string.length;
+	let ajuste='';
+	for(let i=0; i<dif; i++){
+		ajuste+='0';
+	}
+	string=(ajuste+string).split('');
+	let alts=$('.alt');
+	for(let i=0; i<alts.length; i++){
+		$(alts[i]).children('.valor').text(string[i]);
+		if(string[i]=='1'){
+			$(alts[i]).css('background-image', 'url("img/um.gif")');
+		}else{
+			$(alts[i]).css('background-image', 'url("img/zero.gif")');
+		}
+	}
+}
 
 function game_over(){
 	parar=true;
