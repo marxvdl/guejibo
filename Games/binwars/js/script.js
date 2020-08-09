@@ -18,8 +18,9 @@ $(window).bind('scroll', bloqueia_scroll);
 // ***
 
 // VARIÁVEIS DE CONFIGURAÇÃO
-let salto_nave=2;
-let salto_laser=20;
+let salto_nave=0.30;
+let salto_laser=3;
+let salto_obs=0.075;
 let tempo_atualizacao=1;
 // ***
 
@@ -62,7 +63,7 @@ $('#btn_jogar_novamente').click(() => {
 // *************************************************
 function atualiza(){
 	verifica_acoes_nave();
-	gera_obstaculos(10);
+	gera_obstaculos(6);
 	move_obstaculos();
 	limite_espaco_nave();
 	limite_espaco_obstaculos();
@@ -86,8 +87,8 @@ function verifica_resposta(){
 	$('#numero_atual').text(valor);
 	let objetivo=parseInt($('#numero_objetivo').text());
 	if(valor==objetivo){
-		toast('Parabéns, você acertou! +5 pontos!', 'purple', 2500);
-		pontuacao+=5;
+		toast('Parabéns, você acertou! +10 pontos!', 'purple', 2500);
+		pontuacao+=10;
 		gc.sendScore(pontuacao);
 		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
@@ -136,7 +137,7 @@ function gera_obstaculos(qtde){
 			_obstaculo=define_tipos(tipo, _obstaculo);
 			$('#obstaculos').append(_obstaculo);
 		}
-		// TIPO B: VEM DA ESQUERDA
+		// TIPO B: VEM DA DIREITA
 		for(let i=0; i<qtde; i++){
 			let x=aleatorio(0, width_obs);
 			let y=aleatorio(90, height_obs-100);
@@ -151,16 +152,8 @@ function gera_obstaculos(qtde){
 }
 
 function move_obstaculos(){
-	if($('#obstaculos').children().length>3){
-		$('.obs_a').css('left', '-=.5px');
-		$('.obs_b').css('left', '+=.5px');		
-	}else if ($('#obstaculos').children().length>=2){
-		$('.obs_a').css('left', '-=1px');
-		$('.obs_b').css('left', '+=1px');
-	}else{
-		$('.obs_a').css('left', '-=2px');
-		$('.obs_b').css('left', '+=2px');
-	}
+	$('.obs_a').css('left', `-=${salto_obs}%`);
+	$('.obs_b').css('left', `+=${salto_obs}%`);		
 }
 
 function limite_espaco_obstaculos(){
@@ -181,11 +174,11 @@ function verifica_acoes_nave(){
 	let c=0;
 	if(acoes_nave['moveu_direita']){
 		$('#nave').css('background-image', `url('img/nave_direita.png')`);
-		$('#nave').css('left', `+=${salto_nave}px`);
+		$('#nave').css('left', `+=${salto_nave}%`);
 	}
 	if(acoes_nave['moveu_esquerda']){
 		$('#nave').css('background-image', `url('img/nave_esquerda.png')`);
-		$('#nave').css('left', `-=${salto_nave}px`);
+		$('#nave').css('left', `-=${salto_nave}%`);
 	}
 	if(!acoes_nave['moveu_direita']&&!acoes_nave['moveu_esquerda']){
 		$('#nave').css('background-image', `url('img/nave.png')`);
@@ -297,7 +290,7 @@ $('#espaco').click(function(e){
 // FUNÇÃO DE TIRO
 function atira(){
 	$('#laser').show();
-	$('#laser').css('margin-top', `-=${salto_laser}`);
+	$('#laser').css('margin-top', `-=${salto_laser}%`);
 
 	// VERIFICA COLISÃO DO LASER COM OBSTÁCULOS
 	let colidiu_obs=verifica_colisao('#laser', '.obs');
