@@ -1,11 +1,4 @@
-// let gc = new gameslib.GameConnection();
-
-// AJUDA A VELOCIDADE DOS OBJETOS NO ESPAÇO
-// function ajusta_velocidade(){
-// 	if(window.innerWidth<=720){
-
-// 	}
-// }
+let gc = new gameslib.GameConnection();
 
 // TODA VEZ QUE A JANELA FOR REDIMENSIONADA, O ESPAÇO ADQUIRE 100% DO SEU HEIGHT E DO SEU WIDTH
 $('#espaco').css('width', `${window.innerWidth}px`);
@@ -56,7 +49,7 @@ $('#numero_objetivo').text(aleatorio(0, 256));
 
 function game_over(){
 	parar=true;
-	// gc.sendScore(pontuacao);
+	gc.sendScore(pontuacao);
 	$('#pontuacao_obtida').text(pontuacao);
 	$('#bg_fim').show();
 }
@@ -96,7 +89,7 @@ function verifica_resposta(){
 	if(valor==objetivo){
 		toast('Parabéns, você acertou! +5 pontos!', 'purple', 2500);
 		pontuacao+=5;
-		// gc.sendScore(pontuacao);
+		gc.sendScore(pontuacao);
 		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
 }
@@ -304,11 +297,11 @@ function atira(){
 	if(colidiu_obs[0]){
 		if($(colidiu_obs[1]).hasClass('inimigo')){
 			pontuacao++;
-			// gc.sendScore(pontuacao);
+			gc.sendScore(pontuacao);
 			toast('+1 ponto!', 'green');
 		}else{
 			pontuacao--;
-			// gc.sendScore(pontuacao);
+			gc.sendScore(pontuacao);
 			toast('-1 ponto!', 'brown');
 		}
 		$(colidiu_obs[1]).remove();
