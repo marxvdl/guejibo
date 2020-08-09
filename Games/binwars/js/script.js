@@ -87,8 +87,8 @@ function verifica_resposta(){
 	$('#numero_atual').text(valor);
 	let objetivo=parseInt($('#numero_objetivo').text());
 	if(valor==objetivo){
-		toast('Parabéns, você acertou! +5 pontos!', 'purple', 2500);
-		pontuacao+=5;
+		toast('Parabéns, você acertou! +10 pontos!', 'purple', 2500);
+		pontuacao+=10;
 		gc.sendScore(pontuacao);
 		$('#numero_objetivo').text(aleatorio(0, 255));
 	}
