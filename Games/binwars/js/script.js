@@ -1,39 +1,396 @@
 let gc = new gameslib.GameConnection();
 
-let passo_nave = 1;
-let limite_movimento = 7;
-let passo_obstaculos = 1;
-let velocidade_obstaculos = 10; // menos é mais
-let qtde_inicial_obstaculos = 10;
-let passo_laser = 30 + Math.PI;
-let pode_atirar = true;
-let limite_tiro = 25;
-let valor_retorno = 5;
-let min_left_aleatorio = 0;
-let max_left_aleatorio = 100;
-let obst_fim = 0;
-let obst_dest = 0;
-let tiros_dados = 0;
-let tiros_errados = 0;
-let fim_jogo = false;
-let qtde_movimento = 25;
-let qtde_maxima_obstaculos = 25;
-let iniciou = false;
-let parar = false;
-let objetivos_concluidos = 0;
-let modo_hard = false;
-let quantidade_para_hard = 10;
+// TODA VEZ QUE A JANELA FOR REDIMENSIONADA, O ESPAÇO ADQUIRE 100% DO SEU HEIGHT E DO SEU WIDTH
+$('#espaco').css('width', `${window.innerWidth}px`);
+$('#espaco').css('height', `${window.innerHeight}px`);
+window.addEventListener('resize', function() {
+	$('#espaco').css('width', `${window.innerWidth}px`);
+	$('#espaco').css('height', `${window.innerHeight}px`);
+});
+// ***
 
-let numeros_formados = 0;
-let tiros_alternativas = 0;
-let pontuacao = 0;
-let aliens_eliminados = 0;
-let melhor_tempo = 999;
-let planetas_destruidos = 0;
-let acuracia_tiro = 0;
+// TODA VEZ QUE O SCROLL FOR CHAMADO, ELE VOLTA PARA ZERO, IMPEDINDO-O DE ACONTECER
+function bloqueia_scroll(){
+    $(window).scrollTop(0);
+    $(window).scrollLeft(0);
+}
+$(window).bind('scroll', bloqueia_scroll);
+// ***
 
-let tempo_restante = 5 * 60;
-let t;
+// VARIÁVEIS DE CONFIGURAÇÃO
+let salto_nave=0.30;
+let salto_laser=3;
+let salto_obs=0.075;
+let tempo_atualizacao=1;
+// ***
+
+// VARIÁVEIS DE CONTROLE
+let acoes_nave={
+	'moveu_direita':false,
+	'moveu_esquerda':false,
+	'atirou':false
+};
+let parar=false;
+let pontuacao=0;
+let tempo=2*60;
+// ***
+
+// CHAMADAS DE FUNÇÕES
+$('#btn_jogar').click(function(){
+	$('#bg_inicio').hide();
+	tempo=Math.floor(parseFloat($('#tempo_desejado').val()))*60;
+	$('#tempo').text(escreve_tempo(tempo));
+	posiciona_laser();
+	atualiza();
+	temporizador();
+});
+$('#numero_objetivo').text(aleatorio(0, 256));
+// ***
+
+function game_over(){
+	parar=true;
+	gc.sendScore(pontuacao);
+	$('#pontuacao_obtida').text(pontuacao);
+	$('#bg_fim').show();
+}
+
+$('#btn_jogar_novamente').click(() => {
+	window.location.reload();
+});
+
+// *************************************************
+// LOOP PRINCIPAL
+// *************************************************
+function atualiza(){
+	verifica_acoes_nave();
+	gera_obstaculos(6);
+	move_obstaculos();
+	limite_espaco_nave();
+	limite_espaco_obstaculos();
+	verifica_resposta();
+	let intervalo_func=setTimeout(atualiza,tempo_atualizacao);
+	if (parar){
+		clearTimeout(intervalo_func);
+	}
+	$('#pontuacao').text(pontuacao);
+}
+// *************************************************
+
+function verifica_resposta(){
+	let resposta='';
+	let alts=$('.alt');
+	for(let i=0; i<alts.length; i++){
+		resposta+=$(alts[i]).children('.valor').text();
+	}
+	resposta=parseInt(resposta, 2);
+	let valor=parseInt(resposta);
+	$('#numero_atual').text(valor);
+	let objetivo=parseInt($('#numero_objetivo').text());
+	if(valor==objetivo){
+		toast('Parabéns, você acertou! +5 pontos!', 'purple', 2500);
+		pontuacao+=5;
+		gc.sendScore(pontuacao);
+		$('#numero_objetivo').text(aleatorio(0, 255));
+	}
+}
+
+function aleatorio(min, max) {
+	// Gera um número aleatório entre o mínimo e o máximo, estando eles inclusos
+	 min = Math.ceil(min);
+	 max = Math.floor(max);
+	 return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function gera_obstaculos(qtde){
+	function define_tipos(t, obj){
+		switch(t){
+			case 1:
+			case 2:
+			case 3:
+				$(obj).addClass('amigo').css('background-image', 'url("img/planeta_generico.gif")');
+				break;
+			case 4:
+			case 5:
+				$(obj).addClass('amigo').css('background-image', 'url("img/planeta_roxo.gif")');
+				break;
+			case 6:
+				$(obj).addClass('amigo').css('background-image', 'url("img/sol.gif")');
+				break;
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+				$(obj).addClass('inimigo').css('background-image', 'url("img/alien.gif")');
+				break;
+		}
+		return obj;
+	}
+	let width_obs = $('#obstaculos').width();
+	let height_obs = $('#obstaculos').height();
+	if($('#obstaculos').children().length==0){
+		// TIPO A: VEM DA ESQUERDA
+		for(let i=0; i<qtde; i++){
+			let x=aleatorio(0, width_obs);
+			let y=aleatorio(90, height_obs-100);
+			let _obstaculo = $('<div class="obs obs_a"></div>').css('bottom', `${y}px`).css('left', `${x}px`);
+			let tipo=aleatorio(1, 10);
+			_obstaculo=define_tipos(tipo, _obstaculo);
+			$('#obstaculos').append(_obstaculo);
+		}
+		// TIPO B: VEM DA DIREITA
+		for(let i=0; i<qtde; i++){
+			let x=aleatorio(0, width_obs);
+			let y=aleatorio(90, height_obs-100);
+			let _obstaculo = $('<div class="obs obs_b"></div>').css('bottom', `${y}px`).css('left', `${x}px`);
+			let tipo=aleatorio(1, 10);
+			_obstaculo=define_tipos(tipo, _obstaculo);
+			$('#obstaculos').append(_obstaculo);
+			$('#obstaculos').append(_obstaculo);
+		}
+
+	}
+}
+
+function move_obstaculos(){
+	$('.obs_a').css('left', `-=${salto_obs}%`);
+	$('.obs_b').css('left', `+=${salto_obs}%`);		
+}
+
+function limite_espaco_obstaculos(){
+	let left_espaco = $('#espaco').offset().left;
+	let width_espaco = $('#espaco').width();
+	let _obstaculos = $('.obs');
+	for(let i=0; i<_obstaculos.length; i++){
+		let left_obs = $(_obstaculos[i]).offset().left;
+		let width_obs = $(_obstaculos[i]).width();
+		if(left_obs<width_obs||left_obs>width_espaco-width_obs){
+			$(_obstaculos[i]).remove();
+		}
+	}
+}
+
+function verifica_acoes_nave(){
+	// AÇÕES DA NAVE
+	let c=0;
+	if(acoes_nave['moveu_direita']){
+		$('#nave').css('background-image', `url('img/nave_direita.png')`);
+		$('#nave').css('left', `+=${salto_nave}%`);
+	}
+	if(acoes_nave['moveu_esquerda']){
+		$('#nave').css('background-image', `url('img/nave_esquerda.png')`);
+		$('#nave').css('left', `-=${salto_nave}%`);
+	}
+	if(!acoes_nave['moveu_direita']&&!acoes_nave['moveu_esquerda']){
+		$('#nave').css('background-image', `url('img/nave.png')`);
+	}
+	if(acoes_nave['atirou']){
+		if (acoes_nave['atirou']){
+			acoes_nave['atirou']=false;
+			atira();
+			clicou_nave=false;
+		}
+	}else{
+		// Dado que a nave não atirou, isso significa que o laser deve estar dentro dela. Portanto, deve ser posicionado.
+		posiciona_laser();
+	}
+	// ***
+}
+
+function limite_espaco_nave() {
+	// Esta função serve para evitar a nave de sair do espaço delimitado. Quando ele atinge o limite à direta, por exemplo, ela surge no início da esquerda.
+	let top_espaco = $('#espaco').offset().top;
+	let left_espaco = $('#espaco').offset().left;
+	let height_espaco = $('#espaco').height();
+	let width_espaco = $('#espaco').width();
+	let top_nave = $('#nave').offset().top;
+	let left_nave = $('#nave').offset().left;
+	let height_nave = $('#nave').height();
+	let width_nave = $('#nave').width();
+	// direita
+	if (left_nave > width_espaco - width_nave) {
+		$('#nave').css('left', `${0}px`);
+	}
+	// esquerda
+	if (left_nave < left_espaco) {
+		$('#nave').css('left', `${width_espaco - width_nave - 5}px`);
+	}
+
+	// TODA VEZ QUE A NAVE E O BLOCO DE INFORMAÇÕES SE ENCONTRAM, O BLOCO MUDA DE LUGAR
+	let left_informacoes = $('#informacoes').offset().left;
+	let width_informacoes = $('#informacoes').width();
+	if(left_nave>=left_informacoes-width_nave){
+		$('#informacoes').css('left', '3%');
+	}
+	if(left_nave<width_informacoes+50){
+		$('#informacoes').css('left', '80%');
+	}
+}
+
+// CENTRO DE AÇÕES
+$('body').keydown(function(event) {
+	let tecla = event.keyCode;
+	if(tecla == 39 || tecla == 68) {
+		 // seta pra DIREITA ou D
+		 acoes_nave['moveu_direita']=true;
+	}
+	if(tecla == 37 || tecla == 65) {
+		 // seta pra ESQUERDA ou A
+		 acoes_nave['moveu_esquerda']=true;
+	}
+	if (tecla == 32) {
+		// espaço
+		// tiros_dados++;
+		acoes_nave['atirou']=true;
+	}
+});
+$('body').keyup(function(event) {
+	let tecla = event.keyCode;
+	if(tecla == 39 || tecla == 68) {
+		 // seta pra DIREITA ou D
+		 acoes_nave['moveu_direita']=false;
+	}
+	if(tecla == 37 || tecla == 65) {
+		 // seta pra ESQUERDA ou A
+		 acoes_nave['moveu_esquerda']=false;
+	}
+	if (tecla == 32) {
+		// espaço
+		// tiros_dados++;
+		acoes_nave['atirou']=false;
+	}
+});
+// ***
+
+// CONTROLE DA NAVE VIA CLIQUE
+let clicou_nave=false;
+$('#nave').click(function(){
+	clicou_nave=true;
+	acoes_nave['atirou']=true;
+});
+let mouse;
+window.addEventListener('mousemove', function(e){
+	let x = {
+	    'x_page': e.pageX,
+	    'y_page': e.pageY,
+	    'x_client': e.clientX,
+	    'y_client': e.clientY
+	};
+    mouse = x;
+});
+$('#espaco').click(function(e){
+	if(!clicou_nave && !parar){
+		$('#nave').animate({
+			'left':`${mouse['x_client']}px`
+		}, 1000);
+		clicou_nave=false;
+	}
+});
+// ***
+
+// FUNÇÃO DE TIRO
+function atira(){
+	$('#laser').show();
+	$('#laser').css('margin-top', `-=${salto_laser}%`);
+
+	// VERIFICA COLISÃO DO LASER COM OBSTÁCULOS
+	let colidiu_obs=verifica_colisao('#laser', '.obs');
+	if(colidiu_obs[0]){
+		if($(colidiu_obs[1]).hasClass('inimigo')){
+			pontuacao++;
+			gc.sendScore(pontuacao);
+			toast('+1 ponto!', 'green');
+		}else{
+			pontuacao--;
+			gc.sendScore(pontuacao);
+			toast('-1 ponto!', 'brown');
+		}
+		$(colidiu_obs[1]).remove();
+	}
+	// VERIFICA COLISÃO DO LASER COM ALTERNATIVAS
+	let colidiu_alt=verifica_colisao('#laser', '.alt');
+	if(!colidiu_obs[0]){
+		if(colidiu_alt[0]){
+			if($(colidiu_alt[1]).children('.valor').text()=='1'){
+				$(colidiu_alt[1]).css('background-image', 'url("img/zero.gif")');
+				$(colidiu_alt[1]).children('.valor').text('0');
+			}else if($(colidiu_alt[1]).children('.valor').text()=='0'){
+				$(colidiu_alt[1]).css('background-image', 'url("img/um.gif")');
+				$(colidiu_alt[1]).children('.valor').text('1');
+			}
+		}
+	}
+
+	let tiro = window.requestAnimationFrame(atira);
+	if ($('#laser').offset().top <= 0) {
+		window.cancelAnimationFrame(tiro);
+		$('#laser').css('margin-top', '0px');
+		$('#laser').hide();
+	}
+}
+
+// DADO QUE O LASER É SEPARADO DO INTERIOR DA NAVE, NO HTML, É PRECISO POSICIONÁ-LO
+function posiciona_laser(){
+	let top_nave = $('#nave').offset().top;
+	let left_nave = $('#nave').offset().left + 5;
+	$('#laser').css('top', `${top_nave}px`);
+	$('#laser').css('left', `${left_nave}px`);
+}
+
+function verifica_colisao(e1, e2){
+	// DIMENSÕES E POSIÇÃO DO ELEMENTO 1
+	let top_e1 = $(e1).offset().top;
+	let left_e1 = $(e1).offset().left;
+	let height_e1 = $(e1).height();
+	let width_e1 = $(e1).width();
+	// DIMENSÕES E POSIÇÃO DO ELEMENTO 2
+	let _e2 = $(e2);
+	for(let i=0; i<_e2.length; i++){
+		let top_e2 = $(_e2[i]).offset().top;
+		let left_e2 = $(_e2[i]).offset().left;
+		let height_e2 = $(_e2[i]).height();
+		let width_e2 = $(_e2[i]).width();
+		// VERIFICAÇÃO
+		if(left_e1>=left_e2){
+			if(left_e1<left_e2+width_e2){
+				if(top_e1<top_e2+height_e2){
+					$('#laser').css('margin-top', '0px');
+					$('#laser').hide();
+					return [true, _e2[i]];										
+				}
+			}
+		}
+	}
+	return false;
+}
+
+// TOAST
+function toast(texto, bg, tempo=1100) {
+	$('#toast').css('background', bg);
+	$('#toast').text(texto);
+	$('#toast').fadeIn('300');
+	setTimeout(function() {
+		$('#toast').fadeOut('1000');
+	}, tempo);
+}
+// ***
+
+// TEMPORIZADOR
+function temporizador() {
+    if(parar){
+    	clearTimeout(t);
+    }
+	let t = setTimeout(function() {
+	  	if(tempo > 0){
+	  		$('#tempo').text(escreve_tempo(tempo--));
+	  	}else{
+	  		$('#tempo').text(escreve_tempo(tempo--));
+	  		game_over();
+	  	}
+	    if(tempo >= 0) {
+	      temporizador();
+	    }
+  	}, 1000);
+}
 
 function escreve_tempo(tempo) {
 	let min = tempo / 60;
@@ -42,651 +399,10 @@ function escreve_tempo(tempo) {
 	} else {
 		min = 0;
 	}
-
 	let seg = tempo - (min * 60);
-
 	if (seg < 10) {
 		seg = '0' + seg;
 	}
-
 	return `${min}:${seg}`;
 }
-
-$('#tempo').text(escreve_tempo(tempo_restante));
-
-let acoes_nave = {
-	'moveu_esquerda':false,
-	'moveu_direita':false,
-	'atirou':false
-};
-
-function atira () {
-
-	$('#laser').css('top', `-=${passo_laser}`);
-
-	for (let i = 0; i < $(`.alt`).length; i++) {
-		atira_alt($(`.alt`).eq(i))
-	}
-
-	for (let i = 0; i < $('.planeta').length; i++) {
-		atira_planeta($('.planeta').eq(i));
-	}
-
-	for (let i = 0; i < $(`.alien`).length; i++) {
-		atira_alien($(`.alien`).eq(i));
-	}
-
-	let tiro = window.requestAnimationFrame(atira);
-
-	if ($('#laser').offset().top < 25) {
-
-		window.cancelAnimationFrame(tiro);
-		$('#laser').hide();
-		$('#laser').css('top', '0px');
-
-	}
-
-}
-
-// ALTERNATIVAS
-
-let qtde_alternativas = 8;
-let binario = '';
-let numeros = [];
-let x = 128;
-
-numeros.push(x);
-for (let i = 0; i < qtde_alternativas; i++) {
-
-	if (x / 2 >= 1) {
-		numeros.push(x = x / 2);
-	}
-
-}
-
-for (let i = 0; i < qtde_alternativas; i++) {
-
-	let r = aleatorio(0, 1);
-	binario += r;
-	let $a;
-
-	if (r == 1) {
-		$a = $(`<div class="alt um"><span class="ajuda">${(numeros[i])}</span></div>`);
-		$a.css('background-image', "url('img/um.gif')");
-	} else {
-		$a = $(`<div class="alt zero"><span class="ajuda">${(numeros[i])}</span></div>`);
-		$a.css('background-image', "url('img/zero.gif')");
-	}
-
-	$('#alternativas').append($a);
-
-}
-
-binario = parseInt(binario, 2);
-let decimal = parseInt(binario, 10);
-$('#numero_atual').text(decimal);
-
-function aleatorio(min, max) {
-
-	// Gera um número aleatório entre o mínimo e o máximo, estando eles inclusos
-
-	 min = Math.ceil(min);
-	 max = Math.floor(max);
-
-	 return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function cria_obstaculos_a(quantidade) {
-
-	// Esta função cria os obstáculos do jogo. Todos eles são gerados em posições aleatórias. O top é definido negativamente, para que eles levem um tempo para chegar ao usuário.
-
-	for (let i = 0; i < quantidade; i++) {
-
-		let $obstaculo = $(`<div class="obstaculo"></div>`);
-		// $($obstaculo).css('position', 'absolute');
-
-		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(7, 50);
-
-		let r = aleatorio(0, 7);
-
-		switch (r) {
-			case 0:
-			case 1:
-			case 2:
-				$($obstaculo).css('background-image', `url('img/planeta_generico.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 3:
-				$($obstaculo).css('background-image', `url('img/sol.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 4:
-				$($obstaculo).css('background-image', `url('img/planeta_roxo.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 5:
-			case 6:
-			case 7:
-				$($obstaculo).css('background-image', `url('img/alien.gif')`);
-				$obstaculo.addClass('alien');
-				break;
-		};
-
-		$($obstaculo).css('top', `${top}%`);
-		$($obstaculo).css('left', `${left}%`);
-
-		$('#espaco_obstaculos_a').append($obstaculo);
-	}
-
-}
-
-function cria_obstaculos_b(quantidade) {
-	for (let i = 0; i < quantidade; i++) {
-
-		let $obstaculo = $(`<div class="obstaculo"></div>`);
-		// $($obstaculo).css('position', 'absolute');
-
-		let left = aleatorio(min_left_aleatorio, max_left_aleatorio);
-		let top = aleatorio(7, 50);
-
-		let r = aleatorio(0, 10);
-
-		switch (r) {
-			case 0:
-			case 1:
-			case 2:
-			case 4:
-			case 5:
-				$($obstaculo).css('background-image', `url('img/planeta_generico.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 6:
-				$($obstaculo).css('background-image', `url('img/sol.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 7:
-				$($obstaculo).css('background-image', `url('img/planeta_roxo.gif')`);
-				$obstaculo.addClass('planeta');
-				break;
-			case 8:
-			case 9:
-			case 10:
-				$($obstaculo).css('background-image', `url('img/alien.gif')`);
-				$obstaculo.addClass('alien');
-				break;
-		};
-
-		$($obstaculo).css('top', `${top}%`);
-		$($obstaculo).css('left', `${left}%`);
-
-		$('#espaco_obstaculos_b').append($obstaculo);
-	}
-
-}
-
-// cria_obstaculos_a(qtde_inicial_obstaculos);
-// cria_obstaculos_b(qtde_inicial_obstaculos);
-
-// window.addEventListener('resize', function() {
-// 	$('#espaco').css('width', `${window.innerWidth}px`);
-// 	$('#espaco').css('height', `${window.innerHeight}px`);
-
-// 	$('#espaco_obstaculos_a').css('width', `${window.innerWidth}px`);
-// 	$('#espaco_obstaculos_b').css('width', `${window.innerWidth}px`);
-	
-// });
-
-let y = false;
-
-function atualiza () {
-
-	let c = 0;
-
-	verifica_formacao_binaria()
-	verifica_limite_espaco();
-    
-    // Aqui as ondas se iniciam
-    if ($('#espaco_obstaculos_b').children().length == 0) {
-    	$('#espaco_obstaculos_b').css('left', '75%');
-    	cria_obstaculos_b(qtde_inicial_obstaculos);
-    }
-
-    if ($('#espaco_obstaculos_a').children().length == 0) {
-    	$('#espaco_obstaculos_a').css('left', '-75%');
-    	cria_obstaculos_a(qtde_inicial_obstaculos);
-    }
-
-	$('#espaco_obstaculos_a').css('left', `+=${passo_obstaculos}`);
-	$('#espaco_obstaculos_b').css('left', `-=${passo_obstaculos}`);
-
-	let obst_a = $('#espaco_obstaculos_a').children();
-	let obst_b = $('#espaco_obstaculos_b').children();
-
-	for (let i = 0; i < $('#espaco_obstaculos_a').children().length; i++) {
-		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
-		if ($(obst_a[i]).offset().left > $('#espaco').width() - 50) {
-			$(obst_a[i]).remove();
-			obst_fim++
-		}
-	}
-
-
-	for (let i = 0; i < $('#espaco_obstaculos_b').children().length; i++) {
-		// Se o obstáculo chegou ao fim do espaço, ele fica escondido e recebe uma classe de chegou ao fim
-		if ($(obst_b[i]).offset().left < 50) {
-			$(obst_b[i]).remove();
-			obst_fim++
-		}
-	}
-
-	if (acoes_nave['moveu_direita']) {
-
-		while (acoes_nave['moveu_direita']) {
-			$('#nave').css('background-image', `url('img/nave_direita.png')`);
-			$('#nave').css('left', `+=${passo_nave}`);
-			if (c == limite_movimento) {
-				break;
-				acoes_nave['moveu_direita'] = false;
-			}
-			c++;
-		}
-	}
-
-	if (acoes_nave['moveu_esquerda']) {
-		
-		while (acoes_nave['moveu_esquerda']) {
-			$('#nave').css('background-image', `url('img/nave_esquerda.png')`);
-			$('#nave').css('left', `-=${passo_nave}`);
-			if (c == limite_movimento) {
-				break;
-				acoes_nave['moveu_esquerda'] = false;
-			}
-			c++;
-		}
-	} 
-
-
-	if (!acoes_nave['moveu_direita'] && !acoes_nave['moveu_esquerda']) {
-		$('#nave').css('background-image', `url('img/nave.png')`);
-	}
-
-	if (acoes_nave['atirou']) {
-		
-		if (acoes_nave['atirou']) {
-			acoes_nave['atirou'] = false;
-			$('#laser').show();
-			atira();
-		}
-	}
-
-	let intervalo_func = setTimeout(atualiza, velocidade_obstaculos);
-
-	if (parar) {
-		clearTimeout(intervalo_func);
-	}
-}
-
-function atira_alt(alternativa) {
-
-	let top_laser = $('#laser').offset().top;
-	let left_laser = $('#laser').offset().left;
-
-	let top_alternativa = $(alternativa).offset().top;
-	let left_alternativa = $(alternativa).offset().left;
-
-	let height_alternativa = $(alternativa).height();
-	let width_alternativa = $(alternativa).width();
-
-	if (top_laser < top_alternativa && top_laser > top_alternativa - height_alternativa) {
-		if (left_laser > left_alternativa && left_laser < left_alternativa + width_alternativa) {
-
-			$('#laser').hide();
-			$('#laser').css('top', '0px');
-
-			tiros_alternativas++;
-
-			if ($(alternativa).hasClass('um')) {
-				$(alternativa).removeClass('um');
-				$(alternativa).addClass('zero');
-				$(alternativa).css('background-image', "url('img/zero.gif')");
-			} else if ($(alternativa).hasClass('zero')) {
-				$(alternativa).removeClass('zero');
-				$(alternativa).addClass('um');
-				$(alternativa).css('background-image', "url('img/um.gif')");
-			}
-
-			setTimeout(() => {
-				$(alternativa).css('box-shadow', 'none');
-			}, 250);
-		}
-	}
-
-}
-
-function atira_planeta(planeta) {
-
-	// Se o "laser", que nada mais é do que uma div cujo top é modificado para simular movimento, entra na região crítica de um obstáculo, o obstáculo é escondido e recebe a classe "obstaculo_destruido", para ser apagado no final.
-
-	let top_laser = $('#laser').offset().top;
-	let left_laser = $('#laser').offset().left;
-
-	let top_planeta = $(planeta).offset().top;
-	let left_planeta = $(planeta).offset().left;
-
-	let height_planeta = $(planeta).height();
-	let width_planeta = $(planeta).width();
-
-	// O top do laser diminui progressivamente, porque está subindo
-	// O top do bloco aumenta progressivamente, porque está descendo
-
-	// Se o top do bloco é 500, o top do laser tem que ser menor do que isso, para ultrapassar o bloco. Porém, o top do laser precisa ser maior do que o top do bloco menos o height do bloco. Ou seja, precisa ultrapassar a parte de baixo do bloco.
-
-	if (top_laser > 0 && left_laser > 0) {
-		if (top_laser < top_planeta && top_laser > top_planeta - height_planeta) {
-			if (left_laser > left_planeta && left_laser < left_planeta + width_planeta) {
-
-				$('#laser').hide();
-				$('#laser').css('top', '0px');
-
-				$(planeta).css('box-shadow', '1px 1px 50px tomato');
-
-				planetas_destruidos++;
-
-				setTimeout(() => {
-					$(planeta).fadeOut('600');
-				}, 25);
-
-				setTimeout(() => {
-					$(planeta).remove();
-					
-					if (pontuacao > 0) {
-						pontuacao--;
-						gc.sendScore(pontuacao);
-					}
-
-					toast('-1 ponto', '#CD5C5C', 500);
-					$('#pontuacao').text(pontuacao);
-				}, 500);
-
-
-			}
-		}
-	}
-
-}
-
-function atira_alien(alien) {
-
-	let top_laser = $('#laser').offset().top;
-	let left_laser = $('#laser').offset().left;
-
-	let top_alien = $(alien).offset().top;
-	let left_alien = $(alien).offset().left;
-
-	let height_alien = $(alien).height();
-	let width_alien = $(alien).width();
-
-	if (top_laser > 0 && left_laser > 0) {
-		if (top_laser < top_alien && top_laser > top_alien - height_alien) {
-			if (left_laser > left_alien && left_laser < left_alien + width_alien) {
-
-				$('#laser').hide();
-				$('#laser').css('top', '0px');
-
-				$(alien).css('background-image', 'linear-gradient(red, tomato)').css('box-shadow', '1px 1px 50px orange');
-				$(alien).css('border-radius', '10px');
-				setTimeout(() => {
-					$(alien).fadeOut('600');
-				}, 25);
-
-				setTimeout(() => {
-					$(alien).remove();
-					
-					aliens_eliminados++;
-					
-					pontuacao++;
-					gc.sendScore(pontuacao);
-					toast('+1 ponto', '#3CB371', 500);
-
-					$('#tempo').text(escreve_tempo(tempo_restante));
-					$('#pontuacao').text(pontuacao);
-				}, 500);	
-
-			}
-		}
-	}
-
-}
-
-function verifica_formacao_binaria() {
-
-	let formacao_binaria = '';
-
-	for (let i = 0; i < $('.alt').length; i++) {
-
-		if ( $('.alt').eq(i).hasClass('zero')) {
-			formacao_binaria += '0';
-		} else {
-			formacao_binaria += '1';
-		}
-
-	}
-
-	formacao_binaria = parseInt(formacao_binaria, 2);
-
-	$('#numero_atual').text(formacao_binaria);
-
-	if (formacao_binaria == $('#numero_objetivo').text()) {
-
-		// if (modo_hard) {
-
-		// 	if (30 - tempo_restante < melhor_tempo) {
-		// 		melhor_tempo = 60 - tempo_restante;
-		// 	}
-
-		// } else {
-
-		// 	if (60 - tempo_restante < melhor_tempo) {
-		// 		melhor_tempo = 60 - tempo_restante;
-		// 	}
-
-		// }
-
-		numeros_formados++;
-
-		objetivos_concluidos++;
-		$('#numero_objetivo').text(aleatorio(0, 255));
-
-		// $('#tempo').text(tempo_inicial + 1);
-		// tempo_restante = tempo_inicial;
-		pontuacao += 5;
-		gc.sendScore(pontuacao);
-		$('#pontuacao').text(pontuacao);
-		toast('Certa resposta! +5 pontos', 'green', 2000);
-
-	 // 	clearTimeout(t);
-		// temporizador();
-
-		return true;
-	}
-
-}
-
-function verifica_limite_espaco() {
-
-	// Esta função serve para evitar a nave de sair do espaço delimitado. Quando ele atinge o limite à direta, por exemplo, ela surge no início da esquerda.
-
-	let top_espaco = $('#espaco').offset().top;
-	let left_espaco = $('#espaco').offset().left;
-	
-	let height_espaco = $('#espaco').height();
-	let width_espaco = $('#espaco').width();
-
-	let top_nave = $('#nave').offset().top;
-	let left_nave = $('#nave').offset().left;
-	
-	let height_nave = $('#nave').height();
-	let width_nave = $('#nave').width();
-
-	// direita
-	if (left_nave > width_espaco - width_nave) {
-		$('#nave').css('left', `${10}px`);
-	}
-
-	// esquerda
-	if (left_nave < left_espaco) {
-		$('#nave').css('left', `${width_espaco - width_nave}px`);
-	}
-
-}
-
-function gameover() {
-
-	// Contadores
-
-	$('#pontuacao_obtida').text(`Pontuação obtida: ${pontuacao}`);
-
-	if (melhor_tempo == 999) {
-		melhor_tempo = 0;
-	}
-
-	$('#melhor_tempo').text(`Melhor tempo: ${melhor_tempo} segundo(s)`);
-
-	let tiros_certos = aliens_eliminados + tiros_alternativas;
-	acuracia_tiro = ((tiros_certos / tiros_dados) * 100).toFixed(2) + '%';
-	
-	$('#numeros_formados').text(`Números formados: ${numeros_formados}`);
-	$('#tiros_alternativas').text(`Tiros em alternativas: ${tiros_alternativas}`);
-	$('#tiros_dados').text(`Tiros dados: ${tiros_dados}`);
-	$('#acuracia_tiro').text(`Acurácia do tiro: ${acuracia_tiro}`);
-	$('#planetas_destruidos').text(`Planetas destruidos: ${planetas_destruidos}`);
-	$(`#aliens_eliminados`).text(`Aliens eliminados: ${aliens_eliminados}`)
-
-	$('#bg_game_over').fadeIn('2000');
-	$('.obstaculo').remove();
-	fim_jogo = true;
-	parar = true;
-	clearTimeout(t);
-
-	gc.sendScore(pontuacao, true);
-}
-
-$('#btn_jogar_novamente').click(() => {
-	window.location.reload();
-});
-
-function temporizador() {
-
-  t = setTimeout(function() {
-    
-  	if (tempo_restante > 0) {
-  		$('#tempo').text(escreve_tempo(tempo_restante--));
-  	} else {
-  		gameover();
-  	}
-
-    if(tempo_restante >= 0) {
-      temporizador();
-    }
-  }, 1000);
-
-}
-
-// CENTRO DE AÇÕES
-
-$('body').keydown(function(event) {
-
-	let tecla = event.keyCode;
-
-	if(tecla == 39 || tecla == 68) {
-		 // seta pra DIREITA ou D
-		 acoes_nave['moveu_direita'] = true;
-	}
-
-	if(tecla == 37 || tecla == 65) {
-		 // seta pra ESQUERDA ou A
-		 acoes_nave['moveu_esquerda'] = true;
-	}
-
-	if (tecla == 32) {
-		// espaço
-		tiros_dados++;
-		acoes_nave['atirou'] = true;
-	}
-
-});
-
-let toggle = true;
-
-$('body').keyup(function(event) {
-
-	let tecla = event.keyCode;
-
-
-
-	if(tecla == 80 && iniciou) {
-		 // Pause
-		 $('#bg_pause').toggle();
-		 if (toggle) {
-		 	 toggle = false;
-			 parar = true;
-			 clearTimeout(t);
-		 } else {
-		 	toggle = true;
-			parar = false;
-			atualiza();
-			temporizador();		 	
-		 }
-
-	}	
-
-	if(tecla == 39 || tecla == 68) {
-		 // seta pra DIREITA ou D
-		 acoes_nave['moveu_direita'] = false;
-	}
-
-	if(tecla == 37 || tecla == 65) {
-		 // seta pra ESQUERDA ou A
-		 acoes_nave['moveu_esquerda'] = false;
-	}
-
-	// if (tecla == 32) {
-	// 	// espaço
-	// 	acoes_nave['atirou'] = false;
-	// 	$('#laser').css('top', '0px');
-	// 	$('#laser').hide();
-	// }
-
-});
-
-// TOAST
-
-function toast(texto, cor = 'green', tempo = 2500) {
-
-	// Simplesmente exibe um toast.
-
-	$('.toast').css('background', cor);
-
-	if (cor != 'green') {
-		$('.toast').css('color', '#fff');
-		$('.toast').css('text-shadow', '1px 1px 3px #606060');
-	}
-
-	$('.toast').fadeIn('300');
-	$('.texto_toast').text(texto);
-
-	setTimeout(function() {
-		$('.toast').fadeOut('1000');
-	}, tempo);
-}
-
-$('#numero_objetivo').text(aleatorio(1, 255));
-
-$('#btn_jogar').click(function() {
-	iniciou = true;
-	$('#bg_iniciar_jogo').css('display', 'none');
-	atualiza();
-	temporizador();
-
-});
+// ***
