@@ -1,0 +1,249 @@
+* {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: Candara;
+}
+
+label{
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+h1{
+	display: none;
+}
+
+/* TOAST */
+#toast {
+	position: fixed;
+	top: 2%;
+	left: 25%;
+	width: 50%;
+	z-index: 15;
+	padding: 10px;
+	padding-right: 20px;
+	border-radius: 5px;
+	display: none;
+	height: auto;
+	color: #fff;
+	background: green;
+	text-align: center;
+}
+/* */
+
+#espaco {
+	background-image: url('../img/fundo.png');
+	background-position: top;
+	background-repeat: repeat;
+	animation: animation 100s linear infinite;
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+	grid-template-rows: 0.5fr 1fr 4fr 4fr;
+	grid-template-areas:
+	"alternativas alternativas"
+	"alternativas alternativas"
+	"obstaculos obstaculos"
+	"obstaculos obstaculos";
+	cursor: pointer;
+}
+
+@keyframes animation{
+	100%{
+		background-position:0px +3000px;
+   }
+ }
+
+#alternativas {
+	grid-area: alternativas;
+	display: flex;
+	height: 50%;
+}
+
+.alt {
+	text-align: center;
+	background-color: #000;
+	color: lightblue;
+	text-shadow: 1px 1px 1px lightyellow;
+	border-right: 1px solid #fff;
+	font-size: 18px;
+    width: 12.5%;
+    padding-bottom: 12.5%;
+    position: relative;
+}
+
+.ajuda {
+	background: rgba(0, 0, 0, .9);
+	color: #fff;
+	position: absolute;
+	top: 10%;
+	border-radius: 10px;
+	padding: 5px;
+	left: 40%;
+	border: .75px solid #fff;
+}
+
+#informacoes {
+	width: 20%;
+	padding-bottom: 10%;
+	font-size: 1em;
+	background: lightyellow;
+	color: #000;
+	opacity: .9;
+	z-index: 10;
+	position: absolute;
+	top: 30%;
+	left: 75%;
+	padding: 5px;
+	border-radius: 10px;
+	text-shadow: 1px 1px 7px #606060;
+	text-align: center;
+	border: 2px solid #fff;
+	box-shadow: 1px 1px 30px lightblue;
+}
+
+#informacoes img{
+	max-height: 250px;
+	width: 100%;
+}
+
+.negrito {
+	font-weight: bolder;
+}
+
+#tempo {
+	color: brown;
+}
+
+.verde {
+	color: darkgreen;
+}
+
+.vermelho {
+	color: brown;
+}
+
+#nave {
+    width: 5%;
+    height: 0;
+    padding-bottom: 5%;
+	position: absolute;
+	top: 87%;
+	left: 45%;
+	cursor: pointer;
+	background-image: url('../img/nave.png');
+	background-size: 100%;
+}
+
+#laser {
+	background-image: linear-gradient(green, orange, yellow, red);
+	box-shadow: 1px 1px 10px #fff;
+	width: 0.5%;
+	height: 5%;
+	border-radius: 10px;
+	position: absolute;
+	display: none;
+}
+
+.obs {
+	position: absolute;
+    width: 6%;
+    height: 0;
+    padding-bottom: 6%;
+	border-radius: 50%;
+	position: absolute;
+	/*background-color: #606060;*/
+}
+
+.amigo, .inimigo {
+	background-position: center !important;
+	background-size: cover !important;
+}
+
+.inimigo{
+	width: 6%;
+	height: 0;
+	padding-bottom: 3%;
+}
+
+#obstaculos {
+	position: relative;
+	grid-area: obstaculos;
+}
+
+/*MODAIS*/
+h2{
+	background: lightblue;
+	padding: 5px;
+}
+
+button{
+	display: block;
+	margin: 10px auto;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+	border-radius: 10px;
+	font-weight: bolder;
+}
+
+button:hover{
+	opacity: .8;
+}
+
+#btn_jogar, #btn_jogar_novamente{
+	background: green;
+	color: #fff;
+}
+
+.bg{
+	background: rgba(0, 0, 0, .5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
+
+#bg_fim{
+	display: none;
+}
+
+.modal {
+	background: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	opacity: 1;
+	width: 50%;
+	max-height: 75%;
+	overflow: scroll;
+	margin: 7% auto;
+	text-align: center;
+	border: 5px solid lightblue;
+}
+
+.modal p{
+	margin: 10px 0px;
+}
+
+@media only screen and (max-width: 1000px) {
+	.alt{
+		font-size: 14px;
+		text-shadow: none;
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	.alt{
+		font-size: 12px;
+		text-shadow: none;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.alt{
+		font-size: 10px;
+		text-shadow: none;
+	}
+}
