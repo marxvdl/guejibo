@@ -26,47 +26,10 @@
 		<p>O jogo acaba quando o tempo chegar a 00:00</p>
 		<p><label for="tempo_desejado">Defina seu tempo de jogo em minutos:</label></p>
 		<input type="number" id="tempo_desejado" value="5">
-		<p><label for="tipo_quiz">Defina o tipo de Quiz:</label></p>
-		<select id="tipo_quiz">
-			<optgroup label="Brasil">
-				<option value="estados_brasil">[BR] Estados</option>
-				<option value="capitais_brasil">[BR] Capitais</option>
-				<option value="bandeiras_brasil">[BR] Bandeiras</option>
-				<option value="regioes_brasil">[BR] Regiões</option>
-				<option value="biomas_brasil">[BR] Biomas</option>
-				<option value="climas_brasil">[BR] Climas</option>
-				<option value="relevos_brasil">[BR] Relevos</option>
-				<option value="bacias_brasil">[BR] Bacias hidrográficas</option>
-			</optgroup>
-			<optgroup label="Capitais de países">
-				<option value="capitais_paises_mundo">[C] Mundo</option>
-				<option value="capitais_paises_america">[C] América</option>
-				<option value="capitais_paises_america_norte">[C] América do Norte</option>
-				<option value="capitais_paises_america_central">[C] América Central</option>
-				<option value="capitais_paises_america_sul">[C] América do Sul</option>
-				<option value="capitais_paises_europa">[C] Europa</option>
-				<option value="capitais_paises_asia">[C] Ásia</option>
-				<option value="capitais_paises_africa">[C] África</option>
-				<option value="capitais_paises_oceania">[C] Oceania</option>
-			</optgroup>
-			<optgroup label="Bandeiras de países">
-				<option value="bandeiras_paises_mundo">[B] Mundo</option>
-				<option value="bandeiras_paises_america">[B] América</option>
-				<option value="bandeiras_paises_america_norte">[B] América do Norte</option>
-				<option value="bandeiras_paises_america_central">[B] América Central</option>
-				<option value="bandeiras_paises_america_sul">[B] América do Sul</option>
-				<option value="bandeiras_paises_europa">[B] Europa</option>
-				<option value="bandeiras_paises_asia">[B] Ásia</option>
-				<option value="bandeiras_paises_africa">[B] África</option>
-				<option value="bandeiras_paises_oceania">[B] Oceania</option>
-			</optgroup>
-			<optgroup label="Outros">
-				<option value="oceanos_mares_golfos">Oceanos, mares e golfos</option>	
-				<option value="ilhas_peninsulas">Ilhas e penínsulas</option>
-				<option value="regioes_continentes">Regiões dos continentes</option>
-				<option value="rosa_ventos">Rosa dos ventos</option>
-			</optgroup>
-		</select>
+		<p><label>Perguntas:</label></p>
+		<input type="text" id="perguntas" value="Acre, Alagoas, Amapá, Amazonas, Bahia, Ceará, Espírito Santo, Goiás, Maranhão, Mato Grosso, Mato Grosso do Sul, Minas Gerais, Pará, Paraíba, Paraná, Pernambuco, Piauí, Rio de Janeiro, Rio Grande do Norte, Rio Grande do Sul, Rondônia, Roraima, Santa Catarina, São Paulo, Sergipe, Tocantis, Distrito Federal">
+		<p><label>Respostas</label></p>
+		<input type="text" id="respostas" value="Rio Branco, Maceió, Macapá, Manaus, Salvador, Fortaleza, Vitória, Goiânia, São Luís, Cuiabá, Campo Grande, Belo Horizonte, Belém, João Pessoa, Curitiba, Recife, Teresina, Rio de Janeiro, Natal, Porto Alegre, Porto Velho, Boa Vista, Florianópolis, São Paulo, Aracaju, Palmas, Brasília">
 		<button id="btn_jogar">Jogar!</button>
 	</div>
 </div>
