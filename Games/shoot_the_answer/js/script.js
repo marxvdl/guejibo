@@ -43,8 +43,8 @@ let pergunta_resposta;
 // ***
 
 function verifica_tipo_quiz(){
-	perguntas=$('#perguntas').val().trim().split(',');
-	respostas=$('#respostas').val().trim().split(',');
+	perguntas=$('#perguntas').val().trim().split(';');
+	respostas=$('#respostas').val().trim().split(';');
 	if(perguntas.length==respostas.length){
 		return true;
 	}else{
@@ -100,7 +100,7 @@ $('#btn_jogar_novamente').click(() => {
 // *************************************************
 function atualiza(){
 	verifica_acoes_nave();
-	gera_obstaculos(4);
+	gera_obstaculos(3);
 	move_obstaculos();
 	limite_espaco_nave();
 	limite_espaco_obstaculos();

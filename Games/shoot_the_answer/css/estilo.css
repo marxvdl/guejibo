@@ -177,6 +177,33 @@ h2{
 	padding: 5px;
 }
 
+textarea, input{
+	padding: 5px;
+	border: none;
+	border-bottom: 1px solid #606060;
+}
+
+textarea:focus, input:focus{
+	outline: none;
+	border-bottom: 1px solid #212121;
+}
+
+#tempo_desejado{
+	text-align: center;
+	font-weight: bolder;
+}
+
+.aviso{
+	color: green;
+	border: 1px dotted #ccc;
+	padding: 3px;
+	cursor: pointer;
+}
+
+#perguntas, #respostas{
+	width: 80%;
+}
+
 button{
 	display: block;
 	margin: 10px auto;
