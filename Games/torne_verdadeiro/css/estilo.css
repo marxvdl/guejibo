@@ -1,0 +1,130 @@
+@charset 'UTF-8';
+*{
+	box-sizing: border-box;
+	font-family: Candara;
+}
+body{
+	background: #212121;
+}
+#container{
+	box-shadow: 2px 2px 5px #fff;
+	padding: 25px;
+	border-radius: 25px;
+	background: #fff;
+	width: 75%;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-around;
+}
+#jogo{
+	display: none;
+}
+#btn_jogar{
+	background: #212121;
+	color: #fff;
+}
+#ajuda{
+	width: 30%;
+	padding: 10px;
+	overflow: scroll;
+	max-height: 400px;
+}
+/*DETAILS E SUMMARY NA AJUDA*/
+summary{
+	margin: 15px;
+	cursor: pointer;
+}
+h1{
+	text-align: center;
+	color: #fff;
+}
+h1::selection, #output::selection{
+	background: none;
+}
+h1, #output{
+	cursor: default;
+}
+#output{
+	background: #212121;
+	padding: 10px;
+	text-align: center;
+	font-weight: bolder;
+	color: #fff;
+	border-radius: 10px;
+
+}
+.config_base{
+	display: grid;
+}
+.config_base, .dimensao_pai{
+	margin: 0 auto;
+}
+#quadro{
+	border-radius: 10px;
+	font-size: 20px;
+}
+#quadro div{
+	text-align: center;
+	font-size: 0px;
+	color: transparent;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+#input div{
+	width: 95%;
+	text-align: center;
+	border: 1px solid #606060;
+	background: #212121;
+	padding: 5px;
+	color: #fff;
+	border-radius: 10px;
+	cursor: pointer;
+	font-family: monospace;
+}
+#input div::selection{
+	background: none;
+	color: #fff;
+}
+
+/* CONFIGURAÇÕES GERAIS DOS BUTTONS */
+button{
+	padding: 10px;
+	background: #fff;
+	color: #212121;
+	cursor: pointer;
+	border: none;
+}
+button:focus{
+	border: none;
+	outline: none;
+	box-shadow: 2px 2px 2px #010101;
+}
+button:hover{
+	text-decoration: underline;
+}
+#btn_ajuda{
+	position: fixed;
+	top: 90%;
+	left: 90%;
+}
+#btn_play_pause{
+	position: fixed;
+	top: 80%;
+	left: 90%;
+}
+/* PLAYER DE ÁUDIO  */
+audio{
+	width: 25%;
+	margin-left: 38%;
+	margin-top: 3%;
+}
+/*MEDIAS*/
+@media only screen and (max-width: 600px){
+	#container{
+		flex-direction: column-reverse;
+	}
+	#ajuda{
+		width: 100%;
+	}
+}

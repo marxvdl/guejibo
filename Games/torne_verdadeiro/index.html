@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Torne Verdadeiro</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css">
+</head>
+<body>
+<h1>Torne Verdadeiro</h1>
+<div id="container">
+	<div id="jogo">
+		<div id="output" class="dimensao_pai">INDETERMINADO</div>
+		<div id="quadro" class="dimensao_pai config_base"></div>
+		<div id="input" class="dimensao_pai config_base"></div>
+	</div>
+	<div id="ajuda">
+		<h2>Como jogar</h2>
+		<p>Um circuito lógico opera com valores 0 (falso) e 1 (verdadeiro). Clique nas entradas abaixo para alterná-las entre 0 e 1, de forma a obter verdadeiro na saída. O objetivo do jogo é passar de nível com o mínimo de ações.</p>
+		<details>
+			<summary>Saiba mais sobre os operadores</summary>
+			<p>NOT: transforma verdadeiro em falso e falso em verdadeiro.</p>
+			<p>AND: exige que ambas as entradas sejam verdadeiras.</p>
+			<p>OR: pelo menos uma entrada deve ser verdadeira.</p>
+			<p>NAND: ambas as entradas não podem ser verdadeiras.</p>
+			<p>XOR: só uma entrada deve ser verdadeira.</p>
+			<p>NOR: ambas as entradas precisam ser falsas.</p>
+			<p>XNOR: ou ambas falsas ou ambas verdadeiras.</p>
+		</details>
+		<button id="btn_jogar">Jogar</button>
+	</div>
+</div>
+<button id="btn_ajuda">Esconder ajuda</button>
+<button id="btn_play_pause">Play/Pause áudio</button>
+<audio id="audio" src="audio/All This Useless Beauty - Jeremy Black.mp3" preload="auto" loop></audio>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/funcoes_uteis.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
