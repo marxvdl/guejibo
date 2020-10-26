@@ -33,6 +33,9 @@ $('.config_base').css('grid-template-columns', `repeat(${qtde_colunas}, 1fr)`)
 $('.dimensao_pai').css('width', `${dimensao_pai}px`);
 $('.dimensao_filho').css('height', `${dimensao_filho}px`);
 
+$('h1').fadeIn('slow');
+$('#container').fadeIn('slow').css('display', 'flex');
+
 function atualiza_celula(celula, novo_estado){
 	if(novo_estado=='on'){
 		if($(celula).hasClass('off')){
@@ -71,13 +74,12 @@ function verifica_fim(){
 		$('#output').text('VERDADEIRO');
 		$('#output').css('background', 'darkgreen');
 		$('#output').css('color', 'white');
+		$('#btn_proximo').css('background', 'darkgreen');
 	}else if(!fim){
 		$('#output').text('FALSO');
 		$('#output').css('background', 'brown');
 		$('#output').css('color', 'white');
 	}
-
-	return fim;
 }
 
 // CONECTORES
@@ -137,6 +139,46 @@ function and(){
 			if($(quadro[i][j]).text()=='&'&&$(quadro[i][j]).hasClass('and2')&&$(quadro[i][j]).hasClass('off')){
 				atualiza_celula(quadro[i+1][j], 'off');
 				atualiza_celula(quadro[i+1][j-1], 'off');
+			}
+		}
+	}
+	// Atualiza conectores
+	conectores();
+}
+
+function or(){
+	for(let i=0; i<qtde_linhas; i++){
+		for(let j=0; j<qtde_colunas; j++){
+			// ATIVA O AND, CASO ALGUM CONECTOR ANTERIOR A ELE ESTEJA LIGADO
+			if($(quadro[i][j]).text()=='|'){
+				if($(quadro[i-1][j]).hasClass('on')){
+					atualiza_celula(quadro[i][j], 'on');
+				}else if($(quadro[i-1][j]).hasClass('off')){
+					atualiza_celula(quadro[i][j], 'off');
+				}
+			}
+			// FAZ O AND ATIVAR ALGUM CONECTOR POSTERIOR, CASO AMBAS PARTES DO AND ESTEJAM LIGADAS
+			// ON
+			if($(quadro[i][j]).text()=='|'&&$(quadro[i][j]).hasClass('or1')&&$(quadro[i][j]).hasClass('on')){
+				atualiza_celula(quadro[i+1][j], 'on');
+				atualiza_celula(quadro[i+1][j+1], 'on');
+			}
+			if($(quadro[i][j]).text()=='|'&&$(quadro[i][j]).hasClass('or2')&&$(quadro[i][j]).hasClass('on')){
+				atualiza_celula(quadro[i+1][j], 'on');
+				atualiza_celula(quadro[i+1][j-1], 'on');
+			}
+			// OFF
+			if($(quadro[i][j]).text()=='|'&&$(quadro[i][j]).hasClass('or1')&&$(quadro[i][j]).hasClass('off')){
+				if($(quadro[i][j+1]).text()=='|'&&$(quadro[i][j+1]).hasClass('or2')&&$(quadro[i][j+1]).hasClass('off')){
+					atualiza_celula(quadro[i+1][j], 'off');
+					atualiza_celula(quadro[i+1][j+1], 'off');
+				}
+			}
+			if($(quadro[i][j]).text()=='|'&&$(quadro[i][j]).hasClass('or2')&&$(quadro[i][j]).hasClass('off')){
+				if($(quadro[i][j-1]).text()=='|'&&$(quadro[i][j-1]).hasClass('or1')&&$(quadro[i][j-1]).hasClass('off')){
+					atualiza_celula(quadro[i+1][j], 'off');
+					atualiza_celula(quadro[i+1][j-1], 'off');
+				}
 			}
 		}
 	}
@@ -205,6 +247,7 @@ function atualiza_quadro(){
 	conectores();
 	not();
 	and();
+	or();
 	coloca_imagens();
 	verifica_fim();
 }
@@ -215,14 +258,14 @@ $(quadro[0][0]).text('cb');
 $(quadro[1][0]).text('cb');
 $(quadro[2][0]).text('!');
 $(quadro[3][0]).text('cb');
-$(quadro[4][0]).text('&');
+$(quadro[4][0]).text('|');
 $(quadro[5][0]).text('cb');
 
 $(quadro[0][1]).text('cb');
 $(quadro[1][1]).text('cb');
 $(quadro[2][1]).text('&');
 $(quadro[3][1]).text('cb');
-$(quadro[4][1]).text('&');
+$(quadro[4][1]).text('|');
 $(quadro[5][1]).text('cb');
 
 $(quadro[0][2]).text('cb');
@@ -246,15 +289,16 @@ $(quadro[3][4]).text('cb');
 $(quadro[4][4]).text('cb');
 $(quadro[5][4]).text('cb');
 
-atualiza_quadro();
-
+let qtde_movimentos=0;
 $('.valor_input').click(function(){
+	qtde_movimentos++;
 	if($(this).text()=='1'){
 		$(this).text('0');
 	}else{
 		$(this).text('1');
 	}
 	atualiza_quadro();
+	$('#qtde_movimentos').html(`Qtde. movimentos: ${qtde_movimentos}`);
 });
 
 let audio=new Audio("audio/All This Useless Beauty - Jeremy Black.mp3");
@@ -270,16 +314,23 @@ $('#btn_play_pause').click(function(){
 });
 
 $('#btn_jogar').click(()=>{
-	$('#jogo').show();
+	atualiza_quadro();
+	$('#jogo').fadeIn('slow');
+	$('#informacoes').fadeIn('slow');
 	$('#btn_jogar').hide();
 	playpause();
+	atualiza_quadro();
 });
 
 $('#btn_ajuda').click(function(){
-	$('#ajuda').toggle();
+	$('#ajuda').toggle('slow');
 	if($('#btn_ajuda').text()=='Esconder ajuda'){
 		$('#btn_ajuda').text('Mostrar ajuda');
 	}else{
 		$('#btn_ajuda').text('Esconder ajuda');
 	}
+});
+
+$('#btn_proximo').click(function(){
+	$(this).css('background', '#212121');
 });

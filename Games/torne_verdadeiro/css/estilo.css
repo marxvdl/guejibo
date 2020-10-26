@@ -1,20 +1,27 @@
 @charset 'UTF-8';
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 *{
 	box-sizing: border-box;
-	font-family: Candara;
+	font-family: 'Oswald', sans-serif;
 }
 body{
 	background: #212121;
 }
 #container{
-	box-shadow: 2px 2px 5px #fff;
+	border: 2px solid green;
 	padding: 25px;
 	border-radius: 25px;
 	background: #fff;
-	width: 75%;
+	min-width: 75%;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-around;
+	display: none;
+}
+#informacoes{
+	display: none;
+	text-align: center;
 }
 #jogo{
 	display: none;
@@ -33,10 +40,16 @@ body{
 summary{
 	margin: 15px;
 	cursor: pointer;
+	padding: 5px;
+	border: 2px solid #212121;
 }
 h1{
 	text-align: center;
 	color: #fff;
+	text-transform: uppercase;
+	font-family: 'Staatliches', cursive;
+	text-shadow: 2px 2px 5px green;
+	display: none;
 }
 h1::selection, #output::selection{
 	background: none;
@@ -94,6 +107,12 @@ button{
 	color: #212121;
 	cursor: pointer;
 	border: none;
+	border-radius: 10px;
+}
+#informacoes button{
+	background: #212121;
+	color: #fff;
+	margin-right: 2px;
 }
 button:focus{
 	border: none;
@@ -103,16 +122,14 @@ button:focus{
 button:hover{
 	text-decoration: underline;
 }
-#btn_ajuda{
-	position: fixed;
-	top: 90%;
-	left: 90%;
+#menu{
+	display: flex;
+	justify-content: center;
 }
-#btn_play_pause{
-	position: fixed;
-	top: 80%;
-	left: 90%;
+#menu button{
+	margin-right: 5px;
 }
+
 /* PLAYER DE ÁUDIO  */
 audio{
 	width: 25%;
@@ -126,5 +143,6 @@ audio{
 	}
 	#ajuda{
 		width: 100%;
+		margin-bottom: 10px;
 	}
 }
