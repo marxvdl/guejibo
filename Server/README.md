@@ -29,11 +29,19 @@
     INSERT INTO Game (name, basePath, createdAt, updatedAt) 
     VALUES  ('Jogo da Nave', 'Nave', NOW(), NOW());
     ```
+    
+7. Criar um arquivo chamado `.env` na pasta `Server/` com o conteúdo:
 
-7. Para iniciar o servidor, basta executar (na pasta `Server/`), o comando:
+    ```
+    JWT_SECRET=XXX
+    ```
+    
+    Onde `XXX` é uma string aleatória (que será usada como chave para a geração e verificação dos tokens JWT).
+
+8. Para iniciar o servidor, basta executar (na pasta `Server/`), o comando:
 
     ```
     node index.js
     ```
 
-8. Se tudo estiver certo, enquanto o servidor estiver em execução, o endereço `http://localhost:3000/api/games` deve retornar um objeto JSON com os itens inseridos na tabela `Game`
+9. Se tudo estiver certo, enquanto o servidor estiver em execução, o endereço `http://localhost:3000/api/games` deve retornar um objeto JSON com os itens inseridos na tabela `Game`
