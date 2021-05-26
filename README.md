@@ -6,6 +6,12 @@ O sistema está disponível para uso online gratuito em http://www.guejibo.com.
 
 Este repositório reúne todo o código-fonte da plataforma, inclusive cliente, servidor e jogos.
 
+---
+
+**[Tutorial em vídeo sobre como instalar e configurar o Guejibo localmente (YouTube)](https://youtu.be/GnHodYVX7uM)**
+
+---
+
 ## Diretórios principais
 
 - **Client**: Interface principal do sistema, desenvolvida em [Angular](https://angular.io/)
