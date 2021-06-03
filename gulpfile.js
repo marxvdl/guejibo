@@ -81,7 +81,7 @@ function games(cb) {
     .pipe(indexHtml)
     .pipe(
       replace(
-        '"\.\.\/\.\.\/GamesLib\/dist\/gameslib\.js"',
+        /"\.\.\/\.\.\/GamesLib\/dist\/gameslib(?:\.min)?\.js"/,
         '"../gameslib.min.js"'
       )
     )
