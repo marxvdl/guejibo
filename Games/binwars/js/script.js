@@ -33,6 +33,9 @@ let acoes_nave={
 let parar=false;
 let pontuacao=0;
 let tempo=2*60;
+
+inicializar();
+
 // ***
 
 // CHAMADAS DE FUNÇÕES
@@ -46,6 +49,19 @@ $('#btn_jogar').click(function(){
 });
 $('#numero_objetivo').text(aleatorio(0, 256));
 // ***
+
+function inicializar(){
+	$('.valor').each(function(){
+		if (Math.random() >= 0.5) {
+			$(this).text('0');
+			$(this).parent().css('background-image', 'url("img/zero.gif")');
+		}
+		else{
+			$(this).text('1');
+			$(this).parent().css('background-image', 'url("img/um.gif")');
+		}		
+	});
+}
 
 function game_over(){
 	parar=true;
