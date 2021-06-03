@@ -49,7 +49,7 @@ $('#numero_objetivo').text(aleatorio(0, 256));
 
 function game_over(){
 	parar=true;
-	gc.sendScore(pontuacao);
+	gc.sendScore(pontuacao, true);
 	$('#pontuacao_obtida').text(pontuacao);
 	$('#bg_fim').show();
 }
