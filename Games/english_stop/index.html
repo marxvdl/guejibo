@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Candal&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="inicio">
+        <section>
+            <h1>English stop</h1>
+
+            <div id='moeda'><img src="img/Coin.gif"></div>
+            <div id='pontuacao'></div>
+            <div id="numeracao"><span id='numero'></span> / <span id='total'></span></div>
+
+            <div id='texto'>
+                Descubra o verbo a que a dica se refere!
+            </div>
+
+            <article class='questoes'>
+                <div id='letra'></div>
+
+                <header class='questao'>
+                    <span id='numeroQues'></span>
+                    <div id='dica'></div>
+                </header>
+
+                <div>
+                    <ol id='opcoes'>
+                        <li id='a' value='1A' class='respostas' onClick='conferirResposta(this, this)'></li>
+                        <li id='b' value='1B' class='respostas' onClick='conferirResposta(this, this)'></li>
+                        <li id='c' value='1C' class='respostas' onClick='conferirResposta(this, this)'></li>
+                        <li id='d' value='1D' class='respostas' onClick='conferirResposta(this, this)'></li>
+                    </ol>
+                </div>
+            </article> 
+            <div id='msgfinal'></div>
+            <button id="bntStop"><img src="img/stop.png" width="50" height="50"></button>
+            <canvas id="gameOver" width="2000" height="2000"></canvas>  
+        </section>
+    </main>        
+
+<script src="./lib/fabric.min.js"></script>
+<script src="js/stop.js"></script>
+<script src="js/sweetalert.js"></script>
+
+</body>
+</html>
