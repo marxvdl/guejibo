@@ -267,7 +267,7 @@ createButton();
     fabric.Object.prototype.transparentCorners = true;
     var radius = 100;
   
-    fabric.Image.fromURL('https://cdn-icons.flaticon.com/png/512/4099/premium/4099871.png?token=exp=1642714858~hmac=f0d791492ae410b4aef4a1321eea9eb5', function(img) {
+    fabric.Image.fromURL('img/gameover.png', function(img) {
       img.scale(0.5).set({
         left: 870,
         top: 130,
