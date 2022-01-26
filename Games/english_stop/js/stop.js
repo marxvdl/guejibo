@@ -1,3 +1,5 @@
+let gc = new gameslib.GameConnection();
+
 let numeroQues = document.querySelector('#numeroQues')
 let letra = document.querySelector('#letra')
 let dica = document.querySelector('#dica')
@@ -190,6 +192,7 @@ function conferirResposta(nQuestao, resposta) {
       })  
 
         pontos += 10 
+        gc.sendScore(pontos)
     } else {
 
         Swal.fire({
@@ -199,6 +202,7 @@ function conferirResposta(nQuestao, resposta) {
             timer: 1200
       })
       pontos -= 2
+      gc.sendScore(pontos)
     }
 
     placar = pontos
@@ -230,6 +234,7 @@ bntStop.addEventListener("click", function fimDoJogo() {
     pontos == 0 
 
     msgfinal.textContent = "Parabéns! Você ganhou " + pontos +" pontos"
+    gc.sendScore(pontos, true)
 
     a.textContent = ""
     b.textContent = ""
