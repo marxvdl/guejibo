@@ -1,5 +1,4 @@
-// let gc = new gameslib.GameConnection();
-// git rm -r --cached .
+let gc = new gameslib.GameConnection();
 
 const data = new Date();
 const ano = data.getFullYear();
@@ -664,6 +663,7 @@ function penalidade(valorPercentual) {
         perfilJogador.faseAtual -= tetoQuantiaPercentual(valorPercentual, perfilJogador.faseAtual);
         valorPontuacao -= tetoQuantiaPercentual(valorPercentual, valorPontuacao);
         pontuacao.innerText = valorPontuacao;
+        gc.sendScore(valorPontuacao, true);
     } else {
         perfilJogador.faseAtual = 0;
     }
@@ -1016,7 +1016,7 @@ function exibeEstrelas() {
         }
     }
 
-    // gc.sendScore(valorPontuacao);
+    gc.sendScore(valorPontuacao);
 	pontuacao.innerText = valorPontuacao;
 	estrelas.style.setProperty('display', 'block');
 
