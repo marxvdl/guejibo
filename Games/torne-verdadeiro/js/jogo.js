@@ -405,7 +405,7 @@ btnJogar.addEventListener('click', () => {
     executaEfeitoSonoro('1');
     fechaDivsAbertura();
     jogoIniciou = true;
-    limiteFases = conjuntoExterno.length > 0 ? limiteFases : parseInt(document.querySelector('#limiteFases').value);
+    limiteFases = conjuntoExterno ? limiteFases : parseInt(document.querySelector('#limiteFases').value);
     if (limiteFases == 0 || !limiteFases) {
         limiteFases = Number.POSITIVE_INFINITY;
     }
