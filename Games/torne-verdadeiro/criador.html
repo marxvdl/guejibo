@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/jogo.css">
+	<link rel="stylesheet" type="text/css" href="css/criador.css">
+	<link rel="stylesheet" type="text/css" href="css/loader.css">
+	<script type="text/javascript" src="js/criador.js" defer></script>
+	<script type="text/javascript" src="js/dinamicidade.js" defer></script>
+	<link rel="icon" href="media/icone.png">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<title>Torne Verdadeiro - Criador</title>
+</head>
+<body>
+
+<div id="loader">
+	<p id="mensagemLoader">Por favor, aguarde.</p>
+	<div class="spinner">
+		<div></div>
+		<div></div>
+	</div>
+</div>
+
+<button><a href="index.html">Voltar</a></button>
+
+<h2>Torne Verdadeiro - Criador de Circuitos</h2>
+
+<div class="toast">Toast sem conteúdo</div>
+
+<div class="alinhados-criador">
+	<div id="elementosCriacao">
+		<div class="alinhados-criador">
+			<img src="media/elementos/linha-central-vertical.png" class="elemento" title="linha-central-vertical">
+			<img src="media/elementos/linha-central-horizontal.png" class="elemento" title="linha-central-horizontal">
+			<img src="media/elementos/primeiro-canto.png" class="elemento" title="primeiro-canto">
+			<img src="media/elementos/segundo-canto.png" class="elemento" title="segundo-canto">
+		</div>
+		<div class="alinhados-criador">
+			<img src="media/elementos/terceiro-canto.png" class="elemento" title="terceiro-canto">
+			<img src="media/elementos/quarto-canto.png" class="elemento" title="quarto-canto">
+			<img src="media/elementos/cruz.png" class="elemento" title="cruz">
+			<img src="media/elementos/cruz-quebrada-esquerda.png" class="elemento" title="cruz-quebrada-esquerda">
+		</div>
+		<div class="alinhados-criador">
+			<img src="media/elementos/cruz-quebrada-direita.png" class="elemento" title="cruz-quebrada-direita">
+			<img src="media/elementos/t.png" class="elemento" title="t">
+			<img src="media/elementos/not.png" class="elemento" title="not">
+			<img src="media/elementos/and.png" class="elemento" title="and">
+		</div>
+		<div class="alinhados-criador">
+			<img src="media/elementos/or.png" class="elemento" title="or">
+			<img src="media/elementos/nand.png" class="elemento" title="nand">
+			<img src="media/elementos/xor.png" class="elemento" title="xor">
+		</div>
+		<div>
+			<img src="media/elementos/nor.png" class="elemento" title="nor">
+			<img src="media/elementos/xnor.png" class="elemento" title="xnor">
+			<img src="media/elementos/remove.png" class="elemento" title="remove">
+		</div>
+	</div>
+
+	<div id="jogo">
+		<div id="output">Indeterminado</div>
+		<div id="circuito"></div>
+		<div id="input"></div>
+	</div>
+</div>
+
+<div class="grupo-botoes">
+	<button id="btnFinalizarCriacaoCircuito"><i class="bi bi-hand-thumbs-up"></i> Finalizar criação do circuito</button>
+	<button id="btnCriarNovoCircuito"><i class="bi bi-plus"></i> Criar novo circuito</button>
+	<button id="btnCopiarLink"><i class="bi bi-hand-thumbs-up"></i> Copiar link (<span class="total-circuitos-feitos">0</span>)</button>
+</div>
+
+<div id="divCodigo">
+	<h2>Código:</h2>
+	<textarea id="codigo" spellcheck="false"></textarea>
+</div>
+
+</body>
+</html>

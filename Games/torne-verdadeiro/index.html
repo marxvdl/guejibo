@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/jogo.css">
+	<link rel="stylesheet" type="text/css" href="css/loader.css">
+	<script type="text/javascript" src="js/dinamicidade.js" defer></script>
+	<script type="text/javascript" src="js/circuitos.js" defer></script>
+	<script type="text/javascript" src="js/jogo.js" defer></script>
+	<!-- <script src="../../GamesLib/dist/gameslib.min.js" defer></script> -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<link rel="icon" href="media/icone.png">
+	<title>Torne Verdadeiro - Jogo</title>
+</head>
+<body>
+
+<div id="elementosPagina"></div>
+
+<div id="loader">
+	<p>Por favor, aguarde. Carregar todos as imagens antes nos ajuda a ter uma experiência de jogo melhor.</p>
+	<div class="spinner">
+		<div></div>
+		<div></div>
+	</div>
+</div>
+
+<div id="toast"></div>
+
+<div id="capturouMonstro">
+	<p>Você capturou um monstro!</p>
+	<img src="media/monstros/monstro33.png" id="imgMonstroCapturado">
+</div>
+
+<div class="bg-modal" id="modalInicial">
+	<div class="modal">
+		<i id="iconeFecharModalInicial" class="bi bi-x icone-fechar-modal"></i>
+		<a href="index.html"><img id="logo" src="media/logo.png" alt="Logo do jogo" title="Clique na logo para atualizar a página"></a>
+		<div class="container-modal">
+			<div id="infoJogador">
+				<div id="nomeFotoJogador">
+					<img id="fotoJogador" src="">
+					<div>
+						<p id="nomeJogador">Nome jogador</p>
+						<p id="generoJogador">Masculino</p>
+						<p id="tituloJogador">Título do jogador</p>
+					</div>					
+				</div>
+				<p><i class="bi bi-person-fill"></i> Nível: <span id="nivelJogador">0</span></p>
+				<p><i class="bi bi-star-fill"></i> Saldo: <span class="saldoJogador">0</span></p>
+				<p><i class="bi bi-graph-up-arrow"></i> Desempenho: <span id="desempenho" title="desempenho">0.00%</span></p>
+				<p title="Esta informação é referente apenas ao modo de jogo progressivo.">Fase Atual no Fácil: <span id="faseAtualFacil">0</span></p>
+				<p title="Esta informação é referente apenas ao modo de jogo progressivo.">Fase Atual no Normal: <span id="faseAtualNormal">0</span></p>
+				<p title="Esta informação é referente apenas ao modo de jogo progressivo.">Fase Atual no Difícil: <span id="faseAtualDificil">0</span></p>
+				<p title="Esta informação é referente apenas ao modo de jogo progressivo.">Fase Atual no Impossível: <span id="faseAtualImpossivel">0</span></p>
+				<p>Total conquistas: <span id="totalConquistasJogador">0</span></p>
+				<p>Recorde de fases: <span id="recordeFasesJogador">0</span></p>
+				<p>Recorde de estrelas: <span id="recordeEstrelasJogador">0</span></p>
+				<p>Exp atual: <span id="expAtualJogador">0</span></p>
+				<p>Exp para o próximo nível: <span id="expProximoNivelJogador">50</span></p>
+				<div class="container-barra-progresso">
+					<div class="barra-progresso" id="barraExpAtual"></div>
+				</div>
+				<button id="btnCompartilharPerfil">Compartilhar perfil</button>
+			</div>
+			<p class="paragrafo-explicativo">Neste jogo, o seu objetivo é auxiliar o pequeno robô a voltar ao seu estado normal de consciência. A mente dele está uma bagunça! Ajude-o a organizá-la! Para isso, você pode atingir três estados de consciência, sendo o último obtido somente a partir do nível 120.</p>
+			<h2 id="abrirCriador" class="abridores">Crie seus próprios circuitos!</h2>
+			<h2 id="abrirComoJogar" class="abridores">Como jogar?</h2>
+			<div id="divComoJogar" class="divsAbertura esconde">
+				<p class="paragrafo-explicativo">O objetivo do jogo é tornar o circuito verdadeiro. Para isso, você deve fazer a corrente elétrica chegar até o final.</p>
+				<p>Clique no 1 para ativar a linha acima e clique no 0 para desativá-la.</p>
+				<p>Cada circuito possui um tempo determinado <i class="tempo bi bi-hourglass-split"></i>. Se o tempo acabar, você perde. Além disso, eles também possuem uma quantidade de bateria disponível <i class="bateria bi bi-battery-charging"></i>. Isso significa que a cada clique dado, você perde uma bateria. Se as baterias acabarem você perde.</p>
+				<p>A ideia é resolver o circuito no menor tempo possível e com a menor quantidade de cliques, mas você ainda pode comprar poções de tempo e bateria na loja, caso sinta que vá precisar. Além disso, avançar no jogo o fará liberar conquistas e capturar figurinhas de monstros. Divirta-se!</p>
+				<p class="paragrafo-explicativo">A porta <strong>AND</strong>, ilustrada abaixo, exige que as duas linhas que se conectam a ela estejam ativas.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/and-preto.png">
+					<table>
+						<caption>Tabela Verdade - AND</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr><td>0</td><td>0</td><td>Falso</td></tr>
+						<tr><td>0</td><td>1</td><td>Falso</td></tr>
+						<tr><td>1</td><td>0</td><td>Falso</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-and.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>OR</strong>, ilustrada abaixo, exige que pelo menos uma linha que se conecta a ela esteja ativa.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/or-preto.png">
+					<table>
+						<caption>Tabela Verdade - OR</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr><td>0</td><td>0</td><td>Falso</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>0</td><td>Verdadeiro</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-or.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>NOT</strong> inverte o valor da linha conectada a ela. Se estiver ativa, então ela ficará desativada. Se estiver desativada, então ela ficará ativada.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/not-preto.png">
+					<table>
+						<caption>Tabela Verdade - NOT</caption>
+						<tr><th>Entrada</th><th>Saída</th></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>Verdadeiro</td></tr>
+						<tr><td>1</td><td>Falso</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-not.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>XOR</strong> exige que só uma conexão esteja ativa.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/xor-preto.png">
+					<table>
+						<caption>Tabela Verdade - XOR</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr><td>1</td><td>1</td><td>Falso</td></tr>
+						<tr><td>0</td><td>0</td><td>Falso</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>0</td><td>Verdadeiro</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-xor.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>NOR</strong> exige que nenhuma conexão esteja ativa.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/nor-preto.png">
+					<table>
+						<caption>Tabela Verdade - NOR</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr><td>1</td><td>1</td><td>Falso</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>0</td><td>Verdadeiro</td></tr>
+						<tr><td>0</td><td>1</td><td>Falso</td></tr>
+						<tr><td>1</td><td>0</td><td>Falso</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-nor.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>XNOR</strong> exige que ou ambas as conexões estejam ativas ou ambas estejam falsas.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/xnor-preto.png">
+					<table>
+						<caption>Tabela Verdade - XNOR</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>0</td><td>Verdadeiro</td></tr>
+						<tr><td>0</td><td>1</td><td>Falso</td></tr>
+						<tr><td>1</td><td>0</td><td>Falso</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-xnor.png">
+				</div>
+				<p class="paragrafo-explicativo">A porta <strong>NAND</strong> só será falsa se ambas as suas conexões forem verdadeiras.</p>
+				<div class="alinhados-centralizados">
+					<img class="ilustracao" src="media/elementos/nand-preto.png">
+					<table>
+						<caption>Tabela Verdade - NAND</caption>
+						<tr><th>Entrada</th><th>Entrada</th><th>Saída</th></tr>
+						<tr><td>1</td><td>1</td><td>Falso</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>0</td><td>Verdadeiro</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>0</td><td>1</td><td>Verdadeiro</td></tr>
+						<tr class="linha-verdadeira-tabela"><td>1</td><td>0</td><td>Verdadeiro</td></tr>
+					</table>
+					<img class="exemplo" src="media/exemplos/exemplo-nand.png">
+				</div>
+			</div>
+
+			<h2 id="abrirConfiguracoes" class="abridores">Configurações</h2>
+			<div id="divConfiguracoes" class="divsAbertura esconde">
+				<div>
+					<h3>Dificuldade:</h3>
+					<div class="div-inputs-configuracao">
+						<p><input type="radio" name="radioDificuldade" class="nova-dificuldade" id="dificuldadeFacil" value="facil" checked><label for="dificuldadeFacil"> Fácil</label></p>
+						<p class="explicacao">Somente 3 tipos de portões lógicos, uma bateria extra por fase, 30 segundos de tempo e penalidade -5% ao perder um circuito</p>
+						<p><input type="radio" name="radioDificuldade" id="dificuldadeNormal" value="normal" class="nova-dificuldade"><label for="dificuldadeNormal"> Normal</label></p>
+						<p class="explicacao">Todos os portões lógicos, nenhuma bateria extra por fase, 30 segundos de tempo e penalidade -10% ao perder um circuito</p>
+						<p><input type="radio" name="radioDificuldade" id="dificuldadeDificil" value="dificil" class="nova-dificuldade"><label for="dificuldadeDificil"> Difícil</label></p>
+						<p class="explicacao">Todos os portões lógicos, nenhuma bateria extra por fase, 20 segundos de tempo e penalidade -20% ao perder um circuito</p>
+						<p><input type="radio" name="radioDificuldade" id="dificuldadeImpossivel" value="impossivel" class="nova-dificuldade"><label for="dificuldadeImpossivel"> Impossível</label></p>
+						<p class="explicacao">Todos os portões lógicos, nenhuma bateria extra por fase, 10 segundos de tempo, penalidade -30% ao perder um circuito e sem cor indicativa nos fios ativos</p>
+					</div>
+				</div>
+
+				<div>
+					<h3>Modo de jogo:</h3>
+					<div class="div-inputs-configuracao">
+						<p><input type="radio" name="radioModoJogo" id="modoProgressivo" value="progressivo" checked><label for="modoProgressivo" title="Até onde você consegue chegar"> Progressivo</label></p>
+						<p><label for="limiteFases">Limite de fases: </label><input type="number" id="limiteFases" value="0"></p>
+						<p><input type="radio" name="radioModoJogo" id="modoInfinito" value="infinito"><label for="modoInfinito"> Infinito</label></p>
+						<p><input type="radio" name="radioModoJogo" id="modoTreino" value="treino"><label for="modoTreino" title="Muita bateria, muito tempo"> Treino</label></p>
+					</div>
+				</div>
+
+				<div>
+					<h3>Desativações</h3>
+					<div class="div-inputs-configuracao">
+						<p><input type="checkbox" name="checkboxDesativarEfeitosSonoros" id="checkboxDesativarEfeitosSonoros"> <label for="checkboxDesativarEfeitosSonoros">Desativar efeitos sonoros</label></p>
+						<p><input type="checkbox" name="checkboxDesativarMusica" id="checkboxDesativarMusica"> <label for="checkboxDesativarMusica">Desativar música</label></p>			
+					</div>
+				</div>
+			</div>
+			<h2 id="abrirEditarPerfil" class="abridores">Editar perfil</h2>
+			<div id="divEditarPerfil" class="divsAbertura esconde">
+				<div class="alinhados-verticalmente item">
+					<p>Logo abaixo você pode alterar o seu nickname, bem como seu gênero. Perguntamos o gênero para que possamos adaptar a linguagem dos títulos.</p>
+					<p>Não se preocupe, você pode mudar o nickname quantas vezes quiser!</p>
+					<label for="inputNome">Nome: </label>
+					<input type="text" id="inputNome" placeholder="Digite aqui o nome que deseja usar">
+					<label for="selectGenero">Gênero: </label>
+					<select id="selectGenero">
+						<option value="m">Masculino</option>
+						<option value="f">Feminino</option>
+					</select>
+					<button class="botao-item" id="btnSalvarPerfil">Salvar</button>
+					<button class="botao-item" id="btnExcluirPerfil">Excluir Perfil</button>	
+					<button class="botao-item" id="btnExcluirPerfilCerteza">Clique novamente se tem certeza</button>		
+				</div>
+				<div class="grid">
+				</div>
+			</div>
+			<h2 id="abrirLoja" class="abridores">Loja</h2>
+			<div id="divLoja" class="divsAbertura esconde">
+				<p id="saldo">Saldo: <span><i class="bi bi-star-fill"></i> <span class="saldoJogador">0</span> estrelas</span></p>
+				<div class="grid">
+					<div class="item" id="pocao-tempo">
+						<h4 class="titulo-item">Poção de Tempo</h4>
+						<img src="media/itens-loja/pocao-tempo.png" class="img-item">
+						<p class="descricao-item">Ganha 5 segundos a mais de tempo a cada poção usada.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 250 estrelas</p>
+						<button class="botao-item btnComprar" title="pocao-tempo">Comprar</button>
+					</div>
+					<div class="item" id="pocao-bateria">
+						<h4 class="titulo-item">Poção de Bateria</h4>
+						<img src="media/itens-loja/pocao-bateria.png" class="img-item">
+						<p class="descricao-item">Ganha 1 bateria a mais.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 250 estrelas</p>
+						<button class="botao-item btnComprar" title="pocao-bateria">Comprar</button>
+					</div>
+					<div class="item" id="foto-guerreiro">
+						<h4 class="titulo-item">Guerreiro</h4>
+						<img src="media/itens-loja/personagens/con1.png" class="img-item">
+						<p class="descricao-item">Libera a foto do guerreiro para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 500 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-guerreiro">Comprar</button>
+					</div>
+					<div class="item" id="foto-bruxa">
+						<h4 class="titulo-item">Bruxa</h4>
+						<img src="media/itens-loja/personagens/con2.png" class="img-item">
+						<p class="descricao-item">Libera a foto da bruxa para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 500 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-bruxa">Comprar</button>
+					</div>
+					<div class="item" id="foto-ladrao">
+						<h4 class="titulo-item">Ladrão</h4>
+						<img src="media/itens-loja/personagens/con3.png" class="img-item">
+						<p class="descricao-item">Libera a foto do ladrão para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 1.000 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-ladrao">Comprar</button>
+					</div>
+					<div class="item" id="foto-ferreiro">
+						<h4 class="titulo-item">Ferreiro</h4>
+						<img src="media/itens-loja/personagens/con4.png" class="img-item">
+						<p class="descricao-item">Libera a foto do ferreiro para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 1.000 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-ferreiro">Comprar</button>
+					</div>
+					<div class="item" id="foto-ladra">
+						<h4 class="titulo-item">Ladra</h4>
+						<img src="media/itens-loja/personagens/con5.png" class="img-item">
+						<p class="descricao-item">Libera a foto da ladra para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 2.500 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-ladra">Comprar</button>
+					</div>
+					<div class="item" id="foto-arqueiro">
+						<h4 class="titulo-item">Arqueiro</h4>
+						<img src="media/itens-loja/personagens/con6.png" class="img-item">
+						<p class="descricao-item">Libera a foto do arqueiro para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 2.500 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-arqueiro">Comprar</button>
+					</div>
+					<div class="item" id="foto-homem-areia">
+						<h4 class="titulo-item">Homem da areia</h4>
+						<img src="media/itens-loja/personagens/con7.png" class="img-item">
+						<p class="descricao-item">Libera a foto do homem da areia para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 3.000 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-homem-areia">Comprar</button>
+					</div>
+					<div class="item" id="foto-fada">
+						<h4 class="titulo-item">Fada</h4>
+						<img src="media/itens-loja/personagens/con8.png" class="img-item">
+						<p class="descricao-item">Libera a foto da fada para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 3.000 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-fada">Comprar</button>
+					</div>
+					<div class="item" id="foto-ninja">
+						<h4 class="titulo-item">Ninja</h4>
+						<img src="media/itens-loja/personagens/con9.png" class="img-item">
+						<p class="descricao-item">Libera a foto do ninja para ser usada no perfil.</p>
+						<p class="preco"><i class="bi bi-star-fill"></i> 5.000 estrelas</p>
+						<button class="botao-item btnComprar" title="foto-ninja">Comprar</button>
+					</div>
+				</div>
+			</div>
+			<h2 id="abrirMonstrosCapturados" class="abridores">Monstros capturados</h2>
+			<div id="divMonstrosCapturados" class="divsAbertura esconde">
+				<p>A imagem ficará colorida quando você capturar o monstro!</p>
+				<div class="grid">
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro1.png" class="img-item bloqueado" id="monstro1">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 50 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro2.png" class="img-item bloqueado" id="monstro2">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 100 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro3.png" class="img-item bloqueado" id="monstro3">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 150 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro4.png" class="img-item bloqueado" id="monstro4">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 200 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro5.png" class="img-item bloqueado" id="monstro5">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 250 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro6.png" class="img-item bloqueado" id="monstro6">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 300 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro7.png" class="img-item bloqueado" id="monstro7">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 350 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro8.png" class="img-item bloqueado" id="monstro8">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 400 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro9.png" class="img-item bloqueado" id="monstro9">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 450 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro10.png" class="img-item bloqueado" id="monstro10">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 500 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro11.png" class="img-item bloqueado" id="monstro11">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 550 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro12.png" class="img-item bloqueado" id="monstro12">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 600 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro13.png" class="img-item bloqueado" id="monstro13">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 650 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro14.png" class="img-item bloqueado" id="monstro14">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 700 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro15.png" class="img-item bloqueado" id="monstro15">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 750 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro16.png" class="img-item bloqueado" id="monstro16">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 800 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro17.png" class="img-item bloqueado" id="monstro17">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 850 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro18.png" class="img-item bloqueado" id="monstro18">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 900 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro19.png" class="img-item bloqueado" id="monstro19">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 950 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro20.png" class="img-item bloqueado" id="monstro20">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.000 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro21.png" class="img-item bloqueado" id="monstro21">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.050 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro22.png" class="img-item bloqueado" id="monstro22">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.100 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro23.png" class="img-item bloqueado" id="monstro23">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.150 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro24.png" class="img-item bloqueado" id="monstro24">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.200 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro25.png" class="img-item bloqueado" id="monstro25">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.250 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro26.png" class="img-item bloqueado" id="monstro26">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.300 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro27.png" class="img-item bloqueado" id="monstro27">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.350 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro28.png" class="img-item bloqueado" id="monstro28">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.400 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro29.png" class="img-item bloqueado" id="monstro29">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.450 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro30.png" class="img-item bloqueado" id="monstro30">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.500 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro31.png" class="img-item bloqueado" id="monstro31">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.550 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro32.png" class="img-item bloqueado" id="monstro32">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.600 no normal ou mais.</p>
+					</div>
+					<div class="item">
+						<h4 class="titulo-item">Monstro</h4>
+						<img src="media/monstros/monstro33.png" class="img-item bloqueado" id="monstro33">
+						<p class="descricao-item">Esta criatura pode ser capturada atingindo o nível 1.650 no normal ou mais.</p>
+					</div>					
+				</div>
+			</div>
+			<h2 id="abrirConquistas" class="abridores">Conquistas</h2>
+			<div id="divConquistas" class="divsAbertura esconde">
+				<p>Quando você concluir uma determinada conquista, a cor de fundo ficará verde.</p>
+				<div class="grupo-conquistas">
+					<p class="conquista" id="conquistaONomeado">Alterar o nome (ganha o título "O nomeado")</p>
+					<p class="conquista" id="conquistaOComprador">Comprar um item na loja (ganha o título "O comprador")</p>
+					<p class="conquista" id="conquistaInsatisfeito">Mudar a dificuldade do jogo (ganha o título "Insatisfeito")</p>
+					<p class="conquista" id="conquistaEquipado">Equipar um item (ganha o título "Equipado")</p>
+					<p class="conquista" id="conquistaEuTambemSeiFazer">Criar um circuito (ganha o título "Eu também sei fazer")</p>
+					<p class="conquista" id="conquistaEuTenhoAmigos">Jogar no circuito de outra pessoa (ganha o título "Eu tenho amigos")</p>
+					<p class="conquista" id="conquistaOCacador">Capturar uma criatura (ganha o título "O caçador")</p>
+					<p class="conquista" id="conquistaOImpiedoso">Capturar duas criaturas (ganha o título "O Impiedoso")</p>
+					<p class="conquista" id="conquistaColecionadorDeCabecas">Capturar três criaturas (ganha o título "Colecionador de cabeças")</p>
+					<p class="conquista" id="conquistaLigeirinho">Realizar uma streak no fácil (ganha o título "Ligeirinho")</p>
+					<p class="conquista" id="conquistaPegandoFogo">Realizar uma streak no normal (ganha o título "Pegando fogo!")</p>
+					<p class="conquista" id="conquistaNadaPodeMeParar">Realizar uma streak no difícil (ganha o título "Nada pode me parar")</p>
+					<p class="conquista" id="conquistaInvencivel">Realizar uma streak no impossível (ganha o título "Invencível")</p>
+					<p class="conquista" id="conquistaLogicoIniciante">Atingir a fase 10 no fácil (ganha o título "Lógico Iniciante")</p>
+					<p class="conquista" id="conquistaLogicoPersistente">Atingir a fase 25 no normal (ganha o título "Lógico Persistente")</p>
+					<p class="conquista" id="conquistaUmVerdadeiroLogico">Atingir a fase 500 no normal (ganha o título "Um verdadeiro lógico")</p>
+					<p class="conquista" id="conquistaLogicoMestre">Atingir a fase 1.000 no normal (ganha o título "Lógico Mestre")</p>
+					<p class="conquista" id="conquistaLogicoDeus">Atingir a fase 5.000 no normal (ganha o título "Lógico Deus")</p>
+					<p class="conquista" id="conquistaOCacadorDivino">Ter caçado todos os monstros (ganha o título "O Caçador Divino")</p>
+				</div>
+			</div>
+
+			<div class="alinhados-horizontalmente">
+				<button id="btnJogar">Novo jogo!</button><br>
+				<button id="btnVoltar">Voltar à partida</button>
+			</div>
+			<p id="resumoConfiguracoes"></p>
+			<div id="creditos">
+				<p>Este jogo foi desenvolvido por <a href="https://wdpedroborges.github.io">Pedro Borges</a></p>
+				<p>Créditos pelas ilustrações dos monstros e dos personagens presentes na loja para <a href="http://craftpix.net">CraftPixel</a></p>
+				<p>Ícones de poções criados por <a href="https://www.flaticon.com/free-icons/potions" target="_blank">Flaticon</a></p>
+				<p>Ícone de fogo criado por  <a href="https://www.flaticon.com/free-icons/fire" target="_blank">Vectors Market - Flaticon</a></p>
+				<p>Ícone de escolha criado por <a href="https://www.flaticon.com/free-icons/choice" target="_blank">Freepik - Flaticon</a></p>
+				<p>Efeitos sonoros obtidos em <a href="https://freesound.org">Free Sound</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<p id="mensagemUpou"></p>
+
+<div id="infoMusica">
+	Você está ouvindo "Lazy Walk" por Cheel
+</div>
+<p id="estrelas"><span id="comentarioEstrelas"></span></p>
+<button id="btnProximo"><i class="bi bi-arrow-right"></i></button>
+<div class="alinhamento-jogo">
+	<div class="infoJogo">
+		<p id="opcaoMenu" class="pGenerico"><i class="bi bi-list"></i></p>
+<!-- 		<p class="pGenerico" id="pMusica"><i id="play" class="bi bi-pause"></i></p>
+ -->		<p class="pGenerico" id="pFase"><i class="bi bi-boxes"></i> <span id="fase" title="fase"></span></p>
+		<p class="pGenerico" id="pPontuacao"><i class="bi bi-hand-thumbs-up"></i> <span id="pontuacao" title="pontuação">0</span></p>
+		<p class="pGenerico"><i class="bi bi-hourglass-split"></i> <span id="tempo" title="tempo">...</span> <i class="bi bi-battery-charging"></i> <span id="bateria" title="bateria">0</span></p>
+		<p class="pGenerico pocoes"><span id="pocaoTempo"><img src="media/itens-loja/pocao-tempo.png"> <span id="quantidadePocaoTempo">0</span></span> <span id="pocaoBateria"><img src="media/itens-loja/pocao-bateria.png"> <span id="quantidadePocaoBateria">0</span></span></p>
+	</div>
+	<div id="jogo">
+		<div id="output">Indeterminado</div>
+		<div id="circuito"></div>
+		<div id="input"></div>
+		<div id="divMensagem"><marquee id="mensagem"></marquee></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+const loader = document.getElementById('loader');
+window.addEventListener('load', () => {
+	loader.style.display = 'none';
+});
+</script>
+
+</body>
+</html>

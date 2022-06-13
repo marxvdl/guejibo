@@ -1,0 +1,185 @@
+* {
+	font-family: monospace;
+	box-sizing: initial;
+}
+
+body {
+	background-color: #ccc;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 0;
+	margin: 0;
+	background-image: none;
+	animation: none;
+}
+
+h1, h2, h3 {
+	text-align: center;
+}
+
+h2 {
+	background-color: #000;
+	color: #fff;
+	padding: 1rem;
+	border-radius: 1rem;
+	width: 75%;
+	margin: 2rem auto;
+	border: none;
+}
+
+h2:hover {
+	border: none;
+}
+
+.toast {
+	padding: 1rem;
+	background-color: seagreen;
+	width: 75%;
+	position: fixed;
+	bottom: 5%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 2px solid #fff;
+	border-radius: 1rem;
+	box-shadow: 0 0 100px #fff;
+	color: #fff;
+	text-align: center;
+	display: none;
+	text-shadow: 0 0 5px black;
+}
+
+#jogo p {
+	font-size: 12px;
+	color: #fff;
+}
+
+#elementosCriacao, #codigo {
+	border-radius: 1rem;
+	box-shadow: 2px 2px 10px black;
+	border: 2px solid #000;
+}
+
+.espacoElemento {
+	border: 1px solid #fff;
+}
+
+#elementosCriacao {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 35%;
+	background-color: #212121;
+}
+
+#elementosCriacao img {
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	border-radius: 1rem;
+	padding: 1rem;
+}
+
+.alinhados-criador {
+	display: flex;
+	justify-content: space-around;
+}
+
+.input-solucao-perfeita {
+	background-color: tomato;
+}
+
+.espacoElemento:hover {
+	outline: 2px solid #999;
+	cursor: pointer;
+}
+
+/* textarea onde o código do circuito é exibido */
+#codigo {
+	display: block;
+	height: 300px;
+	width: 90%;
+	border-radius: 1rem;
+	margin: 0 auto;
+	font-family: monospace;
+	font-size: 1rem;
+	padding: 1rem;
+	color: #606060;
+}
+
+#divCodigo {
+	display: none;
+}
+
+#codigo:focus {
+	border: 2px solid #000;
+	outline: none;
+}
+
+button {
+	background-color: dodgerblue;
+	border-radius: 0 0 1rem 0;
+}
+
+button a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.grupo-botoes {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	outline: 1px dashed #606060;
+	padding: 1rem;
+	margin: 5rem auto;
+	width: 75%;
+}
+
+.grupo-botoes button {
+	margin-top: 1rem;
+	padding: 1rem;
+	border-radius: 1rem;
+	font-size: 1rem;
+	text-shadow: 0 0 5px black;
+	color: #fff;
+}
+
+#btnFinalizarCriacaoCircuito {
+	background-color: seagreen;
+}
+#btnExplorarCircuito {
+	background-color: orange;
+}
+#btnCriarNovoCircuito {
+	background-color: tomato;
+}
+
+@media (max-width: 1000px) {
+	.alinhados-criador {
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: space-between;
+		align-items: center;
+		height: auto;
+	}
+
+	#elementosCriacao {
+		margin-top: 2rem;
+		width: 90%;
+		display: flex;
+		flex-direction: row;
+	}
+
+	#jogo {
+		margin-top: 1rem;
+	}
+
+	.grupo-botoes {
+		width: 90%;
+	}
+
+	.grupo-botoes button {
+		max-width: 30%;
+	}
+}
