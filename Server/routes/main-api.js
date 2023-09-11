@@ -174,8 +174,8 @@ module.exports = function (app, passport) {
     app.get('/*', (req, res, next) => {
         if (req.url.startsWith('/games')) {
             res.sendFile(
-                req.url.substr(1),
-                { root: path.join(__dirname, '..') },
+                'G'+req.url.substr(2),
+                { root: path.join(__dirname, '../..') },
                 err => {
                     if (err) {
                         if (err.code == 'EISDIR')
