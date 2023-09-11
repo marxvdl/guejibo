@@ -2,7 +2,7 @@
 
 1. Instalar o [Node.js](https://nodejs.org/) , caso já não esteja instalado
 
-2. Dentro da pasta `Server`, instalar todas as dependências do projeto:
+2. Dentro da pasta `Client`, instalar todas as dependências do projeto:
 
     ```
     npm install
