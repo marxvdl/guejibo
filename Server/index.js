@@ -5,13 +5,14 @@ const passport = require('passport');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const http = require('http');
+const session = require('express-session');
 
-/* ******************************************* */
+/* ***************************************** */
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-/* ******************************************* */
+/* ***************************************** */
 
 // dotenv
 dotenv.config();
@@ -25,11 +26,19 @@ app.use(cookieParser());
 // body-parser
 app.use(bodyParser.json());
 
+// express-session
+app.use(session({
+  secret: 'your secret here',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true }
+}));
+
 // passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* ******************************************* */
+/* ***************************************** */
 
 // Internal modules
 require('./app/auth')(passport);
@@ -46,4 +55,4 @@ require('./app/ws')(app, httpServer, passport);
 httpServer.listen(port);
 console.log("Port: " + port);
 
-/* ******************************************* */
+/* ***************************************** */

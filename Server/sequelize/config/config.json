@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "admin",
-    "password": "123",
-    "database": "iacweb",
+    "username": "root",
+    "password": "admin",
+    "database": "guejibo",
     "host": "127.0.0.1",
     "dialect": "mariadb",
     "operatorsAliases": 0

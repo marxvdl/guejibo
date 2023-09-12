@@ -7,7 +7,7 @@ export const environment = {
 
   apiUrl: "http://localhost:3000/",
   wsUrl: 'ws://localhost:3000/',
-  gamesPath: 'http://localhost/dev/guejibo/Games/'
+  gamesPath: 'http://localhost:8080/dev/guejibo/Games/'
 };
 
 /*
