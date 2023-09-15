@@ -4,3 +4,33 @@
     @include forms.host;
     @include forms.contents;
 }
+
+#buttondiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.googlebutton {
+  background-color: #E0E0E0;
+  color: dimgray;
+  border: 2px solid #929292;
+  margin-top: 2rem;
+  font-size: 110%;
+  font-weight: bold;
+  padding: 10px 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.buttontext {
+  margin-left: 5px;
+  padding-top: 0.2rem;
+}
+
+.google-icon {
+  width: 20px;
+  margin-right: 5px;
+  padding-top: 0.12rem;
+}
