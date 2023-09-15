@@ -21,6 +21,16 @@ export interface Response {
 })
 export class AuthService {
 
+  private user: Partial<User>;
+
+  setUser(user: Partial<User>) {
+    this.user = user;
+  }
+
+  getUser(): Partial<User> {
+    return this.user;
+  }
+
   private topbar = null;
 
   private loggedIn: boolean = false;
